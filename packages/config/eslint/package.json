@@ -1,0 +1,12 @@
+{
+  "name": "@solana-playground/config-eslint",
+  "version": "1.0.0",
+  "private": true,
+  "main": "base.js",
+  "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0"
+  }
+}
+

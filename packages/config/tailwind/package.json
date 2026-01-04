@@ -1,0 +1,10 @@
+{
+  "name": "@solana-playground/config-tailwind",
+  "version": "1.0.0",
+  "private": true,
+  "main": "base.js",
+  "dependencies": {
+    "tailwindcss": "^3.4.1"
+  }
+}
+
