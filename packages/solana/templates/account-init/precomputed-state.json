@@ -4,6 +4,7 @@
       "name": "Initialize Account",
       "description": "Initialize a new account with data value 42",
       "instruction": "initialize",
+      "args": [42],
       "accountsBefore": [
         {
           "address": "11111111111111111111111111111111",
@@ -67,6 +68,7 @@
       "name": "Update Account",
       "description": "Update the account data to 100",
       "instruction": "update",
+      "args": [100],
       "accountsBefore": [
         {
           "address": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
@@ -122,4 +124,3 @@
     }
   ]
 }
-

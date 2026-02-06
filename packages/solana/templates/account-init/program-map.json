@@ -1,4 +1,20 @@
 {
+  "flow": [
+    {
+      "id": "initialize",
+      "title": "Create Program Account",
+      "description": "Allocate and initialize the custom account with initial data.",
+      "lineRange": [9, 15],
+      "concepts": ["Account initialization", "Program-owned state"]
+    },
+    {
+      "id": "update",
+      "title": "Authorize Update",
+      "description": "Verify authority before mutating stored data.",
+      "lineRange": [17, 26],
+      "concepts": ["Authorization", "Mutable state"]
+    }
+  ],
   "instructions": [
     {
       "name": "initialize",
@@ -68,4 +84,3 @@
   ],
   "cpiCalls": []
 }
-

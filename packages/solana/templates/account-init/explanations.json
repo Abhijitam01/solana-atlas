@@ -1,102 +1,326 @@
 [
   {
-    "lineNumber": 8,
-    "what": "Instruction handler that initializes a new account with initial data",
-    "why": "This demonstrates the core pattern of account initialization in Solana - creating on-chain state that persists across transactions",
-    "solanaConcept": "Account Initialization",
-    "rustConcept": "Function parameters and mutability",
-    "whatBreaksIfRemoved": "No way to create accounts - the program can't store any state",
+    "lineNumber": 1,
+    "what": "Imports Anchor prelude.",
+    "why": "Brings Anchor types and macros into scope.",
     "isImportant": true
   },
   {
+    "lineNumber": 3,
+    "what": "Declares the program ID.",
+    "why": "Program ID uniquely identifies the program on-chain.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 5,
+    "what": "Marks the program module entry point.",
+    "why": "Anchor uses this to generate instruction dispatch.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 6,
+    "what": "Defines the program module.",
+    "why": "Groups instruction handlers under a namespace.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 7,
+    "what": "Imports symbols into scope.",
+    "why": "Required to reference external types and modules.",
+    "isImportant": false
+  },
+  {
     "lineNumber": 9,
-    "what": "Mutable reference to the account being initialized",
-    "why": "We need mut to write data to the account. The &mut allows us to modify the account's fields",
-    "solanaConcept": "Account Mutability",
-    "rustConcept": "Mutable references",
-    "whatBreaksIfRemoved": "Can't modify the account - compilation error",
+    "what": "Defines an instruction handler.",
+    "why": "Entry point for a Solana instruction.",
     "isImportant": true
   },
   {
     "lineNumber": 10,
-    "what": "Sets the data field of the account",
-    "why": "This stores the u64 value on-chain. This data persists and can be read in future transactions",
-    "solanaConcept": "Account Data Storage",
-    "rustConcept": "Struct field assignment",
-    "whatBreaksIfRemoved": "Account is created but empty - no data stored",
-    "isImportant": true
+    "what": "Declares a local variable.",
+    "why": "Stores intermediate values for this instruction.",
+    "isImportant": false
   },
   {
     "lineNumber": 11,
-    "what": "Stores the authority (user's public key) in the account",
-    "why": "This enables access control - we can check who created the account and allow only them to update it",
-    "solanaConcept": "Account Authority",
-    "rustConcept": "Public key access",
-    "whatBreaksIfRemoved": "No way to track who owns the account - access control breaks",
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 12,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 13,
+    "what": "Emits a log message.",
+    "why": "Helps observe execution in transaction logs.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 14,
+    "what": "Returns success.",
+    "why": "Signals the instruction completed without errors.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 15,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 17,
+    "what": "Defines an instruction handler.",
+    "why": "Entry point for a Solana instruction.",
     "isImportant": true
   },
   {
     "lineNumber": 18,
-    "what": "Instruction handler that updates existing account data",
-    "why": "Shows how to modify account state after initialization, with proper access control",
-    "solanaConcept": "Account Updates",
-    "rustConcept": "Function implementation",
-    "whatBreaksIfRemoved": "Can't modify accounts after creation - read-only program",
+    "what": "Declares a local variable.",
+    "why": "Stores intermediate values for this instruction.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 19,
+    "what": "Checks a required condition.",
+    "why": "Aborts execution on invalid state.",
     "isImportant": true
   },
   {
     "lineNumber": 20,
-    "what": "Access control check using require! macro",
-    "why": "Ensures only the account's authority can update it. This is critical for security",
-    "solanaConcept": "Access Control",
-    "rustConcept": "Macros and error handling",
-    "whatBreaksIfRemoved": "Security vulnerability - anyone can update any account",
-    "isImportant": true
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 21,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 22,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 23,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 24,
+    "what": "Emits a log message.",
+    "why": "Helps observe execution in transaction logs.",
+    "isImportant": false
   },
   {
     "lineNumber": 25,
-    "what": "Account struct for initialization with init constraint",
-    "why": "The init constraint tells Anchor to create this account if it doesn't exist, allocate space, and set the owner",
-    "solanaConcept": "Account Initialization Constraint",
-    "rustConcept": "Struct definitions and attributes",
-    "whatBreaksIfRemoved": "Account won't be created automatically - manual account creation required",
-    "isImportant": true
+    "what": "Returns success.",
+    "why": "Signals the instruction completed without errors.",
+    "isImportant": false
   },
   {
     "lineNumber": 26,
-    "what": "Specifies the payer for account creation",
-    "why": "Account creation costs lamports (rent). The payer is the account that pays for the rent-exempt minimum",
-    "solanaConcept": "Account Rent",
-    "rustConcept": "Attribute parameters",
-    "whatBreaksIfRemoved": "Anchor doesn't know who pays - compilation error",
-    "isImportant": true
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
   },
   {
     "lineNumber": 27,
-    "what": "Specifies the space needed for the account",
-    "why": "Solana requires accounts to be rent-exempt. We must specify exactly how much space the account needs",
-    "solanaConcept": "Account Space",
-    "rustConcept": "Arithmetic expressions",
-    "whatBreaksIfRemoved": "Anchor doesn't know how much space to allocate - compilation error",
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 29,
+    "what": "Generates account validation for this struct.",
+    "why": "Anchor validates accounts before instruction execution.",
     "isImportant": true
+  },
+  {
+    "lineNumber": 30,
+    "what": "Defines an accounts or state struct.",
+    "why": "Specifies the data layout and required accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 31,
+    "what": "Applies account constraints.",
+    "why": "Enforces runtime checks on accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 32,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 33,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 34,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 35,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 36,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 37,
+    "what": "Applies account constraints.",
+    "why": "Enforces runtime checks on accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 38,
+    "what": "Declares a signer account.",
+    "why": "Ensures the transaction is authorized by this key.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 39,
+    "what": "References the System Program.",
+    "why": "Required for account creation or lamport transfers.",
+    "isImportant": false
   },
   {
     "lineNumber": 40,
-    "what": "Account struct definition with #[account] attribute",
-    "why": "This marks the struct as an Anchor account type. Anchor generates serialization/deserialization code",
-    "solanaConcept": "Account Types",
-    "rustConcept": "Derive macros and attributes",
-    "whatBreaksIfRemoved": "Not recognized as an account type - serialization fails",
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 42,
+    "what": "Generates account validation for this struct.",
+    "why": "Anchor validates accounts before instruction execution.",
     "isImportant": true
   },
   {
-    "lineNumber": 46,
-    "what": "Implementation block defining the account's size",
-    "why": "LEN constant is used in the init constraint to specify space. 8 bytes for discriminator + data fields",
-    "solanaConcept": "Account Discriminator",
-    "rustConcept": "Associated constants",
-    "whatBreaksIfRemoved": "Can't calculate account size - space allocation fails",
+    "lineNumber": 43,
+    "what": "Defines an accounts or state struct.",
+    "why": "Specifies the data layout and required accounts.",
     "isImportant": true
+  },
+  {
+    "lineNumber": 44,
+    "what": "Applies account constraints.",
+    "why": "Enforces runtime checks on accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 45,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 46,
+    "what": "Declares a signer account.",
+    "why": "Ensures the transaction is authorized by this key.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 47,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 49,
+    "what": "Applies account constraints.",
+    "why": "Enforces runtime checks on accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 50,
+    "what": "Defines an accounts or state struct.",
+    "why": "Specifies the data layout and required accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 51,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 52,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 53,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 55,
+    "what": "Implements methods for a type.",
+    "why": "Adds behavior to structs or enums.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 56,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 57,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 59,
+    "what": "Applies an attribute.",
+    "why": "Changes behavior via compile-time metadata.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 60,
+    "what": "Defines an enum type.",
+    "why": "Represents one of several variants in program state.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 61,
+    "what": "Applies an attribute.",
+    "why": "Changes behavior via compile-time metadata.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 62,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 63,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
   }
 ]
-

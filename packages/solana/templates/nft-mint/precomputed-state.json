@@ -4,6 +4,7 @@
       "name": "Create NFT",
       "description": "Create a new NFT with name, symbol, and URI",
       "instruction": "create_nft",
+      "args": ["My NFT", "NFT", "https://example.com/metadata.json"],
       "accountsBefore": [
         {
           "address": "11111111111111111111111111111111",
@@ -112,4 +113,3 @@
     }
   ]
 }
-

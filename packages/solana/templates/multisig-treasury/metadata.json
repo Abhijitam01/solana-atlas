@@ -1,0 +1,22 @@
+{
+  "id": "multisig-treasury",
+  "name": "Multisig Treasury",
+  "description": "Create a 3-of-N style multisig vault and approve proposals to move lamports. This template demonstrates multisig ownership, proposal workflows, and PDA vaults.",
+  "difficulty": "intermediate",
+  "learningGoals": [
+    "Model multisig ownership with multiple signers",
+    "Create and approve on-chain proposals",
+    "Store approvals and execute once a threshold is met",
+    "Use PDAs to secure a treasury vault",
+    "Understand lamport transfers from program-owned accounts"
+  ],
+  "solanaConcepts": [
+    "Multisig",
+    "Program Derived Addresses (PDAs)",
+    "Lamports",
+    "Account State",
+    "Access Control"
+  ],
+  "estimatedTime": "40 minutes",
+  "prerequisites": ["pda-vault", "authority-validation"]
+}

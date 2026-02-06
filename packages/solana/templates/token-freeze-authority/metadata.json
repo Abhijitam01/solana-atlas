@@ -1,0 +1,18 @@
+{
+  "id": "token-freeze-authority",
+  "name": "Token Freeze Authority",
+  "description": "Freeze and thaw token accounts using the SPL Token program.",
+  "difficulty": "intermediate",
+  "learningGoals": [
+    "Invoke freeze/thaw CPI calls",
+    "Understand freeze authority rules",
+    "Observe token account state changes"
+  ],
+  "solanaConcepts": [
+    "SPL Token",
+    "Authority",
+    "CPI"
+  ],
+  "estimatedTime": "20 minutes",
+  "prerequisites": ["Basic Token Mint"]
+}

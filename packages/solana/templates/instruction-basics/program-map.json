@@ -1,0 +1,51 @@
+{
+  "flow": [
+    {
+      "id": "init",
+      "title": "Initialize Counter",
+      "description": "Creates the counter account and stores initial value and authority.",
+      "lineRange": [9, 14],
+      "concepts": ["Account Initialization", "State"]
+    },
+    {
+      "id": "increment",
+      "title": "Increment Counter",
+      "description": "Safely increments the counter value with overflow protection.",
+      "lineRange": [16, 22],
+      "concepts": ["State Mutation", "Error Handling"]
+    }
+  ],
+  "instructions": [
+    {
+      "name": "initialize",
+      "lineStart": 9,
+      "lineEnd": 14,
+      "accounts": [
+        { "name": "counter", "isMut": true, "isSigner": false, "isPda": false },
+        { "name": "authority", "isMut": true, "isSigner": true, "isPda": false },
+        { "name": "system_program", "isMut": false, "isSigner": false, "isPda": false }
+      ],
+      "description": "Creates the counter account and stores initial state."
+    },
+    {
+      "name": "increment",
+      "lineStart": 16,
+      "lineEnd": 22,
+      "accounts": [
+        { "name": "counter", "isMut": true, "isSigner": false, "isPda": false },
+        { "name": "authority", "isMut": false, "isSigner": true, "isPda": false }
+      ],
+      "description": "Increments the counter value with overflow checks."
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Counter",
+      "fields": [
+        { "name": "authority", "type": "Pubkey" },
+        { "name": "value", "type": "u64" }
+      ]
+    }
+  ],
+  "cpiCalls": []
+}

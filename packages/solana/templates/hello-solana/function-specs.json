@@ -1,0 +1,12 @@
+[
+  {
+    "id": "say_hello",
+    "title": "Say Hello",
+    "lineRange": [9, 14],
+    "does": "Emits a greeting and prints the program and caller identities.",
+    "why": "Introduces the Solana program entrypoint pattern and shows how accounts are accessed for logging and debugging.",
+    "breaksIfRemoved": "The program no longer has a runnable instruction, so clients cannot invoke it to verify deployment.",
+    "concepts": ["Program entrypoint", "Account context", "Logging"],
+    "securityImplications": "Low risk on its own, but removing logs reduces observability when diagnosing account or authority issues."
+  }
+]

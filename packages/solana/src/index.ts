@@ -7,6 +7,7 @@ import {
   LineExplanationSchema,
   ProgramMapSchema,
   PrecomputedStateSchema,
+  FunctionSpecSchema,
 } from "@solana-playground/types";
 
 const getTemplatesDir = () => {
@@ -41,7 +42,7 @@ export async function loadTemplate(id: string): Promise<Template> {
   const basePath = join(TEMPLATES_DIR, id);
 
   try {
-    const [code, metadata, explanations, programMap, precomputedState] =
+    const [code, metadata, explanations, programMap, precomputedState, functionSpecs] =
       await Promise.all([
         readFile(join(basePath, "program/lib.rs"), "utf-8").catch((err) => {
           throw new Error(`Failed to read program code: ${err instanceof Error ? err.message : String(err)}`);
@@ -51,7 +52,7 @@ export async function loadTemplate(id: string): Promise<Template> {
           .catch((err) => {
             throw new Error(`Invalid metadata: ${err instanceof Error ? err.message : String(err)}`);
           }),
-        readJSON(join(basePath, "explanations.json"))
+        readJSON(join(basePath, "line-explanations.json"))
           .then((data) => z.array(LineExplanationSchema).parse(data))
           .catch((err) => {
             throw new Error(`Invalid explanations: ${err instanceof Error ? err.message : String(err)}`);
@@ -66,7 +67,30 @@ export async function loadTemplate(id: string): Promise<Template> {
           .catch((err) => {
             throw new Error(`Invalid precomputed state: ${err instanceof Error ? err.message : String(err)}`);
           }),
+        readJSON(join(basePath, "function-specs.json"))
+          .then((data) => z.array(FunctionSpecSchema).parse(data))
+          .catch((err) => {
+            if (err instanceof Error && err.message.includes("ENOENT")) {
+              return [];
+            }
+            throw new Error(`Invalid function specs: ${err instanceof Error ? err.message : String(err)}`);
+          }),
       ]);
+
+    // Enforce 100% explanation coverage for non-empty lines
+    const codeLines = code.split("\n");
+    const explainedLines = new Set(explanations.map((entry) => entry.line));
+    const missingLines = codeLines
+      .map((line, idx) => ({ line, number: idx + 1 }))
+      .filter(({ line }) => line.trim().length > 0)
+      .filter(({ number }) => !explainedLines.has(number))
+      .map(({ number }) => number);
+
+    if (missingLines.length > 0) {
+      throw new Error(
+        `Template "${id}" is missing line explanations for lines: ${missingLines.join(", ")}`
+      );
+    }
 
     return {
       id,
@@ -74,6 +98,7 @@ export async function loadTemplate(id: string): Promise<Template> {
       metadata,
       explanations,
       programMap,
+      functionSpecs,
       precomputedState,
     };
   } catch (error) {
@@ -95,4 +120,3 @@ export async function listTemplates(): Promise<string[]> {
     throw new Error(`Failed to list templates: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
-

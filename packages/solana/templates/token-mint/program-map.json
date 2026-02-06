@@ -1,4 +1,27 @@
 {
+  "flow": [
+    {
+      "id": "create_mint",
+      "title": "Create Token Mint",
+      "description": "Initialize a new SPL token mint and set its authority.",
+      "lineRange": [10, 13],
+      "concepts": ["SPL Token", "Mint authority"]
+    },
+    {
+      "id": "mint_tokens",
+      "title": "Mint Supply",
+      "description": "Mint new tokens into a recipient account via CPI.",
+      "lineRange": [15, 29],
+      "concepts": ["CPI", "Minting"]
+    },
+    {
+      "id": "transfer_tokens",
+      "title": "Transfer Tokens",
+      "description": "Move tokens between accounts using the SPL Token program.",
+      "lineRange": [31, 45],
+      "concepts": ["Transfers", "Authority"]
+    }
+  ],
   "instructions": [
     {
       "name": "create_mint",
@@ -123,4 +146,3 @@
     }
   ]
 }
-

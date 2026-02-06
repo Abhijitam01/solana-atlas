@@ -1,4 +1,34 @@
 {
+  "flow": [
+    {
+      "id": "derive",
+      "title": "Derive PDA",
+      "description": "Derive the vault PDA from seeds and bump for a deterministic vault address.",
+      "lineRange": [38, 67],
+      "concepts": ["PDA", "Seeds", "Bump"]
+    },
+    {
+      "id": "initialize",
+      "title": "Initialize Vault",
+      "description": "Create the vault account and store authority and bump.",
+      "lineRange": [9, 15],
+      "concepts": ["Account initialization", "Authority"]
+    },
+    {
+      "id": "deposit",
+      "title": "Deposit Lamports",
+      "description": "Move lamports from the signer into the vault PDA.",
+      "lineRange": [17, 22],
+      "concepts": ["Lamports", "PDA ownership"]
+    },
+    {
+      "id": "withdraw",
+      "title": "Withdraw With Authority",
+      "description": "Validate authority and release lamports back to the signer.",
+      "lineRange": [24, 33],
+      "concepts": ["Authority validation", "Lamports"]
+    }
+  ],
   "instructions": [
     {
       "name": "initialize",
@@ -96,4 +126,3 @@
   ],
   "cpiCalls": []
 }
-

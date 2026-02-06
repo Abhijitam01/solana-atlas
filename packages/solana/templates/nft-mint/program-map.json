@@ -1,4 +1,13 @@
 {
+  "flow": [
+    {
+      "id": "create_nft",
+      "title": "Create NFT",
+      "description": "Initialize the mint and write metadata via the Token Metadata program.",
+      "lineRange": [14, 49],
+      "concepts": ["NFT metadata", "CPI", "Token Metadata program"]
+    }
+  ],
   "instructions": [
     {
       "name": "create_nft",
@@ -66,4 +75,3 @@
     }
   ]
 }
-

@@ -1,0 +1,28 @@
+{
+  "scenarios": [
+    {
+      "name": "Initialize Counter",
+      "description": "Create a counter with an initial value.",
+      "instruction": "initialize",
+      "args": ["start"],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: Counter initialized to 42"
+      ],
+      "computeUnits": 7000
+    },
+    {
+      "name": "Increment Counter",
+      "description": "Increment the counter by one.",
+      "instruction": "increment",
+      "args": [],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: Counter incremented to 43"
+      ],
+      "computeUnits": 6500
+    }
+  ]
+}

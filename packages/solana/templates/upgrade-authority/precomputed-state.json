@@ -1,0 +1,40 @@
+{
+  "scenarios": [
+    {
+      "name": "Initialize Upgrade Authority",
+      "description": "Create upgrade authority state.",
+      "instruction": "initialize",
+      "args": ["authority"],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: Upgrade authority initialized"
+      ],
+      "computeUnits": 7000
+    },
+    {
+      "name": "Rotate Authority",
+      "description": "Rotate upgrade authority if not frozen.",
+      "instruction": "rotate_authority",
+      "args": ["new_authority"],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: Upgrade authority rotated"
+      ],
+      "computeUnits": 7000
+    },
+    {
+      "name": "Freeze Authority",
+      "description": "Freeze upgrade authority to prevent changes.",
+      "instruction": "freeze_authority",
+      "args": [],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: Upgrade authority frozen"
+      ],
+      "computeUnits": 6000
+    }
+  ]
+}

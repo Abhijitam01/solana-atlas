@@ -4,6 +4,7 @@
       "name": "Basic Execution",
       "description": "Execute the say_hello instruction with a user account",
       "instruction": "say_hello",
+      "args": [],
       "accountsBefore": [
         {
           "address": "11111111111111111111111111111111",
@@ -66,4 +67,3 @@
     }
   ]
 }
-

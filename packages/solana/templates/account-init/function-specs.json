@@ -1,0 +1,22 @@
+[
+  {
+    "id": "initialize",
+    "title": "Initialize Account",
+    "lineRange": [9, 15],
+    "does": "Creates and seeds a custom account with initial data and authority.",
+    "why": "Demonstrates how programs initialize stateful accounts with ownership and data.",
+    "breaksIfRemoved": "No account state exists, so later updates have nothing to modify.",
+    "concepts": ["Account initialization", "Program-owned state", "Authority"],
+    "securityImplications": "Incorrect authority assignment enables unauthorized updates."
+  },
+  {
+    "id": "update",
+    "title": "Update Account",
+    "lineRange": [17, 26],
+    "does": "Validates the authority and updates stored data.",
+    "why": "Shows how programs enforce ownership before mutating state.",
+    "breaksIfRemoved": "State can never change after initialization.",
+    "concepts": ["Authorization", "Mutable state", "Require macro"],
+    "securityImplications": "The authority check prevents arbitrary mutation by attackers."
+  }
+]

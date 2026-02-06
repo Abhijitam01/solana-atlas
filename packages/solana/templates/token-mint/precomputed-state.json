@@ -4,6 +4,7 @@
       "name": "Create Mint",
       "description": "Create a new token mint",
       "instruction": "create_mint",
+      "args": [],
       "accountsBefore": [
         {
           "address": "11111111111111111111111111111111",
@@ -84,6 +85,7 @@
       "name": "Mint Tokens",
       "description": "Mint 1000 tokens into a token account",
       "instruction": "mint_tokens",
+      "args": [1000000000],
       "accountsBefore": [
         {
           "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
@@ -147,6 +149,7 @@
       "name": "Transfer Tokens",
       "description": "Transfer 500 tokens from one account to another",
       "instruction": "transfer_tokens",
+      "args": [500000000],
       "accountsBefore": [
         {
           "address": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
@@ -208,4 +211,3 @@
     }
   ]
 }
-

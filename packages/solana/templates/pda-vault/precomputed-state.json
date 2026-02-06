@@ -4,6 +4,7 @@
       "name": "Initialize Vault",
       "description": "Initialize a new PDA vault",
       "instruction": "initialize",
+      "args": [],
       "accountsBefore": [
         {
           "address": "11111111111111111111111111111111",
@@ -67,6 +68,7 @@
       "name": "Deposit",
       "description": "Deposit 1000000 lamports into the vault",
       "instruction": "deposit",
+      "args": [10000000],
       "accountsBefore": [
         {
           "address": "GjJyeC1rB1h4VpFMLnX3vJz3vJz3vJz3vJz3vJz3vJz3v",
@@ -116,6 +118,7 @@
       "name": "Withdraw",
       "description": "Withdraw 5000000 lamports from the vault",
       "instruction": "withdraw",
+      "args": [5000000],
       "accountsBefore": [
         {
           "address": "GjJyeC1rB1h4VpFMLnX3vJz3vJz3vJz3vJz3vJz3vJz3v",
@@ -163,4 +166,3 @@
     }
   ]
 }
-

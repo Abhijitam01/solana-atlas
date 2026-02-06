@@ -1,0 +1,16 @@
+{
+  "scenarios": [
+    {
+      "name": "Update Metadata",
+      "description": "Update metadata and freeze updates.",
+      "instruction": "update_metadata",
+      "args": ["name", "symbol", "uri"],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: Metadata updated and immutable"
+      ],
+      "computeUnits": 12000
+    }
+  ]
+}

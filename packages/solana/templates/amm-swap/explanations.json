@@ -1,0 +1,716 @@
+[
+  {
+    "lineNumber": 1,
+    "what": "Import Anchor prelude types and macros.",
+    "why": "Provides Context, Result, and account helpers.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 2,
+    "what": "Import SPL Token CPI helpers and account types.",
+    "why": "Needed to move tokens during swaps.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 4,
+    "what": "Declare the program ID.",
+    "why": "Identifies the on-chain program.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 6,
+    "what": "Mark the module as the Anchor program entry point.",
+    "why": "Anchor generates instruction dispatch from this module.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 7,
+    "what": "Define the program module namespace.",
+    "why": "Define the program module namespace.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 8,
+    "what": "Bring parent symbols into scope.",
+    "why": "Bring parent symbols into scope.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 10,
+    "what": "Define the initialize_pool instruction handler.",
+    "why": "Creates and configures the AMM pool.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 11,
+    "what": "Create a mutable reference to the pool account.",
+    "why": "Allows writing pool configuration.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 12,
+    "what": "Store the PDA authority key on the pool.",
+    "why": "Records who controls pool vaults.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 13,
+    "what": "Store mint A on the pool.",
+    "why": "Defines the first asset in the pair.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 14,
+    "what": "Store mint B on the pool.",
+    "why": "Defines the second asset in the pair.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 15,
+    "what": "Store the vault A token account.",
+    "why": "Tracks the reserve for mint A.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 16,
+    "what": "Store the vault B token account.",
+    "why": "Tracks the reserve for mint B.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 17,
+    "what": "Persist the authority PDA bump.",
+    "why": "Needed to sign CPIs later.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 18,
+    "what": "Log pool initialization.",
+    "why": "Provides feedback in transaction logs.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 19,
+    "what": "Return success from initialize_pool.",
+    "why": "Return success from initialize_pool.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 20,
+    "what": "End of initialize_pool handler.",
+    "why": "End of initialize_pool handler.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 22,
+    "what": "Define the swap instruction handler.",
+    "why": "Swaps between the two pool assets.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 23,
+    "what": "Bind the pool account for reuse.",
+    "why": "Bind the pool account for reuse.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 24,
+    "what": "Bind the input vault account.",
+    "why": "Bind the input vault account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 25,
+    "what": "Bind the output vault account.",
+    "why": "Bind the output vault account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 27,
+    "what": "Start validation of vault pairing.",
+    "why": "Ensures swaps use the configured pool vaults.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 28,
+    "what": "Allow swapping A for B.",
+    "why": "Allow swapping A for B.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 29,
+    "what": "Allow swapping B for A.",
+    "why": "Allow swapping B for A.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 30,
+    "what": "Use InvalidVaults error when validation fails.",
+    "why": "Use InvalidVaults error when validation fails.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 31,
+    "what": "End vault validation block.",
+    "why": "End vault validation block.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 32,
+    "what": "Ensure the pool has liquidity before swapping.",
+    "why": "Ensure the pool has liquidity before swapping.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 34,
+    "what": "Start constant-product swap math.",
+    "why": "Start constant-product swap math.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 35,
+    "what": "Multiply input by output reserve.",
+    "why": "Multiply input by output reserve.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 36,
+    "what": "Divide by the new input reserve.",
+    "why": "Divide by the new input reserve.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 37,
+    "what": "Convert overflow into an error.",
+    "why": "Convert overflow into an error.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 39,
+    "what": "Start CPI to transfer input tokens into the pool.",
+    "why": "Start CPI to transfer input tokens into the pool.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 40,
+    "what": "Build a CPI context for the transfer.",
+    "why": "Build a CPI context for the transfer.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 41,
+    "what": "Provide the Token Program account.",
+    "why": "Provide the Token Program account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 42,
+    "what": "Begin the Transfer accounts struct.",
+    "why": "Begin the Transfer accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 43,
+    "what": "Source token account owned by the user.",
+    "why": "Source token account owned by the user.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 44,
+    "what": "Destination vault for the input token.",
+    "why": "Destination vault for the input token.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 45,
+    "what": "User signer authorizing the debit.",
+    "why": "User signer authorizing the debit.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 46,
+    "what": "End the Transfer accounts struct.",
+    "why": "End the Transfer accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 47,
+    "what": "Finish CPI context construction.",
+    "why": "Finish CPI context construction.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 48,
+    "what": "Specify the input amount to transfer.",
+    "why": "Specify the input amount to transfer.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 49,
+    "what": "Propagate CPI errors if transfer fails.",
+    "why": "Propagate CPI errors if transfer fails.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 51,
+    "what": "Define PDA signer seeds for the pool authority.",
+    "why": "Allows the program to sign for vault transfers.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 52,
+    "what": "Use the authority seed prefix.",
+    "why": "Use the authority seed prefix.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 53,
+    "what": "Include the pool public key in the seeds.",
+    "why": "Include the pool public key in the seeds.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 54,
+    "what": "Append the PDA bump.",
+    "why": "Append the PDA bump.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 55,
+    "what": "End signer seeds definition.",
+    "why": "End signer seeds definition.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 57,
+    "what": "Start CPI to transfer output tokens to the user.",
+    "why": "Start CPI to transfer output tokens to the user.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 58,
+    "what": "Build a CPI context with signer seeds.",
+    "why": "Build a CPI context with signer seeds.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 59,
+    "what": "Provide the Token Program account.",
+    "why": "Provide the Token Program account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 60,
+    "what": "Begin the Transfer accounts struct.",
+    "why": "Begin the Transfer accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 61,
+    "what": "Source vault for the output token.",
+    "why": "Source vault for the output token.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 62,
+    "what": "Destination token account for the user.",
+    "why": "Destination token account for the user.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 63,
+    "what": "Pool authority PDA signs the transfer.",
+    "why": "Pool authority PDA signs the transfer.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 64,
+    "what": "End the Transfer accounts struct.",
+    "why": "End the Transfer accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 65,
+    "what": "Pass signer seeds into the CPI context.",
+    "why": "Pass signer seeds into the CPI context.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 66,
+    "what": "Finish CPI context construction.",
+    "why": "Finish CPI context construction.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 67,
+    "what": "Specify the output amount to transfer.",
+    "why": "Specify the output amount to transfer.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 68,
+    "what": "Propagate CPI errors if transfer fails.",
+    "why": "Propagate CPI errors if transfer fails.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 70,
+    "what": "Log the swap amounts.",
+    "why": "Log the swap amounts.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 71,
+    "what": "Return success from swap.",
+    "why": "Return success from swap.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 72,
+    "what": "End of swap handler.",
+    "why": "End of swap handler.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 73,
+    "what": "End of program module.",
+    "why": "End of program module.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 75,
+    "what": "Derive account validation for InitializePool.",
+    "why": "Derive account validation for InitializePool.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 76,
+    "what": "Define accounts required to initialize the pool.",
+    "why": "Define accounts required to initialize the pool.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 77,
+    "what": "Initialize the pool account.",
+    "why": "Initialize the pool account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 78,
+    "what": "Pool state account.",
+    "why": "Pool state account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 79,
+    "what": "Document unchecked PDA authority.",
+    "why": "Document unchecked PDA authority.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 80,
+    "what": "Derive the pool authority PDA.",
+    "why": "Derive the pool authority PDA.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 81,
+    "what": "Pool authority PDA account.",
+    "why": "Pool authority PDA account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 82,
+    "what": "Mint A account.",
+    "why": "Mint A account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 83,
+    "what": "Mint B account.",
+    "why": "Mint B account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 84,
+    "what": "Validate vault A token account.",
+    "why": "Validate vault A token account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 85,
+    "what": "Vault A token account.",
+    "why": "Vault A token account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 86,
+    "what": "Validate vault B token account.",
+    "why": "Validate vault B token account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 87,
+    "what": "Vault B token account.",
+    "why": "Vault B token account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 88,
+    "what": "Mark payer as mutable for rent and fees.",
+    "why": "Mark payer as mutable for rent and fees.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 89,
+    "what": "Payer signer account.",
+    "why": "Payer signer account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 90,
+    "what": "Token Program account.",
+    "why": "Token Program account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 91,
+    "what": "System Program account.",
+    "why": "System Program account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 92,
+    "what": "End of InitializePool accounts struct.",
+    "why": "End of InitializePool accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 94,
+    "what": "Derive account validation for Swap.",
+    "why": "Derive account validation for Swap.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 95,
+    "what": "Define accounts required to swap tokens.",
+    "why": "Define accounts required to swap tokens.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 96,
+    "what": "Pool state account.",
+    "why": "Pool state account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 97,
+    "what": "Document unchecked PDA authority.",
+    "why": "Document unchecked PDA authority.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 98,
+    "what": "Derive the pool authority PDA for swaps.",
+    "why": "Derive the pool authority PDA for swaps.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 99,
+    "what": "Pool authority PDA account.",
+    "why": "Pool authority PDA account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 100,
+    "what": "Input vault token account.",
+    "why": "Input vault token account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 101,
+    "what": "Input vault account passed in.",
+    "why": "Input vault account passed in.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 102,
+    "what": "Output vault token account.",
+    "why": "Output vault token account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 103,
+    "what": "Output vault account passed in.",
+    "why": "Output vault account passed in.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 104,
+    "what": "User input token account (mutable for debit).",
+    "why": "User input token account (mutable for debit).",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 105,
+    "what": "User input account passed in.",
+    "why": "User input account passed in.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 106,
+    "what": "User output token account (mutable for credit).",
+    "why": "User output token account (mutable for credit).",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 107,
+    "what": "User output account passed in.",
+    "why": "User output account passed in.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 108,
+    "what": "User signer authorizing the swap.",
+    "why": "User signer authorizing the swap.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 109,
+    "what": "Token Program account.",
+    "why": "Token Program account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 110,
+    "what": "End of Swap accounts struct.",
+    "why": "End of Swap accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 112,
+    "what": "Mark the Pool struct as an account.",
+    "why": "Mark the Pool struct as an account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 113,
+    "what": "Define the Pool state struct.",
+    "why": "Define the Pool state struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 114,
+    "what": "Authority PDA public key.",
+    "why": "Authority PDA public key.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 115,
+    "what": "Mint A public key.",
+    "why": "Mint A public key.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 116,
+    "what": "Mint B public key.",
+    "why": "Mint B public key.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 117,
+    "what": "Vault A token account address.",
+    "why": "Vault A token account address.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 118,
+    "what": "Vault B token account address.",
+    "why": "Vault B token account address.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 119,
+    "what": "Bump seed for the PDA authority.",
+    "why": "Bump seed for the PDA authority.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 120,
+    "what": "End of Pool struct.",
+    "why": "End of Pool struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 122,
+    "what": "Implement helper constants for Pool.",
+    "why": "Implement helper constants for Pool.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 123,
+    "what": "Define the serialized size of Pool.",
+    "why": "Define the serialized size of Pool.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 124,
+    "what": "End of Pool impl block.",
+    "why": "End of Pool impl block.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 126,
+    "what": "Start custom error definitions.",
+    "why": "Start custom error definitions.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 127,
+    "what": "Define the ErrorCode enum.",
+    "why": "Define the ErrorCode enum.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 128,
+    "what": "Message for invalid vault configuration.",
+    "why": "Message for invalid vault configuration.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 129,
+    "what": "Error when vaults do not match the pool.",
+    "why": "Error when vaults do not match the pool.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 130,
+    "what": "Message for empty pool.",
+    "why": "Message for empty pool.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 131,
+    "what": "Error when the pool has no liquidity.",
+    "why": "Error when the pool has no liquidity.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 132,
+    "what": "Message for math overflow.",
+    "why": "Message for math overflow.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 133,
+    "what": "Error when swap math overflows.",
+    "why": "Error when swap math overflows.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 134,
+    "what": "End of ErrorCode enum.",
+    "why": "End of ErrorCode enum.",
+    "isImportant": false
+  }
+]

@@ -1,120 +1,452 @@
 [
   {
     "lineNumber": 1,
-    "what": "Import Anchor SPL token module",
-    "why": "Provides types and functions for interacting with the SPL Token program, including Mint, TokenAccount, and CPI helpers",
-    "solanaConcept": "SPL Token Program",
-    "rustConcept": "Module imports",
-    "whatBreaksIfRemoved": "Can't use SPL Token types or functions - compilation error",
+    "what": "Imports Anchor prelude.",
+    "why": "Brings Anchor types and macros into scope.",
     "isImportant": true
+  },
+  {
+    "lineNumber": 2,
+    "what": "Imports symbols into scope.",
+    "why": "Required to reference external types and modules.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 4,
+    "what": "Declares the program ID.",
+    "why": "Program ID uniquely identifies the program on-chain.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 6,
+    "what": "Marks the program module entry point.",
+    "why": "Anchor uses this to generate instruction dispatch.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 7,
+    "what": "Defines the program module.",
+    "why": "Groups instruction handlers under a namespace.",
+    "isImportant": false
   },
   {
     "lineNumber": 8,
-    "what": "Instruction to create a new token mint",
-    "why": "A token mint is the source of truth for a token type. It defines the token's properties (decimals, supply, etc.)",
-    "solanaConcept": "Token Mint",
-    "rustConcept": "Function implementation",
-    "whatBreaksIfRemoved": "No way to create tokens - core functionality missing",
+    "what": "Imports symbols into scope.",
+    "why": "Required to reference external types and modules.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 10,
+    "what": "Defines an instruction handler.",
+    "why": "Entry point for a Solana instruction.",
     "isImportant": true
+  },
+  {
+    "lineNumber": 11,
+    "what": "Emits a log message.",
+    "why": "Helps observe execution in transaction logs.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 12,
+    "what": "Returns success.",
+    "why": "Signals the instruction completed without errors.",
+    "isImportant": false
   },
   {
     "lineNumber": 13,
-    "what": "Instruction to mint new tokens into a token account",
-    "why": "Minting creates new tokens and adds them to the total supply. Only the mint authority can mint",
-    "solanaConcept": "Token Minting",
-    "rustConcept": "Function parameters",
-    "whatBreaksIfRemoved": "Can't create new tokens - supply is fixed at zero",
-    "isImportant": true
-  },
-  {
-    "lineNumber": 14,
-    "what": "CPI call to the SPL Token program's mint_to instruction",
-    "why": "This is a Cross-Program Invocation - our program calls into the SPL Token program to perform the minting",
-    "solanaConcept": "Cross-Program Invocation (CPI)",
-    "rustConcept": "Function calls and error propagation",
-    "whatBreaksIfRemoved": "Tokens aren't actually minted - just a log message",
-    "isImportant": true
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
   },
   {
     "lineNumber": 15,
-    "what": "Creates a CPI context with the required accounts",
-    "why": "CPI contexts specify which accounts the called program needs and their roles (mint, to, authority)",
-    "solanaConcept": "CPI Context",
-    "rustConcept": "Struct initialization",
-    "whatBreaksIfRemoved": "Can't pass accounts to SPL Token program - CPI fails",
+    "what": "Defines an instruction handler.",
+    "why": "Entry point for a Solana instruction.",
     "isImportant": true
+  },
+  {
+    "lineNumber": 16,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 17,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 18,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 19,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 20,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 21,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 22,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 23,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 24,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
   },
   {
     "lineNumber": 25,
-    "what": "Instruction to transfer tokens between token accounts",
-    "why": "Demonstrates how to move tokens from one account to another, which is fundamental to token operations",
-    "solanaConcept": "Token Transfers",
-    "rustConcept": "Function implementation",
-    "whatBreaksIfRemoved": "Can't move tokens - they're locked in accounts",
-    "isImportant": true
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
   },
   {
     "lineNumber": 26,
-    "what": "CPI call to the SPL Token program's transfer instruction",
-    "why": "Transfers tokens by calling into the SPL Token program, which handles all the account updates",
-    "solanaConcept": "Token Transfers via CPI",
-    "rustConcept": "Function calls",
-    "whatBreaksIfRemoved": "Tokens don't actually move - transfer fails",
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 27,
+    "what": "Emits a log message.",
+    "why": "Helps observe execution in transaction logs.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 28,
+    "what": "Returns success.",
+    "why": "Signals the instruction completed without errors.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 29,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 31,
+    "what": "Defines an instruction handler.",
+    "why": "Entry point for a Solana instruction.",
     "isImportant": true
+  },
+  {
+    "lineNumber": 32,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 33,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 34,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 35,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 36,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 37,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 38,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 39,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
   },
   {
     "lineNumber": 40,
-    "what": "Account struct for creating a token mint",
-    "why": "Defines all accounts needed to create a mint, with Anchor constraints that handle initialization",
-    "solanaConcept": "Token Mint Creation",
-    "rustConcept": "Struct definitions",
-    "whatBreaksIfRemoved": "Can't create mints - missing account structure",
-    "isImportant": true
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
   },
   {
     "lineNumber": 41,
-    "what": "Init constraint for the mint account",
-    "why": "Tells Anchor to initialize the mint account if it doesn't exist",
-    "solanaConcept": "Account Initialization",
-    "rustConcept": "Attribute parameters",
-    "whatBreaksIfRemoved": "Mint account isn't created - initialization fails",
-    "isImportant": true
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 42,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
   },
   {
     "lineNumber": 43,
-    "what": "Sets the mint's decimals to 9",
-    "why": "Decimals define the smallest unit of the token. 9 is standard (like SOL). 1 token = 1,000,000,000 base units",
-    "solanaConcept": "Token Decimals",
-    "rustConcept": "Attribute parameters",
-    "whatBreaksIfRemoved": "Mint has wrong decimals - token amounts are incorrect",
-    "isImportant": true
+    "what": "Emits a log message.",
+    "why": "Helps observe execution in transaction logs.",
+    "isImportant": false
   },
   {
     "lineNumber": 44,
-    "what": "Sets the mint authority",
-    "why": "The mint authority is the only account that can mint new tokens. This is critical for supply control",
-    "solanaConcept": "Mint Authority",
-    "rustConcept": "Attribute parameters",
-    "whatBreaksIfRemoved": "No mint authority set - can't mint tokens",
+    "what": "Returns success.",
+    "why": "Signals the instruction completed without errors.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 45,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 46,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 48,
+    "what": "Generates account validation for this struct.",
+    "why": "Anchor validates accounts before instruction execution.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 49,
+    "what": "Defines an accounts or state struct.",
+    "why": "Specifies the data layout and required accounts.",
     "isImportant": true
   },
   {
     "lineNumber": 50,
-    "what": "Account struct for minting tokens",
-    "why": "Defines accounts needed: the mint, destination token account, and mint authority",
-    "solanaConcept": "Token Minting",
-    "rustConcept": "Struct definitions",
-    "whatBreaksIfRemoved": "Can't specify accounts for minting - CPI fails",
+    "what": "Applies account constraints.",
+    "why": "Enforces runtime checks on accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 51,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 52,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 53,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 54,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 55,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 56,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 57,
+    "what": "Applies account constraints.",
+    "why": "Enforces runtime checks on accounts.",
     "isImportant": true
   },
   {
     "lineNumber": 58,
-    "what": "Account struct for transferring tokens",
-    "why": "Defines source, destination, and authority accounts needed for a token transfer",
-    "solanaConcept": "Token Transfers",
-    "rustConcept": "Struct definitions",
-    "whatBreaksIfRemoved": "Can't specify accounts for transfer - CPI fails",
+    "what": "Declares a signer account.",
+    "why": "Ensures the transaction is authorized by this key.",
     "isImportant": true
+  },
+  {
+    "lineNumber": 59,
+    "what": "Declares a signer account.",
+    "why": "Ensures the transaction is authorized by this key.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 60,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 61,
+    "what": "References the System Program.",
+    "why": "Required for account creation or lamport transfers.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 62,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 63,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 65,
+    "what": "Generates account validation for this struct.",
+    "why": "Anchor validates accounts before instruction execution.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 66,
+    "what": "Defines an accounts or state struct.",
+    "why": "Specifies the data layout and required accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 67,
+    "what": "Applies account constraints.",
+    "why": "Enforces runtime checks on accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 68,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 69,
+    "what": "Applies account constraints.",
+    "why": "Enforces runtime checks on accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 70,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 71,
+    "what": "Declares a signer account.",
+    "why": "Ensures the transaction is authorized by this key.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 72,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 73,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 75,
+    "what": "Generates account validation for this struct.",
+    "why": "Anchor validates accounts before instruction execution.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 76,
+    "what": "Defines an accounts or state struct.",
+    "why": "Specifies the data layout and required accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 77,
+    "what": "Applies account constraints.",
+    "why": "Enforces runtime checks on accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 78,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 79,
+    "what": "Applies account constraints.",
+    "why": "Enforces runtime checks on accounts.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 80,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 81,
+    "what": "Declares a signer account.",
+    "why": "Ensures the transaction is authorized by this key.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 82,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 83,
+    "what": "Executes this statement.",
+    "why": "Implements instruction logic.",
+    "isImportant": false
   }
 ]
-

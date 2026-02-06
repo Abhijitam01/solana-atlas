@@ -1,0 +1,32 @@
+{
+  "flow": [
+    {
+      "id": "transfer",
+      "title": "Transfer via CPI",
+      "description": "Invoke the System Program to move lamports.",
+      "lineRange": [10, 19],
+      "concepts": ["CPI", "System Program", "Lamports"]
+    }
+  ],
+  "instructions": [
+    {
+      "name": "transfer_lamports",
+      "lineStart": 10,
+      "lineEnd": 19,
+      "accounts": [
+        { "name": "from", "isMut": true, "isSigner": true, "isPda": false },
+        { "name": "to", "isMut": true, "isSigner": false, "isPda": false },
+        { "name": "system_program", "isMut": false, "isSigner": false, "isPda": false }
+      ],
+      "description": "Transfers lamports using a CPI to the System Program."
+    }
+  ],
+  "accounts": [],
+  "cpiCalls": [
+    {
+      "program": "System Program",
+      "instruction": "transfer",
+      "lineRange": [11, 16]
+    }
+  ]
+}
