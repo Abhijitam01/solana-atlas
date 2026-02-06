@@ -19,9 +19,6 @@ export function TransactionBuilder() {
     accounts,
     addInstruction,
     removeInstruction,
-    updateInstruction,
-    reorderInstructions,
-    addAccount,
     removeAccount,
     reset,
   } = useTransactionStore();
@@ -36,7 +33,7 @@ export function TransactionBuilder() {
       id: `inst-${Date.now()}`,
       programId: "program",
       instructionName: firstInstruction.name,
-      accounts: firstInstruction.accounts.map((acc, idx) => ({
+      accounts: firstInstruction.accounts.map((acc: typeof firstInstruction.accounts[number], idx: number) => ({
         pubkey: `account-${idx}`,
         isSigner: acc.isSigner || false,
         isWritable: acc.isMut || false,
@@ -67,9 +64,9 @@ export function TransactionBuilder() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col h-full bg-card rounded-xl border border-border shadow-lg overflow-hidden"
+      className="panel flex h-full flex-col"
     >
-      <div className="px-4 py-3 border-b border-border bg-muted/30 flex items-center justify-between">
+      <div className="panel-header">
         <div className="flex items-center gap-2">
           <Play className="w-4 h-4 text-primary" />
           <h2 className="text-sm font-semibold text-foreground">Transaction Builder</h2>
@@ -78,7 +75,7 @@ export function TransactionBuilder() {
           <Tooltip content="Copy transaction JSON">
             <button
               onClick={handleCopyTransaction}
-              className="p-1.5 rounded-lg hover:bg-muted transition-colors"
+              className="rounded-lg p-1.5 transition-colors hover:bg-muted/60"
               aria-label="Copy"
             >
               {copied ? (
@@ -158,7 +155,7 @@ export function TransactionBuilder() {
                       </div>
                       <div className="space-y-1">
                         <div className="text-xs text-muted-foreground">Accounts:</div>
-                        {instruction.accounts.map((acc, accIdx) => (
+                        {instruction.accounts.map((acc: typeof instruction.accounts[number], accIdx: number) => (
                           <div
                             key={accIdx}
                             className="flex items-center gap-2 text-xs font-mono"
@@ -259,4 +256,3 @@ export function TransactionBuilder() {
     </motion.div>
   );
 }
-

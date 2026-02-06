@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useTemplates } from "@/hooks/use-templates";
 import { usePlaygroundStore } from "@/stores/playground";
+import { shallow } from "zustand/shallow";
 import { Search, Code, Home, ArrowRight, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
@@ -22,15 +23,17 @@ export function CommandPalette() {
   const [searchQuery, setSearchQuery] = useState("");
   const router = useRouter();
   const { data: templates } = useTemplates();
-  const { setExecutionMode } = usePlaygroundStore();
+  const { setExecutionMode } = usePlaygroundStore(
+    (state) => ({ setExecutionMode: state.setExecutionMode }),
+    shallow
+  );
 
   // Open command palette with Cmd/Ctrl+K
   useKeyboardShortcuts([
     {
       key: "k",
       meta: true,
-      handler: (e) => {
-        e.preventDefault();
+      handler: () => {
         setIsOpen(true);
       },
     },
@@ -244,4 +247,3 @@ export function CommandPalette() {
     </AnimatePresence>
   );
 }
-

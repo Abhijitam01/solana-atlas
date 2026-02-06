@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export interface Toast {
   id: string;
@@ -24,20 +24,20 @@ export function ToastComponent({ toast, onDismiss }: ToastProps) {
   }, [toast, onDismiss]);
 
   const bgColors = {
-    success: "bg-green-500",
-    error: "bg-red-500",
-    info: "bg-blue-500",
-    warning: "bg-yellow-500",
+    success: "bg-success",
+    error: "bg-destructive",
+    info: "bg-info",
+    warning: "bg-warning",
   };
 
   return (
     <div
-      className={`${bgColors[toast.type]} text-white px-4 py-2 rounded-lg shadow-lg mb-2 flex items-center justify-between min-w-[300px]`}
+      className={`${bgColors[toast.type]} text-primary-foreground px-4 py-2 rounded-xl shadow-lg mb-2 flex items-center justify-between min-w-[300px]`}
     >
       <span>{toast.message}</span>
       <button
         onClick={() => onDismiss(toast.id)}
-        className="ml-4 text-white hover:text-gray-200"
+        className="ml-4 text-primary-foreground/80 transition-colors hover:text-primary-foreground"
       >
         ×
       </button>
@@ -54,4 +54,3 @@ export function ToastContainer({ toasts, onDismiss }: { toasts: Toast[]; onDismi
     </div>
   );
 }
-

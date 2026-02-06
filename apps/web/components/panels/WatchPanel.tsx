@@ -54,9 +54,9 @@ export function WatchPanel() {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col h-full bg-card rounded-xl border border-border shadow-lg overflow-hidden"
+      className="panel flex h-full flex-col"
     >
-      <div className="px-4 py-3 border-b border-border bg-muted/30 flex items-center justify-between">
+      <div className="panel-header">
         <div className="flex items-center gap-2">
           <Eye className="w-4 h-4 text-primary" />
           <h2 className="text-sm font-semibold text-foreground">Watch</h2>
@@ -64,7 +64,7 @@ export function WatchPanel() {
         <Tooltip content="Add watch expression">
           <button
             onClick={() => setIsAdding(true)}
-            className="p-1 rounded-lg hover:bg-muted transition-colors"
+            className="rounded-lg p-1 transition-colors hover:bg-muted/60"
             aria-label="Add watch"
           >
             <Plus className="w-4 h-4 text-muted-foreground" />
@@ -169,4 +169,3 @@ export function WatchPanel() {
     </motion.div>
   );
 }
-

@@ -6,7 +6,6 @@ import { useMemo, useState } from "react";
 import { GitBranch, Network } from "lucide-react";
 import { motion } from "framer-motion";
 import { FlowChart, FlowNode, FlowEdge } from "@/components/ui/FlowChart";
-import { Badge } from "@/components/ui/Badge";
 import { HelpIcon } from "@/components/ui/HelpIcon";
 
 export function FlowPanel() {
@@ -35,7 +34,7 @@ export function FlowPanel() {
 
     // Add instruction nodes
     const instructions = template.programMap.instructions;
-    instructions.forEach((instruction, index) => {
+    instructions.forEach((instruction: typeof instructions[number], index: number) => {
       const x = 100 + (index % 3) * 200;
       const y = 150 + Math.floor(index / 3) * 150;
 
@@ -62,7 +61,7 @@ export function FlowPanel() {
       }
 
       // Add account nodes for this instruction
-      instruction.accounts.forEach((account, accIndex) => {
+      instruction.accounts.forEach((account: typeof instruction.accounts[number], accIndex: number) => {
         const accX = x + 150;
         const accY = y - 60 + accIndex * 40;
         const accId = `${instruction.name}-${account.name}`;
@@ -85,7 +84,7 @@ export function FlowPanel() {
 
     // Add CPI call nodes
     if (template.programMap.cpiCalls) {
-      template.programMap.cpiCalls.forEach((cpi, index) => {
+      template.programMap.cpiCalls.forEach((cpi: typeof template.programMap.cpiCalls[number], index: number) => {
         const cpiX = 700;
         const cpiY = 150 + index * 100;
 
@@ -136,11 +135,13 @@ export function FlowPanel() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col h-full bg-card rounded-xl border border-border shadow-lg overflow-hidden"
+        className="panel flex h-full flex-col"
       >
-        <div className="px-4 py-3 border-b border-border bg-muted/30 flex items-center gap-2">
-          <Network className="w-4 h-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Program Flow</h2>
+        <div className="panel-header">
+          <div className="flex items-center gap-2">
+            <Network className="w-4 h-4 text-primary" />
+            <h2 className="text-sm font-semibold text-foreground">Program Flow</h2>
+          </div>
         </div>
         <div className="flex-1 p-4 text-sm text-muted-foreground flex items-center justify-center">
           <div className="animate-pulse">Loading...</div>
@@ -153,18 +154,18 @@ export function FlowPanel() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col h-full bg-card rounded-xl border border-border shadow-lg overflow-hidden"
+      className="panel flex h-full flex-col"
     >
-      <div className="px-4 py-3 border-b border-border bg-muted/30 flex items-center justify-between">
+      <div className="panel-header">
         <div className="flex items-center gap-2">
           <Network className="w-4 h-4 text-primary" />
           <h2 className="text-sm font-semibold text-foreground">Program Flow</h2>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
+          <div className="flex items-center gap-1 rounded-lg bg-muted/60 p-1">
             <button
               onClick={() => setViewMode("control")}
-              className={`px-2 py-1 text-xs rounded transition-colors ${
+              className={`rounded px-2 py-1 text-xs transition-colors ${
                 viewMode === "control"
                   ? "bg-background text-foreground"
                   : "text-muted-foreground hover:text-foreground"
@@ -213,4 +214,3 @@ export function FlowPanel() {
     </motion.div>
   );
 }
-

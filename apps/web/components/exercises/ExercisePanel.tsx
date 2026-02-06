@@ -51,9 +51,9 @@ export function ExercisePanel({ exercise, onComplete }: ExercisePanelProps) {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col h-full bg-card rounded-xl border border-border shadow-lg overflow-hidden"
+      className="panel flex h-full flex-col"
     >
-      <div className="px-4 py-3 border-b border-border bg-muted/30 flex items-center justify-between">
+      <div className="panel-header">
         <div className="flex items-center gap-2">
           <BookOpen className="w-4 h-4 text-primary" />
           <h2 className="text-sm font-semibold text-foreground">{exercise.title}</h2>
@@ -144,4 +144,3 @@ export function ExercisePanel({ exercise, onComplete }: ExercisePanelProps) {
     </motion.div>
   );
 }
-

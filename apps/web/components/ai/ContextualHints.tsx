@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/Badge";
 import { usePlaygroundStore } from "@/stores/playground";
 import { useEffect, useState } from "react";
+import { shallow } from "zustand/shallow";
 
 interface ContextualHint {
   id: string;
@@ -14,38 +15,44 @@ interface ContextualHint {
 }
 
 export function ContextualHints() {
-  const { selectedLine, currentExplanation } = usePlaygroundStore();
+  const { hoveredLine, currentFunctionSpec } = usePlaygroundStore(
+    (state) => ({
+      hoveredLine: state.hoveredLine,
+      currentFunctionSpec: state.currentFunctionSpec,
+    }),
+    shallow
+  );
   const [hints, setHints] = useState<ContextualHint[]>([]);
   const [dismissedHints, setDismissedHints] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    if (selectedLine && currentExplanation) {
-      // Generate contextual hints based on explanation
+    if (hoveredLine && currentFunctionSpec) {
+      // Generate contextual hints based on function intent
       const newHints: ContextualHint[] = [];
 
-      if (currentExplanation.solanaConcept) {
+      if (currentFunctionSpec.concepts.length > 0) {
         newHints.push({
-          id: `solana-${selectedLine}`,
-          line: selectedLine,
-          hint: `This demonstrates the Solana concept: ${currentExplanation.solanaConcept}`,
+          id: `concepts-${hoveredLine}`,
+          line: hoveredLine,
+          hint: `Concepts in play: ${currentFunctionSpec.concepts.join(", ")}`,
           type: "info",
         });
       }
 
-      if (currentExplanation.whatBreaksIfRemoved) {
+      if (currentFunctionSpec.breaksIfRemoved) {
         newHints.push({
-          id: `warning-${selectedLine}`,
-          line: selectedLine,
-          hint: `Important: ${currentExplanation.whatBreaksIfRemoved}`,
+          id: `warning-${hoveredLine}`,
+          line: hoveredLine,
+          hint: `Critical: ${currentFunctionSpec.breaksIfRemoved}`,
           type: "warning",
         });
       }
 
-      if (currentExplanation.rustConcept) {
+      if (currentFunctionSpec.securityImplications) {
         newHints.push({
-          id: `rust-${selectedLine}`,
-          line: selectedLine,
-          hint: `Rust concept: ${currentExplanation.rustConcept}`,
+          id: `security-${hoveredLine}`,
+          line: hoveredLine,
+          hint: `Security: ${currentFunctionSpec.securityImplications}`,
           type: "tip",
         });
       }
@@ -54,7 +61,7 @@ export function ContextualHints() {
     } else {
       setHints([]);
     }
-  }, [selectedLine, currentExplanation]);
+  }, [hoveredLine, currentFunctionSpec]);
 
   const visibleHints = hints.filter((h) => !dismissedHints.has(h.id));
 
@@ -69,7 +76,7 @@ export function ContextualHints() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
-            className={`p-4 rounded-lg border shadow-lg ${
+            className={`p-4 rounded-lg border shadow-xl ${
               hint.type === "warning"
                 ? "bg-warning-light border-warning"
                 : hint.type === "tip"
@@ -119,4 +126,3 @@ export function ContextualHints() {
     </div>
   );
 }
-

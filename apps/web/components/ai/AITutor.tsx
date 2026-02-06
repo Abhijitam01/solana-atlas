@@ -5,6 +5,7 @@ import { Bot, Send, Lightbulb, X, Minimize2, Maximize2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/Badge";
 import { usePlaygroundStore } from "@/stores/playground";
+import { shallow } from "zustand/shallow";
 
 interface Message {
   id: string;
@@ -18,14 +19,17 @@ interface AITutorProps {
   currentLine?: number | null;
 }
 
-export function AITutor({ templateId, currentLine }: AITutorProps) {
+export function AITutor({ }: AITutorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { selectedLine } = usePlaygroundStore();
+  const { selectedLine } = usePlaygroundStore(
+    (state) => ({ selectedLine: state.selectedLine }),
+    shallow
+  );
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -228,4 +232,3 @@ export function AITutor({ templateId, currentLine }: AITutorProps) {
     </AnimatePresence>
   );
 }
-

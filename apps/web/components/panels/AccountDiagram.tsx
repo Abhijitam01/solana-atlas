@@ -3,7 +3,7 @@
 import { useTemplate } from "@/hooks/use-templates";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
-import { Network, HelpCircle } from "lucide-react";
+import { Network } from "lucide-react";
 import { motion } from "framer-motion";
 import { AccountGraph, AccountNode, AccountEdge } from "@/components/ui/AccountGraph";
 import { HelpIcon } from "@/components/ui/HelpIcon";
@@ -42,8 +42,8 @@ export function AccountDiagram() {
     });
 
     // Process instructions and their accounts
-    template.programMap.instructions.forEach((instruction, instIndex) => {
-      instruction.accounts.forEach((account, accIndex) => {
+    template.programMap.instructions.forEach((instruction: typeof template.programMap.instructions[number], instIndex: number) => {
+      instruction.accounts.forEach((account: typeof instruction.accounts[number], accIndex: number) => {
         const nodeId = `${instruction.name}-${account.name}`;
         const x = 100 + (instIndex % 2) * 300;
         const y = 200 + accIndex * 80;
@@ -97,7 +97,7 @@ export function AccountDiagram() {
 
     // Add CPI program nodes
     if (template.programMap.cpiCalls) {
-      template.programMap.cpiCalls.forEach((cpi, index) => {
+      template.programMap.cpiCalls.forEach((cpi: typeof template.programMap.cpiCalls[number], index: number) => {
         const cpiNodeId = `cpi-${cpi.program}`;
         const existingNode = accountNodes.find((n) => n.id === cpiNodeId);
 
@@ -128,11 +128,13 @@ export function AccountDiagram() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col h-full bg-card rounded-xl border border-border shadow-lg overflow-hidden"
+        className="panel flex h-full flex-col"
       >
-        <div className="px-4 py-3 border-b border-border bg-muted/30 flex items-center gap-2">
-          <Network className="w-4 h-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Account Relationships</h2>
+        <div className="panel-header">
+          <div className="flex items-center gap-2">
+            <Network className="w-4 h-4 text-primary" />
+            <h2 className="text-sm font-semibold text-foreground">Account Relationships</h2>
+          </div>
         </div>
         <div className="flex-1 p-4 text-sm text-muted-foreground flex items-center justify-center">
           <div className="animate-pulse">Loading...</div>
@@ -147,9 +149,9 @@ export function AccountDiagram() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col h-full bg-card rounded-xl border border-border shadow-lg overflow-hidden"
+      className="panel flex h-full flex-col"
     >
-      <div className="px-4 py-3 border-b border-border bg-muted/30 flex items-center justify-between">
+      <div className="panel-header">
         <div className="flex items-center gap-2">
           <Network className="w-4 h-4 text-primary" />
           <h2 className="text-sm font-semibold text-foreground">Account Relationships</h2>
@@ -183,7 +185,7 @@ export function AccountDiagram() {
                   ? "info"
                   : selectedNode.type === "program"
                   ? "default"
-                  : "muted"
+                  : "default"
               }
               size="sm"
             >
@@ -208,4 +210,3 @@ export function AccountDiagram() {
     </motion.div>
   );
 }
-

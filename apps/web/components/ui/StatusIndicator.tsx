@@ -55,7 +55,7 @@ export function StatusIndicator({
   return (
     <div
       className={cn(
-        "inline-flex items-center justify-center rounded-full",
+        "inline-flex items-center justify-center rounded-full ring-1 ring-inset ring-white/10",
         config.bg,
         className
       )}
@@ -70,4 +70,3 @@ export function StatusIndicator({
     </div>
   );
 }
-

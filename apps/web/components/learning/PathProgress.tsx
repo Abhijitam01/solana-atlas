@@ -1,6 +1,6 @@
 "use client";
 
-import { TrendingUp, Clock, Target, Award } from "lucide-react";
+import { Clock, Target, Award } from "lucide-react";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/Badge";
 

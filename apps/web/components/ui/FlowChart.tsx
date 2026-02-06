@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { usePlaygroundStore } from "@/stores/playground";
+import { shallow } from "zustand/shallow";
 
 export interface FlowNode {
   id: string;
@@ -32,7 +32,13 @@ export function FlowChart({
   onNodeClick,
   selectedNodeId,
 }: FlowChartProps) {
-  const { setSelectedLine, setSelectedInstruction } = usePlaygroundStore();
+  const { setSelectedLine, setSelectedInstruction } = usePlaygroundStore(
+    (state) => ({
+      setSelectedLine: state.setSelectedLine,
+      setSelectedInstruction: state.setSelectedInstruction,
+    }),
+    shallow
+  );
 
   const handleNodeClick = (node: FlowNode) => {
     if (onNodeClick) {
@@ -66,15 +72,14 @@ export function FlowChart({
     <div className="relative w-full h-full overflow-auto bg-muted/20 p-8">
       <svg className="absolute inset-0 w-full h-full">
         {/* Draw edges */}
-        {edges.map((edge, index) => {
-          const fromNode = nodes.find((n) => n.id === edge.from);
-          const toNode = nodes.find((n) => n.id === edge.to);
+        {edges.map((edge: FlowEdge, index: number) => {
+          const fromNode = nodes.find((n: FlowNode) => n.id === edge.from);
+          const toNode = nodes.find((n: FlowNode) => n.id === edge.to);
           if (!fromNode || !toNode) return null;
 
-          const dx = toNode.x - fromNode.x;
-          const dy = toNode.y - fromNode.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          const angle = Math.atan2(dy, dx);
+          // Calculate edge position
+          // const dx = toNode.x - fromNode.x;
+          // const dy = toNode.y - fromNode.y;
 
           return (
             <g key={index}>
@@ -152,4 +157,3 @@ export function FlowChart({
     </div>
   );
 }
-

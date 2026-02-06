@@ -2,9 +2,8 @@
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { BookOpen, Link2 } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
-import Link from "next/link";
 
 export interface Concept {
   id: string;

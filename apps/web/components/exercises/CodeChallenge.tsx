@@ -1,5 +1,6 @@
 "use client";
 
+import "@/lib/monaco-setup";
 import { useState } from "react";
 import Editor from "@monaco-editor/react";
 import { Check, Play } from "lucide-react";
@@ -128,4 +129,3 @@ export function CodeChallenge({ content, solution, onComplete }: CodeChallengePr
     </div>
   );
 }
-

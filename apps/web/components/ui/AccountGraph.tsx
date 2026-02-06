@@ -1,8 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { usePlaygroundStore } from "@/stores/playground";
 import { Database, Key, Link2 } from "lucide-react";
 
 export interface AccountNode {
@@ -14,7 +12,7 @@ export interface AccountNode {
   isSigner?: boolean;
   x: number;
   y: number;
-  data?: any;
+  data?: Record<string, unknown>;
 }
 
 export interface AccountEdge {
@@ -37,7 +35,6 @@ export function AccountGraph({
   onNodeClick,
   selectedNodeId,
 }: AccountGraphProps) {
-  const { setSelectedLine } = usePlaygroundStore();
 
   const handleNodeClick = (node: AccountNode) => {
     if (onNodeClick) {
@@ -86,15 +83,14 @@ export function AccountGraph({
     <div className="relative w-full h-full overflow-auto bg-muted/20 p-8">
       <svg className="absolute inset-0 w-full h-full">
         {/* Draw edges */}
-        {edges.map((edge, index) => {
-          const fromNode = nodes.find((n) => n.id === edge.from);
-          const toNode = nodes.find((n) => n.id === edge.to);
+        {edges.map((edge: AccountEdge, index: number) => {
+          const fromNode = nodes.find((n: AccountNode) => n.id === edge.from);
+          const toNode = nodes.find((n: AccountNode) => n.id === edge.to);
           if (!fromNode || !toNode) return null;
 
-          const dx = toNode.x - fromNode.x;
-          const dy = toNode.y - fromNode.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          const angle = Math.atan2(dy, dx);
+          // Calculate edge position
+          // const dx = toNode.x - fromNode.x;
+          // const dy = toNode.y - fromNode.y;
 
           return (
             <g key={index}>

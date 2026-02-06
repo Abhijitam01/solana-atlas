@@ -11,7 +11,6 @@ export function LoadingSpinner({ size = "md", className = "" }: LoadingSpinnerPr
   };
 
   return (
-    <div className={`animate-spin rounded-full border-b-2 border-indigo-600 ${sizeClasses[size]} ${className}`} />
+    <div className={`animate-spin rounded-full border-b-2 border-primary ${sizeClasses[size]} ${className}`} />
   );
 }
-

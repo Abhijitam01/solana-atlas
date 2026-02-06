@@ -26,10 +26,10 @@ export function Tooltip({
           <TooltipPrimitive.Content
             side={side}
             className={cn(
-              "z-50 overflow-hidden rounded-md bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-lg animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+              "z-50 max-w-xs rounded-xl border border-border/70 bg-popover/95 px-3 py-2 text-xs text-popover-foreground shadow-xl backdrop-blur animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
               className
             )}
-            sideOffset={5}
+            sideOffset={8}
           >
             {content}
             <TooltipPrimitive.Arrow className="fill-popover" />
@@ -39,4 +39,3 @@ export function Tooltip({
     </TooltipPrimitive.Provider>
   );
 }
-

@@ -135,7 +135,7 @@ export function LearningPathComponent({ path, onStepClick }: LearningPathProps) 
                       <Badge variant="success" size="sm">Completed</Badge>
                     )}
                     {step.locked && (
-                      <Badge variant="muted" size="sm">Locked</Badge>
+                      <Badge variant="default" size="sm">Locked</Badge>
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground">{step.description}</p>

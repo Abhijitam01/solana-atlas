@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Check } from "lucide-react";
 import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/Badge";
 
 interface FillInBlankProps {
   content: {
@@ -37,7 +36,6 @@ export function FillInBlank({ content, solution, onComplete }: FillInBlankProps)
   };
 
   const lines = content.code.split("\n");
-  let blankIndex = 0;
 
   return (
     <div className="space-y-4">

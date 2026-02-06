@@ -1,13 +1,18 @@
 "use client";
 
-import { Play, Pause, StepOver, StepInto, StepOut, Square, RotateCcw } from "lucide-react";
+import { Play, Pause, Square, RotateCcw, SkipForward, ArrowDown, ArrowUp } from "lucide-react";
 import { useExecutionStore } from "@/stores/execution";
 import { usePlaygroundStore } from "@/stores/playground";
+import { shallow } from "zustand/shallow";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/Badge";
 import { Tooltip } from "@/components/ui/Tooltip";
 
-export function ExecutionControl() {
+interface ExecutionControlProps {
+  variant?: "panel" | "inline";
+}
+
+export function ExecutionControl({ variant = "panel" }: ExecutionControlProps) {
   const {
     executionState,
     currentStep,
@@ -17,7 +22,10 @@ export function ExecutionControl() {
     setCurrentStepIndex,
     reset,
   } = useExecutionStore();
-  const { setSelectedLine } = usePlaygroundStore();
+  const { setSelectedLine } = usePlaygroundStore(
+    (state) => ({ setSelectedLine: state.setSelectedLine }),
+    shallow
+  );
 
   const handlePlay = () => {
     setExecutionState("running");
@@ -67,42 +75,17 @@ export function ExecutionControl() {
   const isStepping = executionState === "stepping";
   const canStep = isPaused || isStepping || executionState === "idle";
   const hasSteps = steps.length > 0;
+  const playbackEnabled = false;
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="flex flex-col h-full bg-card rounded-xl border border-border shadow-lg overflow-hidden"
-    >
-      <div className="px-4 py-3 border-b border-border bg-muted/30 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Play className="w-4 h-4 text-primary" />
-          <h2 className="text-sm font-semibold text-foreground">Execution Control</h2>
-        </div>
-        {executionState !== "idle" && (
-          <Badge
-            variant={
-              executionState === "running"
-                ? "success"
-                : executionState === "paused"
-                ? "warning"
-                : "info"
-            }
-            size="sm"
-          >
-            {executionState}
-          </Badge>
-        )}
-      </div>
-
-      <div className="flex-1 p-4 space-y-4">
+  const content = (
+    <div className={variant === "panel" ? "flex-1 p-4 space-y-4" : "space-y-4"}>
         {/* Control Buttons */}
         <div className="flex items-center gap-2 flex-wrap">
           {!isRunning ? (
-            <Tooltip content="Start execution">
+            <Tooltip content={playbackEnabled ? "Start execution" : "Playback coming soon"}>
               <button
                 onClick={handlePlay}
-                disabled={!hasSteps && executionState === "idle"}
+                disabled={!hasSteps || !playbackEnabled}
                 className="p-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Play"
               >
@@ -110,9 +93,10 @@ export function ExecutionControl() {
               </button>
             </Tooltip>
           ) : (
-            <Tooltip content="Pause execution">
+            <Tooltip content={playbackEnabled ? "Pause execution" : "Playback coming soon"}>
               <button
                 onClick={handlePause}
+                disabled={!playbackEnabled}
                 className="p-2 rounded-lg bg-warning text-warning-foreground hover:bg-warning/90 transition-colors"
                 aria-label="Pause"
               >
@@ -141,29 +125,29 @@ export function ExecutionControl() {
               className="p-2 rounded-lg bg-muted hover:bg-muted/80 text-foreground transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Step over"
             >
-              <StepOver className="w-4 h-4" />
+              <SkipForward className="w-4 h-4" />
             </button>
           </Tooltip>
 
-          <Tooltip content="Step into (enter function)">
+          <Tooltip content={playbackEnabled ? "Step into (enter function)" : "Step into coming soon"}>
             <button
               onClick={handleStepInto}
-              disabled={!canStep || !hasSteps}
+              disabled={!canStep || !hasSteps || !playbackEnabled}
               className="p-2 rounded-lg bg-muted hover:bg-muted/80 text-foreground transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Step into"
             >
-              <StepInto className="w-4 h-4" />
+              <ArrowDown className="w-4 h-4" />
             </button>
           </Tooltip>
 
-          <Tooltip content="Step out (exit function)">
+          <Tooltip content={playbackEnabled ? "Step out (exit function)" : "Step out coming soon"}>
             <button
               onClick={handleStepOut}
-              disabled={!canStep || !hasSteps}
+              disabled={!canStep || !hasSteps || !playbackEnabled}
               className="p-2 rounded-lg bg-muted hover:bg-muted/80 text-foreground transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               aria-label="Step out"
             >
-              <StepOut className="w-4 h-4" />
+              <ArrowUp className="w-4 h-4" />
             </button>
           </Tooltip>
 
@@ -226,8 +210,40 @@ export function ExecutionControl() {
             </div>
           </div>
         )}
+    </div>
+  );
+
+  if (variant === "inline") {
+    return <div className="rounded-lg border border-border bg-muted/20 p-4">{content}</div>;
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="panel flex h-full flex-col"
+    >
+      <div className="panel-header">
+        <div className="flex items-center gap-2">
+          <Play className="w-4 h-4 text-primary" />
+          <h2 className="text-sm font-semibold text-foreground">Execution Control</h2>
+        </div>
+        {executionState !== "idle" && (
+          <Badge
+            variant={
+              executionState === "running"
+                ? "success"
+                : executionState === "paused"
+                ? "warning"
+                : "info"
+            }
+            size="sm"
+          >
+            {executionState}
+          </Badge>
+        )}
       </div>
+      {content}
     </motion.div>
   );
 }
-
