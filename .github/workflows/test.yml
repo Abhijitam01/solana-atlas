@@ -42,6 +42,13 @@ jobs:
       - name: Build web
         run: pnpm turbo run build --filter=@solana-playground/web
 
+      - name: Validate templates
+        run: |
+          pnpm --filter @solana-playground/template-cli build
+          node packages/template-cli/dist/cli.js validate
+      - name: Template health check
+        run: node scripts/check-template-health.js
+
       - name: Start web server
         run: pnpm --filter @solana-playground/web exec next start --hostname 0.0.0.0 --port 3000 &
 
@@ -61,5 +68,3 @@ jobs:
         env:
           E2E_BASE_URL: http://127.0.0.1:3000
         run: pnpm --filter @solana-playground/web exec playwright test
-
-

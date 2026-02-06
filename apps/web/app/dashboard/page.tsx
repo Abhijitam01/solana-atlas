@@ -2,7 +2,6 @@
 
 import { TrendingUp, Clock, Target, Award, BookOpen, Zap } from "lucide-react";
 import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/Badge";
 import { PathProgressComponent, PathProgress } from "@/components/learning/PathProgress";
 
 // Mock data - in real implementation, this would come from API

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-describe("Test harness", () => {
-  it("is configured", () => {
+describe("Playground UI", () => {
+  it("has a test harness wired", () => {
     expect(true).toBe(true);
   });
 });

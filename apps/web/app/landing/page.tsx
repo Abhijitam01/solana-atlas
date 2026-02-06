@@ -27,25 +27,25 @@ const features = [
     title: "GSAP-grade smoothness",
     description: "Micro-interactions, parallax, and scroll magic tuned for Solana devs.",
     icon: Sparkles,
-    accent: "from-purple-500/20 to-cyan-400/10",
+    accent: "from-emerald-500/20 to-amber-400/10",
   },
   {
     title: "Execution-aware UI",
     description: "Live program runs, state diffs, and transaction views in one flow.",
     icon: Cpu,
-    accent: "from-cyan-400/20 to-emerald-400/10",
+    accent: "from-sky-400/20 to-teal-400/10",
   },
   {
     title: "Guided clarity",
     description: "Line-by-line explainers and visuals keep you unblocked while you build.",
     icon: ShieldCheck,
-    accent: "from-indigo-400/20 to-purple-500/10",
+    accent: "from-amber-400/20 to-orange-500/10",
   },
   {
     title: "Ready to launch",
     description: "Prebuilt templates, playground routing, and Solana-native shortcuts.",
     icon: Rocket,
-    accent: "from-amber-400/15 to-rose-500/10",
+    accent: "from-emerald-400/15 to-cyan-500/10",
   },
 ];
 
@@ -104,13 +104,13 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen bg-gradient-to-b from-[#05060f] via-[#0b1024] to-background text-foreground overflow-hidden">
+    <main className="relative min-h-screen bg-gradient-to-b from-[#0b1116] via-[#0f1b24] to-background text-foreground overflow-hidden">
       <Decor />
 
       <header className="sticky top-0 z-40 backdrop-blur-xl bg-background/70 border-b border-white/5">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
           <Link href="/" className="group flex items-center gap-2 font-semibold">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-purple-500/70 via-cyan-400/70 to-emerald-400/60 shadow-lg shadow-purple-500/30 transition-all duration-200 group-hover:scale-105" />
+            <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-emerald-500/70 via-teal-400/70 to-amber-400/60 shadow-lg shadow-emerald-500/30 transition-all duration-200 group-hover:scale-105" />
             <div className="leading-tight">
               <p className="text-xs text-muted-foreground">Solana</p>
               <p className="text-base text-foreground">Playground</p>
@@ -155,7 +155,7 @@ export default function LandingPage() {
         <div className="pointer-events-none absolute inset-0 -z-10">
           <div
             ref={glowRef}
-            className="absolute left-1/2 top-10 h-64 w-64 -translate-x-1/2 rounded-full bg-gradient-to-br from-purple-500/40 via-cyan-400/30 to-emerald-300/20 blur-3xl"
+            className="absolute left-1/2 top-10 h-64 w-64 -translate-x-1/2 rounded-full bg-gradient-to-br from-emerald-400/40 via-teal-400/30 to-amber-300/20 blur-3xl"
           />
         </div>
 
@@ -177,8 +177,8 @@ export default function LandingPage() {
               data-reveal
               className="max-w-2xl text-lg text-muted-foreground md:text-xl"
             >
-              Crafted for speed, clarity, and wow. Animations powered by GSAP +
-              Framer, Solana-native visuals, and direct paths into the playground.
+              Crafted for speed, clarity, and flow. Motion-first UI, Solana-native
+              visuals, and direct paths into the playground.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <Link
@@ -207,7 +207,7 @@ export default function LandingPage() {
               transition={{ duration: 0.7 }}
               className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/0 p-6 shadow-2xl backdrop-blur"
             >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(168,85,247,0.12),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(34,211,238,0.12),transparent_30%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.12),transparent_30%),radial-gradient(circle_at_80%_20%,rgba(56,189,248,0.12),transparent_30%)]" />
               <div className="relative space-y-4">
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <span className="flex items-center gap-2">
@@ -221,8 +221,8 @@ export default function LandingPage() {
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <Metric label="TPS" value="3,200+" accent="text-emerald-300" />
                   <Metric label="Latency" value="~400ms" accent="text-cyan-200" />
-                  <Metric label="Templates" value="15+" accent="text-purple-200" />
-                  <Metric label="Explainers" value="line-by-line" accent="text-indigo-200" />
+                  <Metric label="Templates" value="15+" accent="text-amber-200" />
+                  <Metric label="Explainers" value="line-by-line" accent="text-emerald-200" />
                 </div>
                 <div className="rounded-xl border border-white/10 bg-black/40 p-4 shadow-inner">
                   <p className="text-xs uppercase tracking-wide text-muted-foreground">
@@ -400,7 +400,7 @@ function TimelineCard({
 }) {
   return (
     <div className="group relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-5 shadow-lg backdrop-blur transition hover:-translate-y-1 hover:border-primary/50">
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-cyan-400/5 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 via-teal-400/5 to-transparent" />
       <div className="relative flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -433,7 +433,7 @@ function SocialProof({
 }) {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg backdrop-blur">
-      <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/10 via-cyan-400/10 to-purple-500/5" />
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/10 via-teal-400/10 to-amber-500/5" />
       <div className="relative space-y-3">
         <p className="text-lg leading-relaxed text-foreground">“{quote}”</p>
         <div>
@@ -484,7 +484,7 @@ function LoadingBeam() {
         initial={{ x: "-100%" }}
         animate={{ x: "100%" }}
         transition={{ repeat: Infinity, duration: 2.4, ease: "easeInOut" }}
-        className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-purple-500/40 via-cyan-400/60 to-emerald-300/40"
+        className="absolute inset-y-0 w-1/2 bg-gradient-to-r from-emerald-500/40 via-teal-400/60 to-amber-300/40"
       />
     </div>
   );
@@ -493,9 +493,8 @@ function LoadingBeam() {
 function Decor() {
   return (
     <div className="pointer-events-none absolute inset-0 -z-10">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_20%,rgba(76,29,149,0.12),transparent_30%),radial-gradient(circle_at_80%_0%,rgba(6,182,212,0.14),transparent_30%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_20%,rgba(16,185,129,0.12),transparent_30%),radial-gradient(circle_at_80%_0%,rgba(14,165,233,0.14),transparent_30%)]" />
       <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(60deg,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:32px_32px]" />
     </div>
   );
 }
-

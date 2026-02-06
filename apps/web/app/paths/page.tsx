@@ -3,77 +3,18 @@
 import { useState } from "react";
 import { BookOpen, Search, Filter } from "lucide-react";
 import { motion } from "framer-motion";
-import { LearningPathComponent, LearningPath } from "@/components/learning/LearningPath";
-
-// Mock data - in real implementation, this would come from API
-const mockPaths: LearningPath[] = [
-  {
-    id: "beginner-path",
-    title: "Solana Fundamentals",
-    description: "Learn the basics of Solana programming from scratch",
-    difficulty: "beginner",
-    estimatedTime: "2-3 hours",
-    progress: 50,
-    completed: false,
-    steps: [
-      {
-        id: "step-1",
-        templateId: "hello-solana",
-        title: "Hello Solana",
-        description: "Your first Solana program",
-        completed: true,
-        locked: false,
-        order: 1,
-      },
-      {
-        id: "step-2",
-        templateId: "account-init",
-        title: "Account Initialization",
-        description: "Learn to create and manage accounts",
-        completed: true,
-        locked: false,
-        order: 2,
-      },
-      {
-        id: "step-3",
-        templateId: "pda-vault",
-        title: "PDA Vault",
-        description: "Master Program Derived Addresses",
-        completed: false,
-        locked: false,
-        order: 3,
-      },
-    ],
-  },
-  {
-    id: "intermediate-path",
-    title: "Advanced Solana Concepts",
-    description: "Deep dive into advanced Solana programming patterns",
-    difficulty: "intermediate",
-    estimatedTime: "4-5 hours",
-    progress: 0,
-    completed: false,
-    steps: [
-      {
-        id: "step-1",
-        templateId: "token-mint",
-        title: "Token Minting",
-        description: "Create and manage SPL tokens",
-        completed: false,
-        locked: false,
-        order: 1,
-      },
-    ],
-  },
-];
+import { LearningPathComponent } from "@/components/learning/LearningPath";
+import { useLearningPathStore, deriveLearningPaths } from "@/stores/learning-path";
 
 export default function LearningPathsPage() {
+  const { completedSteps } = useLearningPathStore();
+  const paths = deriveLearningPaths(completedSteps);
   const [searchQuery, setSearchQuery] = useState("");
   const [difficultyFilter, setDifficultyFilter] = useState<
     "all" | "beginner" | "intermediate" | "advanced"
   >("all");
 
-  const filteredPaths = mockPaths.filter((path) => {
+  const filteredPaths = paths.filter((path) => {
     const matchesSearch =
       path.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       path.description.toLowerCase().includes(searchQuery.toLowerCase());
@@ -160,4 +101,3 @@ export default function LearningPathsPage() {
     </main>
   );
 }
-

@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { PublicKey } from "@solana/web3.js";
 
 export interface TransactionInstruction {
   id: string;
@@ -64,8 +63,11 @@ export const useTransactionStore = create<TransactionStore>((set) => ({
   reorderInstructions: (fromIndex, toIndex) =>
     set((state) => {
       const newInstructions = [...state.instructions];
-      const [removed] = newInstructions.splice(fromIndex, 1);
-      newInstructions.splice(toIndex, 0, removed);
+      const removed = newInstructions[fromIndex];
+      if (removed) {
+        newInstructions.splice(fromIndex, 1);
+        newInstructions.splice(toIndex, 0, removed);
+      }
       return { instructions: newInstructions };
     }),
   addAccount: (account) =>

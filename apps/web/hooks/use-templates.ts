@@ -1,6 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const normalizeApiUrl = (raw: string) => {
+  const trimmed = raw.replace(/\/+$/, "");
+  return trimmed.endsWith("/templates") ? trimmed.slice(0, -"/templates".length) : trimmed;
+};
+
+const API_URL = normalizeApiUrl(
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"
+);
 
 export interface TemplateListItem {
   id: string;
@@ -31,4 +38,3 @@ export function useTemplate(id: string) {
     enabled: !!id,
   });
 }
-
