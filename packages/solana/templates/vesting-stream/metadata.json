@@ -1,0 +1,22 @@
+{
+  "id": "vesting-stream",
+  "name": "Vesting Stream",
+  "description": "Create a time-based vesting contract that releases lamports after a cliff and linearly over time. This template demonstrates time math, cliffs, and claimable balances.",
+  "difficulty": "intermediate",
+  "learningGoals": [
+    "Model time-based vesting schedules",
+    "Implement cliffs and linear vesting",
+    "Compute claimable balances safely",
+    "Use PDAs to hold vested funds",
+    "Track released amounts on-chain"
+  ],
+  "solanaConcepts": [
+    "Time (Clock Sysvar)",
+    "Program Derived Addresses (PDAs)",
+    "Lamports",
+    "Account State",
+    "Safe Math"
+  ],
+  "estimatedTime": "35 minutes",
+  "prerequisites": ["pda-vault", "account-init"]
+}

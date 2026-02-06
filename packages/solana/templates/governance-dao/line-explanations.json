@@ -73,6 +73,7 @@
   {"line":74,"type":"account","summary":"Authority signer.","concepts":["Signer"]},
   {"line":75,"type":"account","summary":"System Program account.","concepts":["System Program"]},
   {"line":76,"type":"logic","summary":"End of InitializeDao accounts struct.","concepts":["Accounts"]},
+  {"line":77,"type":"logic","summary":"Close the InitializeDao struct definition.","concepts":["Rust"]},
 
   {"line":79,"type":"macro","summary":"Derive account validation for CreateProposal.","concepts":["Accounts"]},
   {"line":80,"type":"logic","summary":"Bind instruction args for PDA seeds.","concepts":["PDA"]},
@@ -117,6 +118,7 @@
   {"line":119,"type":"account","summary":"DAO account.","concepts":["Accounts"]},
   {"line":120,"type":"account","summary":"Proposal account (mutable for executed flag).", "concepts":["Accounts"]},
   {"line":121,"type":"logic","summary":"End of ExecuteProposal accounts struct.","concepts":["Accounts"]},
+  {"line":122,"type":"logic","summary":"Close the ExecuteProposal struct definition.","concepts":["Rust"]},
 
   {"line":124,"type":"macro","summary":"Mark Dao as an account.","concepts":["Accounts"]},
   {"line":125,"type":"account","summary":"Define the Dao state struct.","concepts":["Governance"]},

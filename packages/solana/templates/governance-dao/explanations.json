@@ -402,6 +402,12 @@
     "isImportant": false
   },
   {
+    "lineNumber": 77,
+    "what": "Close the InitializeDao struct definition.",
+    "why": "Close the InitializeDao struct definition.",
+    "isImportant": false
+  },
+  {
     "lineNumber": 79,
     "what": "Derive account validation for CreateProposal.",
     "why": "Derive account validation for CreateProposal.",
@@ -645,6 +651,12 @@
     "lineNumber": 121,
     "what": "End of ExecuteProposal accounts struct.",
     "why": "End of ExecuteProposal accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 122,
+    "what": "Close the ExecuteProposal struct definition.",
+    "why": "Close the ExecuteProposal struct definition.",
     "isImportant": false
   },
   {
