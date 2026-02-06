@@ -1,15 +1,12 @@
 import { z } from "zod";
 
 export const LineExplanationSchema = z.object({
-  lineNumber: z.number(),
-  what: z.string(),
-  why: z.string(),
-  solanaConcept: z.string().optional(),
-  rustConcept: z.string().optional(),
-  whatBreaksIfRemoved: z.string().optional(),
-  isImportant: z.boolean().default(false),
-  relatedLines: z.array(z.number()).optional(),
+  line: z.number(),
+  type: z.enum(["instruction", "account", "macro", "logic", "security"]),
+  summary: z.string(),
+  why: z.string().optional(),
+  risk: z.string().optional(),
+  concepts: z.array(z.string()).optional(),
 });
 
 export type LineExplanation = z.infer<typeof LineExplanationSchema>;
-

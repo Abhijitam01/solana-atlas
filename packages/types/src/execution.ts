@@ -17,6 +17,7 @@ export const ExecutionScenarioSchema = z.object({
   name: z.string(),
   description: z.string(),
   instruction: z.string(),
+  args: z.array(z.unknown()).optional(),
   accountsBefore: z.array(AccountStateSchema),
   accountsAfter: z.array(AccountStateAfterSchema),
   logs: z.array(z.string()),
@@ -36,6 +37,7 @@ export const ExecutionRequestSchema = z.object({
   templateId: z.string(),
   scenario: z.string(),
   instruction: z.string(),
+  args: z.array(z.unknown()).optional(),
 });
 
 export const ExecutionResultSchema = z.object({
@@ -45,9 +47,18 @@ export const ExecutionResultSchema = z.object({
   accountsAfter: z.array(AccountStateAfterSchema),
   logs: z.array(z.string()),
   computeUnits: z.number(),
+  trace: z
+    .array(
+      z.object({
+        program: z.string(),
+        depth: z.number(),
+        status: z.enum(["invoke", "success", "failed"]),
+        logs: z.array(z.string()),
+      })
+    )
+    .default([]),
   error: z.string().optional(),
 });
 
 export type ExecutionRequest = z.infer<typeof ExecutionRequestSchema>;
 export type ExecutionResult = z.infer<typeof ExecutionResultSchema>;
-

@@ -35,7 +35,16 @@ export const CpiCallSchema = z.object({
   line: z.number(),
 });
 
+export const FlowStepSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  lineRange: z.tuple([z.number(), z.number()]).optional(),
+  concepts: z.array(z.string()).optional(),
+});
+
 export const ProgramMapSchema = z.object({
+  flow: z.array(FlowStepSchema).optional().default([]),
   instructions: z.array(InstructionSchema),
   accounts: z.array(AccountDefinitionSchema),
   cpiCalls: z.array(CpiCallSchema).optional(),
@@ -46,5 +55,5 @@ export type Instruction = z.infer<typeof InstructionSchema>;
 export type AccountField = z.infer<typeof AccountFieldSchema>;
 export type AccountDefinition = z.infer<typeof AccountDefinitionSchema>;
 export type CpiCall = z.infer<typeof CpiCallSchema>;
+export type FlowStep = z.infer<typeof FlowStepSchema>;
 export type ProgramMap = z.infer<typeof ProgramMapSchema>;
-
