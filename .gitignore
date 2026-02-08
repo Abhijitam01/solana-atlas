@@ -6,6 +6,10 @@ node_modules
 # Testing
 coverage
 
+.env
+.env.local
+.env*.local
+
 # Next.js
 .next
 out

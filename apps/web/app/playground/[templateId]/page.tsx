@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useTemplate, useTemplates } from "@/hooks/use-templates";
 import { usePlaygroundStore } from "@/stores/playground";
+import { trpc } from "@/lib/trpc-client";
 import { CodePanel } from "@/components/panels/CodePanel";
 import { MapPanel } from "@/components/panels/MapPanel";
 import { StatePanel } from "@/components/panels/StatePanel";
@@ -49,10 +50,6 @@ export default function PlaygroundPage() {
     shallow
   );
   const toast = useToast();
-  const { openTemplateProgram } = useProgramStore(
-    (state) => ({ openTemplateProgram: state.openTemplateProgram }),
-    shallow
-  );
   const { panels, toggleZenMode, sidebarVisible } = useLayoutStore(
     (state) => ({
       panels: state.panels,
@@ -64,11 +61,33 @@ export default function PlaygroundPage() {
   const anyPanelOpen =
     panels.map || panels.explanation || panels.execution || panels.inspector || panels.checklist;
 
+  const codeId = useSearchParams().get("code");
+  const { openTemplateProgram, openUserProgram } = useProgramStore(
+    (state) => ({ openTemplateProgram: state.openTemplateProgram, openUserProgram: state.openUserProgram }),
+    shallow
+  );
+
+  // Fetch user code if codeId is present
+  const { data: userCode, isLoading: isUserCodeLoading } = trpc.code.getById.useQuery(
+    { id: codeId! },
+    { enabled: !!codeId }
+  );
+
   useEffect(() => {
-    if (routeTemplate) {
+    if (userCode) {
+      if (routeTemplate) {
+        openUserProgram({
+          id: userCode.id,
+          templateId: userCode.templateId,
+          title: userCode.title,
+          code: userCode.code,
+          template: routeTemplate,
+        });
+      }
+    } else if (routeTemplate && !codeId && !isUserCodeLoading) {
       openTemplateProgram(routeTemplate);
     }
-  }, [routeTemplate, openTemplateProgram]);
+  }, [routeTemplate, userCode, codeId, openTemplateProgram, openUserProgram, isUserCodeLoading]);
 
   useEffect(() => {
     if (template) {

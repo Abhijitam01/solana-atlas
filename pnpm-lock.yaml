@@ -140,7 +140,7 @@ importers:
         specifier: ^2.1.0
         version: 2.1.1
       framer-motion:
-        specifier: ^10.16.16
+        specifier: ^10.18.0
         version: 10.18.0(react-dom@18.3.1)(react@18.3.1)
       gsap:
         specifier: ^3.12.5
@@ -286,7 +286,7 @@ importers:
         specifier: ^20.11.0
         version: 20.19.27
       drizzle-kit:
-        specifier: ^0.20.6
+        specifier: ^0.20.18
         version: 0.20.18
       typescript:
         specifier: ^5.3.3

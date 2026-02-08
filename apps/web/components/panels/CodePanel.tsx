@@ -16,6 +16,7 @@ import { useProgramStore } from "@/stores/programs";
 import { shallow } from "zustand/shallow";
 import { useLayoutStore } from "@/stores/layout";
 import { generateCodeCompletion } from "@/app/actions/ai";
+import { useAutoSave } from "@/hooks/useAutoSave";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
@@ -615,6 +616,32 @@ export function CodePanel() {
     };
   }, [clearHoverTimeout]);
 
+  // Auto-save integration
+  const updateProgramSavedId = useProgramStore((state) => state.updateProgramSavedId);
+  const { isSaving, lastSaved } = useAutoSave({
+    code: activeProgram?.code || '',
+    title: activeProgram?.name || 'Untitled',
+    templateId: activeProgram?.templateId || activeProgram?.typeId || 'hello-solana',
+    codeId: activeProgram?.savedId,
+    onSaveSuccess: (id) => {
+      if (activeProgram && activeProgram.id) {
+        updateProgramSavedId(activeProgram.id, id);
+      }
+    },
+  });
+
+  // Update savedId when auto-save creates a new entry (handled by side-effect in useAutoSave? No, useAutoSave mutation returns data).
+  // Actually, useAutoSave hook should return the saved ID or update store.
+  // My useAutoSave hook doesn't expose the saved ID easily unless I add a callback or side effect there.
+  // I should modify useAutoSave to call a callback on success.
+  // But for now, let's leave it. If codeId is missing, it creates new.
+  
+  // Wait, if I create new, I get a new ID. If I don't update store, next save creates another new ID.
+  // I NEED to update store.
+  // I'll assume useAutoSave might need a callback ref or I modify it to accept `onSaveSuccess`.
+  // CodePanel imports useAutoSave.
+  // I'll modify useAutoSave to accept `onSaveSuccess`.
+  
   return (
     <motion.div
       {...PANEL_ANIMATION}
@@ -635,6 +662,12 @@ export function CodePanel() {
               <FileCode className="h-3 w-3 mr-1" />
               Template
             </Badge>
+          )}
+          {isSaving && (
+             <span className="text-xs text-muted-foreground animate-pulse ml-2">Saving...</span>
+          )}
+          {!isSaving && lastSaved && (
+             <span className="text-xs text-muted-foreground ml-2">Saved</span>
           )}
         </div>
         <div className="editor-actions">

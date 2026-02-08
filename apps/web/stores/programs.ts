@@ -7,6 +7,7 @@ export type ProgramSource = "template" | "custom";
 
 export interface ProgramSession {
   id: string;
+  savedId?: string;
   name: string;
   source: ProgramSource;
   typeId: ProgramTypeId;
@@ -36,6 +37,20 @@ interface ProgramState {
   }) => ProgramSession;
   setActiveProgram: (id: string) => void;
   updateProgramCode: (id: string, code: string) => void;
+  updateProgramSavedId: (id: string, savedId: string) => void;
+  openUserProgram: (userCode: {
+    id: string;
+    templateId: string;
+    title: string;
+    code: string;
+    template: {
+      metadata: TemplateMetadata;
+      functionSpecs: FunctionSpec[];
+      programMap: ProgramMap;
+      precomputedState: PrecomputedState;
+      checklist: string[];
+    };
+  }) => ProgramSession;
 }
 
 const nowIso = () => new Date().toISOString();
@@ -115,6 +130,39 @@ export const useProgramStore = create<ProgramState>()(
 
         return session;
       },
+      openUserProgram: (userCode) => {
+        const id = `user-${userCode.id}`;
+        // Check if already open
+        const existing = get().programs[id];
+        if (existing) {
+           set({ activeProgramId: id });
+           return existing;
+        }
+
+        const session: ProgramSession = {
+          id,
+          savedId: userCode.id,
+          name: userCode.title,
+          source: "custom", // User code is custom, but based on a template
+          typeId: userCode.templateId as ProgramTypeId,
+          templateId: userCode.templateId,
+          code: userCode.code,
+          metadata: userCode.template.metadata,
+          functionSpecs: userCode.template.functionSpecs,
+          programMap: userCode.template.programMap,
+          precomputedState: userCode.template.precomputedState,
+          checklist: userCode.template.checklist,
+          createdAt: nowIso(),
+          updatedAt: nowIso(),
+          isDirty: false,
+        };
+
+        set((state) => ({
+          programs: { ...state.programs, [id]: session },
+          activeProgramId: id,
+        }));
+        return session;
+      },
       setActiveProgram: (id) => set({ activeProgramId: id }),
       updateProgramCode: (id, code) =>
         set((state) => {
@@ -127,7 +175,22 @@ export const useProgramStore = create<ProgramState>()(
                 ...program,
                 code,
                 updatedAt: nowIso(),
-                isDirty: program.source === "custom" ? true : program.isDirty,
+                isDirty: true, // Always dirty if edited
+              },
+            },
+          };
+        }),
+      updateProgramSavedId: (id, savedId) =>
+        set((state) => {
+          const program = state.programs[id];
+          if (!program) return state;
+          return {
+            programs: {
+              ...state.programs,
+              [id]: {
+                ...program,
+                savedId,
+                isDirty: false, // Clean after save? Or keep dirty if logic differs
               },
             },
           };
