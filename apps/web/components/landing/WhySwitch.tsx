@@ -44,7 +44,7 @@ export function WhySwitch() {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#262626] border border-[#262626] rounded-lg overflow-hidden">
-          {features.map((feature, idx) => (
+          {features.map((feature) => (
             <div
               key={feature.title}
               className="bg-[#0A0A0A] p-8 hover:bg-[#111111] transition-colors group relative"
