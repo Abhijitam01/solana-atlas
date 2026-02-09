@@ -197,9 +197,7 @@ export default function PlaygroundPage() {
 
   return (
     <>
-      <div className="relative min-h-screen overflow-visible bg-[#1e1e1e] text-[#cccccc]">
-        {/* Removed "AI slop" gradients, kept clean dark background */
-        /* Optional: Very subtle grid if needed, otherwise plain */ }
+      <div className="relative min-h-screen overflow-visible bg-[#1e1e1e] text-[#cccccc] grid-pattern-dark">
         <div className="flex min-h-screen">
           {sidebarVisible && <ProgramSidebar />}
           <div className="flex flex-1 min-w-0">

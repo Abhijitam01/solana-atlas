@@ -21,7 +21,7 @@ interface LogoProps {
  * The full logo includes the compass icon with N/E/S/W and "SOLANA ATLAS" text on black background.
  */
 export function Logo({ 
-  height = 40, 
+  height = 48, 
   showWordmark = true, 
   className = "",
   useFullLogo = true 
@@ -30,15 +30,25 @@ export function Logo({
   if (useFullLogo) {
     return (
       <Link href="/" className={`flex items-center ${className}`}>
-        <Image
-          src="/logo/solana-atlas-full.png"
-          alt="Solana Atlas"
-          width={height * 4}
-          height={height}
-          className="h-auto w-auto object-contain"
-          style={{ height: `${height}px`, width: "auto" }}
-          priority
-        />
+        <div 
+          className="relative flex items-center"
+          style={{ height: `${height}px` }}
+        >
+          <Image
+            src="/logo/solana-atlas-full.png"
+            alt="Solana Atlas"
+            width={400}
+            height={100}
+            className="h-full w-auto object-contain"
+            style={{ 
+              height: `${height}px`,
+              width: "auto",
+              maxWidth: "none"
+            }}
+            priority
+            unoptimized
+          />
+        </div>
       </Link>
     );
   }
@@ -57,6 +67,7 @@ export function Logo({
           height={height}
           className="w-full h-full object-contain"
           priority
+          unoptimized
         />
       </div>
       {showWordmark && (

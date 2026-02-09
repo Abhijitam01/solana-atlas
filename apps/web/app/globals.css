@@ -142,6 +142,20 @@
     letter-spacing: 0.01em;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    /* Global grid pattern - cool lines effect */
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: 0 0;
+  }
+
+  /* Dark mode grid pattern */
+  .dark body,
+  body.dark {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   }
   
   /* Code font */
@@ -190,6 +204,33 @@
   /* Gradient text */
   .gradient-text {
     @apply bg-gradient-to-r from-primary via-emerald-500 to-amber-500 bg-clip-text text-transparent;
+  }
+
+  /* Grid pattern background - cool lines effect */
+  .grid-pattern {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: 0 0;
+  }
+
+  /* Grid pattern for dark backgrounds */
+  .grid-pattern-dark {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: 0 0;
+  }
+
+  /* Grid pattern for light backgrounds */
+  .grid-pattern-light {
+    background-image: 
+      linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: 0 0;
   }
 
   .panel {

@@ -15,7 +15,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-12">
           {/* Brand Column */}
           <div className="md:col-span-4">
-            <Logo height={44} useFullLogo={true} className="mb-6" />
+            <Logo height={56} useFullLogo={true} className="mb-6" />
             <p className="text-sm text-[#737373] leading-relaxed mb-6 max-w-sm">
               Interactive playground for learning Solana development. 
               Run real programs, visualize state, and understand execution—all in your browser.

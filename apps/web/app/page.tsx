@@ -16,11 +16,11 @@ import Link from "next/link";
 
 export default function SolanaAtlasLanding() {
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-[#FAFAFA] font-sans selection:bg-[#14F195] selection:text-[#0A0A0A]">
+    <div className="min-h-screen bg-[#0A0A0A] text-[#FAFAFA] font-sans selection:bg-[#14F195] selection:text-[#0A0A0A] grid-pattern-dark relative">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0A]/90 border-b border-[#262626] backdrop-blur-sm">
         <div className="max-w-[1200px] mx-auto px-6 h-20 flex items-center justify-between">
-          <Logo height={36} useFullLogo={true} className="text-[#FAFAFA]" />
+          <Logo height={48} useFullLogo={true} className="text-[#FAFAFA]" />
 
           <div className="hidden md:flex items-center gap-8">
             <Link
