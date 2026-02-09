@@ -405,7 +405,7 @@ export default function SolanaAtlasLanding() {
                   className="flex flex-wrap items-center gap-4"
                 >
                   <Link
-                    href="/playground/hello-solana"
+                    href="/signup"
                     className="group relative px-8 py-4 rounded-xl overflow-hidden"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-[#14F195] to-[#00D18C]" />

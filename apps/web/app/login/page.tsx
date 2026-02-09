@@ -34,10 +34,14 @@ export default function LoginPage() {
   };
 
   const handleOAuthLogin = async (provider: 'google' | 'github' | 'twitter') => {
+    const redirectTo = process.env.NEXT_PUBLIC_APP_URL 
+      ? `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`
+      : `${window.location.origin}/auth/callback`;
+
     await supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo,
       },
     });
   };
