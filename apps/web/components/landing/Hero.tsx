@@ -1,8 +1,11 @@
 "use client";
 
+import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Zap, Lock, BookOpen, Rocket } from "lucide-react";
+import { useAuth } from "@/components/providers/AuthProvider";
+import { useRouter } from "next/navigation";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -14,6 +17,19 @@ const stagger = {
 };
 
 export function Hero() {
+  const { user } = useAuth();
+  const router = useRouter();
+
+  const handlePrimaryClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // Auth-aware funnel: if not logged in, send to signup with redirect back to playground.
+    if (!user) {
+      e.preventDefault();
+      const next = encodeURIComponent("/playground/hello-solana");
+      router.push(`/signup?next=${next}`);
+    }
+    // If logged in, the href will take them directly to the playground.
+  };
+
   return (
     <section className="relative pt-32 pb-24 px-6 flex items-center justify-center bg-[#0A0A0A] text-[#FAFAFA] border-b border-[#262626]">
       {/* Subtle Grid Background */}
@@ -53,7 +69,8 @@ export function Hero() {
             className="flex items-center justify-center gap-4 mb-12"
           >
             <Link
-              href="/signup"
+              href="/playground/hello-solana"
+              onClick={handlePrimaryClick}
               className="bg-[#FAFAFA] text-[#0A0A0A] px-8 py-3 rounded text-sm font-semibold hover:bg-white transition-colors"
             >
               Open Playground

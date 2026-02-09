@@ -27,13 +27,21 @@ export const profileRouter = router({
         .insert(profiles)
         .values({
           id: ctx.user.id,
-          ...input,
           username: input.username || ctx.user.email?.split('@')[0] || 'user',
+          displayName: input.displayName ?? (ctx.user.email || 'User'),
+          avatarUrl: input.avatarUrl ?? 'https://www.gravatar.com/avatar?d=identicon',
         })
         .onConflictDoUpdate({
           target: profiles.id,
           set: {
-            ...input,
+            username:
+              input.username ??
+              (ctx.user.email?.split("@")[0] || "user"),
+            displayName:
+              input.displayName ?? (ctx.user.email || "User"),
+            avatarUrl:
+              input.avatarUrl ??
+              "https://www.gravatar.com/avatar?d=identicon",
             updatedAt: new Date(),
           },
         })

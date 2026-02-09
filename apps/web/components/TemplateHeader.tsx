@@ -1,16 +1,18 @@
 "use client";
 
-import Link from "next/link";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { usePlaygroundStore } from "@/stores/playground";
 import { useTemplates } from "@/hooks/use-templates";
 import type { TemplateMetadata } from "@solana-playground/types";
-import { Home, ChevronLeft, ChevronRight, Play, Database, Eye, EyeOff, Moon, Sun } from "lucide-react";
+import { ChevronLeft, ChevronRight, Play, Database, Eye, EyeOff, Moon, Sun } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { StatusIndicator } from "@/components/ui/StatusIndicator";
 import { Tooltip } from "@/components/ui/Tooltip";
 import { useSettingsStore } from "@/stores/settings";
 import { shallow } from "zustand/shallow";
+import { Logo } from "@/components/Logo";
+import { AuthButton } from "@/components/auth/AuthButton";
 
 interface TemplateHeaderProps {
   template: {
@@ -48,15 +50,7 @@ export function TemplateHeader({ template }: TemplateHeaderProps) {
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <Tooltip content="Back to templates">
-              <Link
-                href="/"
-                className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-muted-foreground transition-all duration-fast hover:bg-muted/60 hover:text-foreground"
-              >
-                <Home className="w-4 h-4" />
-                <span>Home</span>
-              </Link>
-            </Tooltip>
+            <Logo size={32} />
             <div className="h-6 w-px bg-border" />
             <div className="flex items-center gap-3">
               {hasPrev && prevTemplate && (
@@ -156,7 +150,7 @@ export function TemplateHeader({ template }: TemplateHeaderProps) {
                   }`}
                 >
                   <Play className="w-4 h-4" />
-                  <span>Live</span>
+                  <span>Live (soon)</span>
                 </button>
               </Tooltip>
             </div>
@@ -164,6 +158,9 @@ export function TemplateHeader({ template }: TemplateHeaderProps) {
               status={executionMode === "precomputed" ? "success" : "info"}
               size="sm"
             />
+            <div className="ml-4">
+              <AuthButton />
+            </div>
           </div>
         </div>
       </div>

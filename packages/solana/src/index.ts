@@ -11,10 +11,22 @@ import {
 } from "@solana-playground/types";
 
 const getTemplatesDir = () => {
+  // If running in Next.js dev server (apps/web context)
+  if (process.cwd().includes("apps/web") || process.cwd().includes("apps\\web")) {
+    return join(process.cwd(), "../../packages/solana/templates");
+  }
+
+  // If __dirname is defined (compiled TS or Node context)
   if (typeof __dirname !== "undefined") {
+    // Check if we are in dist/solana/src (compiled package)
+    if (__dirname.includes("dist")) {
+      return join(__dirname, "../../../templates");
+    }
+    // Check if we are in src (source package)
     return join(__dirname, "../templates");
   }
-  // Fallback for build output
+
+  // Fallback for Vercel / standalone build where CWD is root
   return join(process.cwd(), "packages/solana/templates");
 };
 
@@ -103,7 +115,7 @@ export async function loadTemplate(id: string): Promise<Template> {
     };
   } catch (error) {
     if (error instanceof Error && error.message.includes("ENOENT")) {
-      throw new Error(`Template "${id}" not found`);
+      throw new Error(`Template "${id}" not found at ${basePath} (CWD: ${process.cwd()}, __dirname: ${typeof __dirname !== 'undefined' ? __dirname : 'undefined'})`);
     }
     throw error;
   }

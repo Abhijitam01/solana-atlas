@@ -9,11 +9,40 @@ export function Footer() {
       <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="text-center md:text-left">
           <p className="text-sm text-[#737373]">
-            © 2024 Solana Atlas
+            © 2026 Solana Atlas
           </p>
           <p className="text-sm text-[#737373] mt-1">
-            Open Source • MIT License
+            Open Source {" "}
+            <span className="font-medium text-[#FAFAFA]">Abhijitam Dubey</span>
           </p>
+          <div className="mt-2 flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-1 text-sm">
+            <a
+              href="https://github.com/Abhijitam01"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#737373] hover:text-[#FAFAFA] transition-colors underline-offset-2 hover:underline"
+            >
+              GitHub
+            </a>
+            <span className="text-[#404040]">•</span>
+            <a
+              href="https://x.com/Abhijitam_"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#737373] hover:text-[#FAFAFA] transition-colors underline-offset-2 hover:underline"
+            >
+              Twitter
+            </a>
+            <span className="text-[#404040]">•</span>
+            <a
+              href="https://github.com/Abhijitam01/solana-playground"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#737373] hover:text-[#FAFAFA] transition-colors underline-offset-2 hover:underline"
+            >
+              Project codebase
+            </a>
+          </div>
         </div>
 
         <div className="flex items-center gap-6">

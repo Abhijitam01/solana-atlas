@@ -8,6 +8,10 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 export const metadata: Metadata = {
   title: "Solana Atlas",
   description: "Learn Solana programming through interactive, explorable code",
+  icons: {
+    icon: "/logo/icon.png",
+    apple: "/logo/icon.png",
+  },
 };
 
 export default function RootLayout({

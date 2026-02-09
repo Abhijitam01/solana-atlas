@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 
@@ -12,6 +12,11 @@ vi.mock("next/link", () => ({
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({ push: vi.fn() }),
+}));
+
+// Avoid pulling in real Auth/Supabase for this unit test
+vi.mock("@/components/auth/AuthButton", () => ({
+  AuthButton: () => <button>Auth</button>,
 }));
 
 vi.mock("@/hooks/use-templates", () => ({

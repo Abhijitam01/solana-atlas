@@ -34,15 +34,20 @@ export default function DashboardPage() {
   const timeSpentMinutes = mockStats.totalTimeSpent % 60;
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-[#0A0A0A] text-[#FAFAFA]">
       <div className="container mx-auto px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
-          <p className="text-muted-foreground">Track your learning progress and achievements</p>
+          <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
+          <p className="text-sm text-[#A3A3A3] mb-1">
+            Dashboard preview with sample data – real tracking coming soon.
+          </p>
+          <p className="text-sm text-[#737373]">
+            Track your learning progress and achievements across Solana Playground.
+          </p>
         </motion.div>
 
         {/* Stats Grid */}

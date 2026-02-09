@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { Code2 } from "lucide-react";
+import React from "react";
 import { AuthButton } from "@/components/auth/AuthButton";
 import { Hero } from "@/components/landing/Hero";
 import { ProductDemo } from "@/components/landing/ProductDemo";
@@ -12,6 +11,8 @@ import { UsedBy } from "@/components/landing/UsedBy";
 import { Trust } from "@/components/landing/Trust";
 import { FinalCTA } from "@/components/landing/FinalCTA";
 import { Footer } from "@/components/landing/Footer";
+import { Logo } from "@/components/Logo";
+import Link from "next/link";
 
 export default function SolanaAtlasLanding() {
   return (
@@ -19,16 +20,27 @@ export default function SolanaAtlasLanding() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0A]/90 border-b border-[#262626] backdrop-blur-sm">
         <div className="max-w-[1200px] mx-auto px-6 h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3">
-             <div className="w-10 h-10 rounded-lg bg-[#14F195] flex items-center justify-center">
-                <Code2 className="w-6 h-6 text-[#0A0A0A]" strokeWidth={2} />
-             </div>
-             <span className="font-bold text-xl tracking-tight text-[#FAFAFA]">Solana Atlas</span>
-          </Link>
+          <Logo className="text-[#FAFAFA]" />
 
           <div className="hidden md:flex items-center gap-8">
-             <a href="#how-it-works" className="text-sm font-medium text-[#737373] hover:text-[#FAFAFA] transition-colors">How it works</a>
-             <a href="#examples" className="text-sm font-medium text-[#737373] hover:text-[#FAFAFA] transition-colors">Examples</a>
+            <Link
+              href="/playground/hello-solana"
+              className="text-sm font-semibold text-[#FAFAFA] hover:text-[#14F195] transition-colors"
+            >
+              Open Playground
+            </Link>
+            <a
+              href="#how-it-works"
+              className="text-sm font-medium text-[#737373] hover:text-[#FAFAFA] transition-colors"
+            >
+              How it works
+            </a>
+            <a
+              href="#examples"
+              className="text-sm font-medium text-[#737373] hover:text-[#FAFAFA] transition-colors"
+            >
+              Examples
+            </a>
           </div>
 
           <AuthButton />

@@ -1,38 +1,28 @@
-import type { ReactNode } from "react";
+import React from "react";
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { Hero } from "@/components/landing/Hero";
 
-import Home from "@/app/page";
-
-vi.mock("next/link", () => ({
-  default: ({ href, children }: { href: string; children: ReactNode }) => (
-    <a href={href}>{children}</a>
-  ),
-}));
-
-vi.mock("@/hooks/use-templates", () => ({
-  useTemplates: () => ({
-    data: [
-      {
-        id: "hello-solana",
-        name: "Hello Solana",
-        description: "Intro to accounts",
-        difficulty: "beginner",
-      },
-    ],
-    isLoading: false,
+// Avoid pulling in real Supabase/Next router logic
+vi.mock("@/components/providers/AuthProvider", () => ({
+  useAuth: () => ({
+    user: null,
+    loading: false,
+    signInWithGoogle: vi.fn(),
+    signOut: vi.fn(),
   }),
 }));
 
-describe("Home page", () => {
-  it("renders the template search and filter controls", () => {
-    render(<Home />);
-    expect(screen.getByPlaceholderText(/Search templates/i)).toBeInTheDocument();
-    expect(screen.getByRole("combobox")).toBeInTheDocument();
-  });
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({ push: vi.fn() }),
+}));
 
-  it("renders the template grid", () => {
-    render(<Home />);
-    expect(screen.getByText(/Hello Solana/i)).toBeInTheDocument();
+describe("Home page hero", () => {
+  it("renders the landing hero content", () => {
+    render(<Hero />);
+    expect(
+      screen.getByText(/The Solana Playground/i)
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Run real Solana programs/i)).toBeInTheDocument();
   });
 });
