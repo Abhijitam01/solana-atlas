@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Github, Twitter, MessageSquare, BookOpen } from "lucide-react";
+
 
 export function Footer() {
   return (
