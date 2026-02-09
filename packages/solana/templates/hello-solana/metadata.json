@@ -1,0 +1,24 @@
+{
+  "id": "hello-solana",
+  "name": "Hello Solana",
+  "description": "The simplest Solana program - logs a message and demonstrates basic account structure. Perfect for understanding the fundamentals of Anchor programs.",
+  "difficulty": "beginner",
+  "learningGoals": [
+    "Understand the basic structure of an Anchor program",
+    "Learn how to use the msg! macro for logging",
+    "Understand account contexts and the Context type",
+    "Learn about the System Program",
+    "Understand the difference between mutable and immutable accounts"
+  ],
+  "solanaConcepts": [
+    "Programs",
+    "Accounts",
+    "Signers",
+    "System Program",
+    "Transaction Logs",
+    "Program ID"
+  ],
+  "estimatedTime": "10 minutes",
+  "prerequisites": []
+}
+

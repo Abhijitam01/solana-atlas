@@ -1,0 +1,81 @@
+[
+  {"line":1,"type":"macro","summary":"Import Anchor prelude types and macros.","why":"Provides Context, Result, and account types.","concepts":["Anchor"]},
+  {"line":2,"type":"macro","summary":"Import SPL Token types and CPI helpers.","why":"Needed to create and manage the NFT mint.","concepts":["Token Program","CPI"]},
+  {"line":3,"type":"macro","summary":"Begin importing Metaplex metadata CPI helpers.","why":"Required to create on-chain metadata accounts.","concepts":["Metadata","CPI"]},
+  {"line":4,"type":"macro","summary":"Import metadata program types and CPI entrypoint.","why":"Used to create metadata and edition records.","concepts":["Metadata"]},
+  {"line":5,"type":"macro","summary":"Import DataV2 metadata struct.","why":"Defines name, symbol, and URI fields.","concepts":["Metadata"]},
+  {"line":6,"type":"macro","summary":"End metadata imports block.","concepts":["Rust Modules"]},
+
+  {"line":8,"type":"macro","summary":"Declare the program ID for this program.","why":"Solana uses this ID to route instructions.","risk":"Program will not compile without a declared ID.","concepts":["Program ID"]},
+
+  {"line":10,"type":"macro","summary":"Mark the module as the Anchor program entry point.","why":"Anchor generates instruction dispatch from this module.","concepts":["Instructions"]},
+  {"line":11,"type":"instruction","summary":"Define the program module namespace.","concepts":["Program Structure"]},
+  {"line":12,"type":"logic","summary":"Bring parent module symbols into scope.","concepts":["Rust Modules"]},
+
+  {"line":14,"type":"instruction","summary":"Start the create_nft instruction signature.","why":"Defines the instruction entrypoint.","concepts":["Instructions"]},
+  {"line":15,"type":"account","summary":"Provide the accounts context for the instruction.","why":"Anchor validates these accounts before execution.","concepts":["Accounts"]},
+  {"line":16,"type":"logic","summary":"NFT name input parameter.","why":"Stored in on-chain metadata.","concepts":["Metadata"]},
+  {"line":17,"type":"logic","summary":"NFT symbol input parameter.","why":"Stored in on-chain metadata.","concepts":["Metadata"]},
+  {"line":18,"type":"logic","summary":"Metadata URI input parameter.","why":"Points to off-chain JSON metadata.","concepts":["Metadata"]},
+  {"line":19,"type":"instruction","summary":"Finish the instruction signature and return type.","concepts":["Result"]},
+
+  {"line":20,"type":"macro","summary":"Log the NFT creation intent.","why":"Provides visibility in transaction logs.","concepts":["Logs"]},
+
+  {"line":22,"type":"logic","summary":"Begin CPI to create the metadata account.","why":"Metaplex program owns metadata creation.","concepts":["Metadata","CPI"]},
+  {"line":23,"type":"logic","summary":"Build a CPI context for the metadata program.","concepts":["CPI"]},
+  {"line":24,"type":"account","summary":"Pass the token metadata program account.","concepts":["Metadata"]},
+  {"line":25,"type":"account","summary":"Begin CPI accounts struct for create_metadata_accounts_v3.","concepts":["CPI"]},
+  {"line":26,"type":"account","summary":"Metadata account PDA to be created.","concepts":["Metadata","PDA"]},
+  {"line":27,"type":"account","summary":"Mint account associated with the NFT.","concepts":["Mint"]},
+  {"line":28,"type":"account","summary":"Mint authority signer.","why":"Authorizes metadata creation.","concepts":["Authority","Signer"]},
+  {"line":29,"type":"account","summary":"Update authority signer (set to mint authority).","why":"Controls future metadata updates.","concepts":["Authority"]},
+  {"line":30,"type":"account","summary":"Payer funds account creation.","concepts":["Payer","Rent"]},
+  {"line":31,"type":"account","summary":"System program for account creation.","concepts":["System Program"]},
+  {"line":32,"type":"logic","summary":"End CPI accounts struct.","concepts":["CPI"]},
+  {"line":33,"type":"logic","summary":"End CPI context construction.","concepts":["CPI"]},
+
+  {"line":34,"type":"logic","summary":"Begin metadata payload (DataV2).","why":"Defines on-chain metadata fields for the NFT.","concepts":["Metadata"]},
+  {"line":35,"type":"logic","summary":"Set metadata name.","concepts":["Metadata"]},
+  {"line":36,"type":"logic","summary":"Set metadata symbol.","concepts":["Metadata"]},
+  {"line":37,"type":"logic","summary":"Set metadata URI.","concepts":["Metadata"]},
+  {"line":38,"type":"logic","summary":"Set seller fee to 0 basis points.","why":"Indicates no royalty on secondary sales.","concepts":["Metadata"]},
+  {"line":39,"type":"logic","summary":"No creators array specified.","concepts":["Metadata"]},
+  {"line":40,"type":"logic","summary":"No collection specified.","concepts":["Metadata"]},
+  {"line":41,"type":"logic","summary":"No usage settings specified.","concepts":["Metadata"]},
+  {"line":42,"type":"logic","summary":"End metadata payload.","concepts":["Metadata"]},
+  {"line":43,"type":"logic","summary":"Set is_mutable to false.","why":"Prevents metadata edits unless update authority changes.","concepts":["Metadata"]},
+  {"line":44,"type":"logic","summary":"Set update_authority_is_signer to true.","why":"Requires update authority signature for changes.","concepts":["Authority"]},
+  {"line":45,"type":"logic","summary":"No collection details provided.","concepts":["Metadata"]},
+  {"line":46,"type":"logic","summary":"Execute CPI and propagate errors.","concepts":["CPI","Error Handling"]},
+
+  {"line":48,"type":"macro","summary":"Log successful NFT creation.","concepts":["Logs"]},
+  {"line":49,"type":"logic","summary":"Return success from create_nft.","concepts":["Result"]},
+  {"line":50,"type":"logic","summary":"End of create_nft handler.","concepts":["Rust"]},
+  {"line":51,"type":"logic","summary":"End of program module.","concepts":["Rust Modules"]},
+
+  {"line":53,"type":"macro","summary":"Derive account validation for CreateNft context.","concepts":["Accounts"]},
+  {"line":54,"type":"account","summary":"Define accounts required to create an NFT.","concepts":["Accounts"]},
+  {"line":55,"type":"account","summary":"Begin constraints for mint initialization.","concepts":["Mint","Account Initialization"]},
+  {"line":56,"type":"account","summary":"Initialize the mint account.","concepts":["Mint","Account Initialization"]},
+  {"line":57,"type":"account","summary":"Specify the payer for mint creation.","concepts":["Payer","Rent"]},
+  {"line":58,"type":"account","summary":"Set mint decimals to 0 for NFTs.","why":"NFTs are non-fungible and indivisible.","concepts":["Mint"]},
+  {"line":59,"type":"account","summary":"Set mint authority for future minting.","concepts":["Authority"]},
+  {"line":60,"type":"account","summary":"End mint constraint block.","concepts":["Accounts"]},
+  {"line":61,"type":"account","summary":"Mint account being created.","concepts":["Mint"]},
+
+  {"line":63,"type":"account","summary":"Mark mint authority as mutable.","why":"Authority may pay fees or be debited.","concepts":["Signer","Mutability"]},
+  {"line":64,"type":"account","summary":"Mint authority signer.","concepts":["Signer","Authority"]},
+
+  {"line":66,"type":"account","summary":"Mark payer as mutable.","why":"Payer funds account creation.","concepts":["Signer","Payer"]},
+  {"line":67,"type":"account","summary":"Payer signer account.","concepts":["Signer","Payer"]},
+
+  {"line":69,"type":"logic","summary":"Indicate this unchecked account is safe to use.","why":"Anchor requires justification for unchecked accounts.","concepts":["Safety"]},
+  {"line":70,"type":"account","summary":"Mark metadata PDA as mutable.","concepts":["Metadata","Mutability"]},
+  {"line":71,"type":"account","summary":"Unchecked metadata account (created via CPI).", "why":"Metadata program will create and validate this account.","concepts":["Metadata","CPI"]},
+
+  {"line":73,"type":"account","summary":"Token Program account.","concepts":["Token Program"]},
+  {"line":74,"type":"account","summary":"Token Metadata Program account.","concepts":["Metadata"]},
+  {"line":75,"type":"account","summary":"System Program account.","concepts":["System Program"]},
+  {"line":76,"type":"account","summary":"Rent sysvar for rent-exemption checks.","concepts":["Rent"]},
+  {"line":77,"type":"logic","summary":"End of CreateNft accounts struct.","concepts":["Accounts"]}
+]

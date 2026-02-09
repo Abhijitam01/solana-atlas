@@ -1,0 +1,40 @@
+{
+  "scenarios": [
+    {
+      "name": "Initialize Roles",
+      "description": "Create role state with admin and operator.",
+      "instruction": "initialize",
+      "args": ["admin"],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: State initialized"
+      ],
+      "computeUnits": 6000
+    },
+    {
+      "name": "Rotate Operator",
+      "description": "Admin assigns a new operator.",
+      "instruction": "set_operator",
+      "args": ["new_operator"],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: Operator updated"
+      ],
+      "computeUnits": 6000
+    },
+    {
+      "name": "Execute Restricted Action",
+      "description": "Operator executes a privileged action.",
+      "instruction": "execute",
+      "args": [],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: Privileged action executed"
+      ],
+      "computeUnits": 5000
+    }
+  ]
+}

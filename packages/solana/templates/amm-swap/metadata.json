@@ -1,0 +1,22 @@
+{
+  "id": "amm-swap",
+  "name": "AMM Token Swap",
+  "description": "Build a simple constant-product AMM that swaps between two SPL tokens. This template demonstrates pool vaults, PDA authorities, and swap math.",
+  "difficulty": "intermediate",
+  "learningGoals": [
+    "Understand constant-product AMM pricing",
+    "Learn how to secure pool vaults with a PDA authority",
+    "Perform token transfers via CPI",
+    "Validate pool configuration on-chain",
+    "Understand liquidity reserves and swap math"
+  ],
+  "solanaConcepts": [
+    "SPL Token",
+    "Program Derived Addresses (PDAs)",
+    "CPI (Cross-Program Invocation)",
+    "Token Accounts",
+    "Constant Product Market Maker"
+  ],
+  "estimatedTime": "35 minutes",
+  "prerequisites": ["token-mint", "cpi-calls"]
+}

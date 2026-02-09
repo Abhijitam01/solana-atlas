@@ -1,0 +1,26 @@
+{
+  "id": "account-init",
+  "name": "Account Initialization",
+  "description": "Learn how to initialize and manage on-chain accounts in Solana. This template demonstrates account creation, data storage, and access control.",
+  "difficulty": "beginner",
+  "learningGoals": [
+    "Understand how to initialize accounts in Solana",
+    "Learn about account space allocation",
+    "Understand the init constraint in Anchor",
+    "Learn about account ownership and authority",
+    "Understand how to update account data",
+    "Learn about access control with require! macro"
+  ],
+  "solanaConcepts": [
+    "Account Initialization",
+    "Account Space",
+    "Account Ownership",
+    "Payer",
+    "System Program",
+    "Account Data",
+    "Access Control"
+  ],
+  "estimatedTime": "20 minutes",
+  "prerequisites": ["hello-solana"]
+}
+

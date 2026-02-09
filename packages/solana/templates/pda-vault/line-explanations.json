@@ -1,0 +1,493 @@
+[
+  {
+    "line": 1,
+    "type": "macro",
+    "summary": "Import Anchor prelude types and macros.",
+    "why": "Provides Context, Result, Account, and macros used throughout the program.",
+    "concepts": ["Anchor"]
+  },
+  {
+    "line": 3,
+    "type": "macro",
+    "summary": "Declare the program ID for this on-chain program.",
+    "why": "The program ID uniquely identifies the program and is used for ownership and PDAs.",
+    "risk": "Program will not compile or deploy without a declared ID.",
+    "concepts": ["Program ID"]
+  },
+  {
+    "line": 5,
+    "type": "macro",
+    "summary": "Mark the module as the Anchor program entry point.",
+    "why": "Anchor generates instruction dispatch from this module.",
+    "concepts": ["Instructions"]
+  },
+  {
+    "line": 6,
+    "type": "instruction",
+    "summary": "Define the program module namespace.",
+    "why": "Groups instruction handlers under a single module.",
+    "concepts": ["Program Structure"]
+  },
+  {
+    "line": 7,
+    "type": "logic",
+    "summary": "Bring parent module symbols into scope.",
+    "why": "Allows using types and constants defined outside the module.",
+    "concepts": ["Rust Modules"]
+  },
+  {
+    "line": 9,
+    "type": "instruction",
+    "summary": "Define the initialize instruction handler.",
+    "why": "Creates and configures the PDA vault account.",
+    "concepts": ["PDA", "Instructions"]
+  },
+  {
+    "line": 10,
+    "type": "logic",
+    "summary": "Create a mutable reference to the vault account.",
+    "why": "Allows updating vault state fields.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 11,
+    "type": "logic",
+    "summary": "Set the vault authority to the signer’s public key.",
+    "why": "Stores who is allowed to withdraw funds.",
+    "risk": "Incorrect authority locks or exposes funds.",
+    "concepts": ["Authority"]
+  },
+  {
+    "line": 12,
+    "type": "logic",
+    "summary": "Store the PDA bump used to derive the vault.",
+    "why": "Needed later to re-derive the PDA for verification.",
+    "concepts": ["PDA", "Bump"]
+  },
+  {
+    "line": 13,
+    "type": "macro",
+    "summary": "Log the initialized authority.",
+    "why": "Gives visibility in transaction logs.",
+    "concepts": ["Logs"]
+  },
+  {
+    "line": 14,
+    "type": "logic",
+    "summary": "Return success from initialize.",
+    "why": "Signals the instruction completed without error.",
+    "concepts": ["Result"]
+  },
+  {
+    "line": 15,
+    "type": "logic",
+    "summary": "End of initialize handler.",
+    "concepts": ["Rust"]
+  },
+  {
+    "line": 17,
+    "type": "instruction",
+    "summary": "Define the deposit instruction handler.",
+    "why": "Moves lamports from the user into the vault.",
+    "concepts": ["Lamports", "Instructions"]
+  },
+  {
+    "line": 18,
+    "type": "logic",
+    "summary": "Increase vault lamports by the deposit amount.",
+    "why": "Transfers value into the PDA vault.",
+    "risk": "Incorrect arithmetic can corrupt balances.",
+    "concepts": ["Lamports"]
+  },
+  {
+    "line": 19,
+    "type": "logic",
+    "summary": "Decrease authority lamports by the deposit amount.",
+    "why": "Balances the transfer from the user.",
+    "risk": "If not matched, lamports can be created or destroyed.",
+    "concepts": ["Lamports"]
+  },
+  {
+    "line": 20,
+    "type": "macro",
+    "summary": "Log the deposit amount.",
+    "why": "Provides feedback in transaction logs.",
+    "concepts": ["Logs"]
+  },
+  {
+    "line": 21,
+    "type": "logic",
+    "summary": "Return success from deposit.",
+    "concepts": ["Result"]
+  },
+  {
+    "line": 22,
+    "type": "logic",
+    "summary": "End of deposit handler.",
+    "concepts": ["Rust"]
+  },
+  {
+    "line": 24,
+    "type": "instruction",
+    "summary": "Define the withdraw instruction handler.",
+    "why": "Moves lamports from the vault to the authority.",
+    "concepts": ["Lamports", "Authority"]
+  },
+  {
+    "line": 25,
+    "type": "security",
+    "summary": "Start an authorization check for withdrawals.",
+    "why": "Only the stored authority should be able to withdraw.",
+    "risk": "Without this, anyone could drain the vault.",
+    "concepts": ["Authority", "Security"]
+  },
+  {
+    "line": 26,
+    "type": "security",
+    "summary": "Compare signer key to the vault’s stored authority.",
+    "why": "Enforces that only the authorized signer can withdraw.",
+    "risk": "Incorrect comparison breaks access control.",
+    "concepts": ["Authority"]
+  },
+  {
+    "line": 27,
+    "type": "security",
+    "summary": "Define the error returned when unauthorized.",
+    "why": "Provides a clear failure reason in logs.",
+    "concepts": ["Errors"]
+  },
+  {
+    "line": 28,
+    "type": "security",
+    "summary": "End of the authorization check.",
+    "concepts": ["Security"]
+  },
+  {
+    "line": 29,
+    "type": "logic",
+    "summary": "Decrease vault lamports by the withdrawal amount.",
+    "why": "Moves value out of the PDA vault.",
+    "risk": "Over-withdrawal can underflow if unchecked.",
+    "concepts": ["Lamports"]
+  },
+  {
+    "line": 30,
+    "type": "logic",
+    "summary": "Increase authority lamports by the withdrawal amount.",
+    "why": "Completes the transfer to the user.",
+    "concepts": ["Lamports"]
+  },
+  {
+    "line": 31,
+    "type": "macro",
+    "summary": "Log the withdrawal amount.",
+    "why": "Provides feedback in transaction logs.",
+    "concepts": ["Logs"]
+  },
+  {
+    "line": 32,
+    "type": "logic",
+    "summary": "Return success from withdraw.",
+    "concepts": ["Result"]
+  },
+  {
+    "line": 33,
+    "type": "logic",
+    "summary": "End of withdraw handler.",
+    "concepts": ["Rust"]
+  },
+  {
+    "line": 34,
+    "type": "logic",
+    "summary": "End of program module.",
+    "concepts": ["Rust Modules"]
+  },
+  {
+    "line": 36,
+    "type": "macro",
+    "summary": "Derive account validation for Initialize context.",
+    "why": "Anchor validates accounts before initialize executes.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 37,
+    "type": "account",
+    "summary": "Define accounts required by initialize.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 38,
+    "type": "account",
+    "summary": "Begin PDA vault account constraints.",
+    "concepts": ["PDA", "Seeds"]
+  },
+  {
+    "line": 39,
+    "type": "account",
+    "summary": "Initialize the vault account if it doesn’t exist.",
+    "why": "Creates the PDA on first run.",
+    "concepts": ["Account Initialization"]
+  },
+  {
+    "line": 40,
+    "type": "account",
+    "summary": "Specify the payer for account creation.",
+    "why": "Defines who funds the new account’s rent.",
+    "concepts": ["Rent", "Payer"]
+  },
+  {
+    "line": 41,
+    "type": "account",
+    "summary": "Allocate space for the Vault account.",
+    "why": "Sets account data size (discriminator + fields).",
+    "concepts": ["Account Size"]
+  },
+  {
+    "line": 42,
+    "type": "account",
+    "summary": "Define PDA seeds for the vault.",
+    "why": "Derives a deterministic vault address.",
+    "concepts": ["PDA", "Seeds"]
+  },
+  {
+    "line": 43,
+    "type": "account",
+    "summary": "Record the PDA bump used for derivation.",
+    "why": "Allows re-derivation in later instructions.",
+    "concepts": ["PDA", "Bump"]
+  },
+  {
+    "line": 44,
+    "type": "account",
+    "summary": "End of account constraint block.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 45,
+    "type": "account",
+    "summary": "The vault PDA account to initialize.",
+    "concepts": ["PDA", "Accounts"]
+  },
+  {
+    "line": 46,
+    "type": "account",
+    "summary": "Mark the authority signer as mutable.",
+    "why": "The signer pays rent and can be debited.",
+    "concepts": ["Signer", "Mutability"]
+  },
+  {
+    "line": 47,
+    "type": "account",
+    "summary": "Authority signer account.",
+    "concepts": ["Signer"]
+  },
+  {
+    "line": 48,
+    "type": "account",
+    "summary": "System program reference for account creation.",
+    "concepts": ["System Program"]
+  },
+  {
+    "line": 49,
+    "type": "logic",
+    "summary": "End of Initialize accounts struct.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 51,
+    "type": "macro",
+    "summary": "Derive account validation for Deposit context.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 52,
+    "type": "account",
+    "summary": "Define accounts required by deposit.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 53,
+    "type": "account",
+    "summary": "Vault PDA account (mutable for balance updates).",
+    "concepts": ["PDA", "Mutability"]
+  },
+  {
+    "line": 54,
+    "type": "account",
+    "summary": "Vault account definition in deposit context.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 55,
+    "type": "account",
+    "summary": "Mark the authority signer as mutable for lamport transfer.",
+    "concepts": ["Signer", "Lamports"]
+  },
+  {
+    "line": 56,
+    "type": "account",
+    "summary": "Authority signer account for deposit.",
+    "concepts": ["Signer"]
+  },
+  {
+    "line": 57,
+    "type": "account",
+    "summary": "System program reference for lamport movement.",
+    "concepts": ["System Program"]
+  },
+  {
+    "line": 58,
+    "type": "logic",
+    "summary": "End of Deposit accounts struct.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 60,
+    "type": "macro",
+    "summary": "Derive account validation for Withdraw context.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 61,
+    "type": "account",
+    "summary": "Define accounts required by withdraw.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 62,
+    "type": "account",
+    "summary": "Begin PDA vault constraints for withdraw.",
+    "concepts": ["PDA", "Seeds"]
+  },
+  {
+    "line": 63,
+    "type": "account",
+    "summary": "Mark the vault as mutable for balance updates.",
+    "concepts": ["Mutability"]
+  },
+  {
+    "line": 64,
+    "type": "account",
+    "summary": "Re-derive the vault PDA using the same seeds.",
+    "why": "Ensures the passed vault is the canonical PDA.",
+    "concepts": ["PDA", "Seeds"]
+  },
+  {
+    "line": 65,
+    "type": "account",
+    "summary": "Use the stored bump to validate the PDA.",
+    "concepts": ["PDA", "Bump"]
+  },
+  {
+    "line": 66,
+    "type": "account",
+    "summary": "End of withdraw constraint block.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 67,
+    "type": "account",
+    "summary": "Vault PDA account used for withdrawal.",
+    "concepts": ["PDA"]
+  },
+  {
+    "line": 68,
+    "type": "account",
+    "summary": "Mark the authority signer as mutable for lamport receipt.",
+    "concepts": ["Signer", "Lamports"]
+  },
+  {
+    "line": 69,
+    "type": "account",
+    "summary": "Authority signer account for withdrawal.",
+    "concepts": ["Signer"]
+  },
+  {
+    "line": 70,
+    "type": "logic",
+    "summary": "End of Withdraw accounts struct.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 72,
+    "type": "macro",
+    "summary": "Mark this struct as an on-chain account.",
+    "why": "Anchor uses this to add a discriminator and serialization.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 73,
+    "type": "account",
+    "summary": "Define the Vault account data layout.",
+    "concepts": ["Account Data"]
+  },
+  {
+    "line": 74,
+    "type": "account",
+    "summary": "Store the vault authority public key.",
+    "concepts": ["Authority"]
+  },
+  {
+    "line": 75,
+    "type": "account",
+    "summary": "Store the PDA bump for re-derivation.",
+    "concepts": ["PDA", "Bump"]
+  },
+  {
+    "line": 76,
+    "type": "logic",
+    "summary": "End of Vault account struct.",
+    "concepts": ["Accounts"]
+  },
+  {
+    "line": 78,
+    "type": "logic",
+    "summary": "Begin Vault impl block for constants.",
+    "concepts": ["Rust"]
+  },
+  {
+    "line": 79,
+    "type": "logic",
+    "summary": "Define the Vault account size constant.",
+    "why": "Used to allocate the correct account size on init.",
+    "concepts": ["Account Size"]
+  },
+  {
+    "line": 80,
+    "type": "logic",
+    "summary": "End of Vault impl block.",
+    "concepts": ["Rust"]
+  },
+  {
+    "line": 82,
+    "type": "macro",
+    "summary": "Mark this enum as program error codes.",
+    "why": "Anchor generates error codes and messages.",
+    "concepts": ["Errors"]
+  },
+  {
+    "line": 83,
+    "type": "logic",
+    "summary": "Define custom error codes for the program.",
+    "concepts": ["Errors"]
+  },
+  {
+    "line": 84,
+    "type": "macro",
+    "summary": "Attach a human-readable error message.",
+    "concepts": ["Errors"]
+  },
+  {
+    "line": 85,
+    "type": "security",
+    "summary": "Unauthorized error variant.",
+    "why": "Returned when a non-authority attempts withdrawal.",
+    "concepts": ["Authority", "Security"]
+  },
+  {
+    "line": 86,
+    "type": "logic",
+    "summary": "End of error enum.",
+    "concepts": ["Errors"]
+  }
+]

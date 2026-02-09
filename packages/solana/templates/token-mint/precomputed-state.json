@@ -1,0 +1,213 @@
+{
+  "scenarios": [
+    {
+      "name": "Create Mint",
+      "description": "Create a new token mint",
+      "instruction": "create_mint",
+      "args": [],
+      "accountsBefore": [
+        {
+          "address": "11111111111111111111111111111111",
+          "label": "System Program",
+          "owner": "11111111111111111111111111111111",
+          "lamports": 0,
+          "dataSize": 0
+        },
+        {
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "label": "Token Program",
+          "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+          "lamports": 0,
+          "dataSize": 0
+        },
+        {
+          "address": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+          "label": "Payer",
+          "owner": "11111111111111111111111111111111",
+          "lamports": 1000000000,
+          "dataSize": 0
+        }
+      ],
+      "accountsAfter": [
+        {
+          "address": "11111111111111111111111111111111",
+          "label": "System Program",
+          "owner": "11111111111111111111111111111111",
+          "lamports": 0,
+          "dataSize": 0,
+          "changes": []
+        },
+        {
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "label": "Token Program",
+          "owner": "BPFLoaderUpgradeab1e11111111111111111111111",
+          "lamports": 0,
+          "dataSize": 0,
+          "changes": []
+        },
+        {
+          "address": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+          "label": "Payer",
+          "owner": "11111111111111111111111111111111",
+          "lamports": 999998200,
+          "dataSize": 0,
+          "changes": [
+            "Lamports decreased by 1800 (rent for mint account + transaction fee)"
+          ]
+        },
+        {
+          "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "label": "Token Mint",
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "lamports": 1461600,
+          "dataSize": 82,
+          "data": {
+            "mint_authority": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+            "supply": 0,
+            "decimals": 9
+          },
+          "changes": [
+            "Token mint created",
+            "Decimals set to 9",
+            "Mint authority set",
+            "Initial supply: 0"
+          ]
+        }
+      ],
+      "logs": [
+        "Program TokenMint1111111111111111111111111111111 invoke [1]",
+        "Program log: Token mint created: EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "Program TokenMint1111111111111111111111111111111 success"
+      ],
+      "computeUnits": 20000
+    },
+    {
+      "name": "Mint Tokens",
+      "description": "Mint 1000 tokens into a token account",
+      "instruction": "mint_tokens",
+      "args": [1000000000],
+      "accountsBefore": [
+        {
+          "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "label": "Token Mint",
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "lamports": 1461600,
+          "dataSize": 82,
+          "data": {
+            "supply": 0
+          }
+        },
+        {
+          "address": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+          "label": "Token Account",
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "lamports": 2039280,
+          "dataSize": 165,
+          "data": {
+            "amount": 0
+          }
+        }
+      ],
+      "accountsAfter": [
+        {
+          "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+          "label": "Token Mint",
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "lamports": 1461600,
+          "dataSize": 82,
+          "data": {
+            "supply": 1000000000
+          },
+          "changes": [
+            "Supply increased from 0 to 1000000000 (1000 tokens with 9 decimals)"
+          ]
+        },
+        {
+          "address": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+          "label": "Token Account",
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "lamports": 2039280,
+          "dataSize": 165,
+          "data": {
+            "amount": 1000000000
+          },
+          "changes": [
+            "Token balance increased from 0 to 1000000000"
+          ]
+        }
+      ],
+      "logs": [
+        "Program TokenMint1111111111111111111111111111111 invoke [1]",
+        "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [2]",
+        "Program log: Minted 1000000000 tokens",
+        "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+        "Program TokenMint1111111111111111111111111111111 success"
+      ],
+      "computeUnits": 15000
+    },
+    {
+      "name": "Transfer Tokens",
+      "description": "Transfer 500 tokens from one account to another",
+      "instruction": "transfer_tokens",
+      "args": [500000000],
+      "accountsBefore": [
+        {
+          "address": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+          "label": "From Token Account",
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "lamports": 2039280,
+          "dataSize": 165,
+          "data": {
+            "amount": 1000000000
+          }
+        },
+        {
+          "address": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+          "label": "To Token Account",
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "lamports": 2039280,
+          "dataSize": 165,
+          "data": {
+            "amount": 0
+          }
+        }
+      ],
+      "accountsAfter": [
+        {
+          "address": "5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1",
+          "label": "From Token Account",
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "lamports": 2039280,
+          "dataSize": 165,
+          "data": {
+            "amount": 500000000
+          },
+          "changes": [
+            "Token balance decreased from 1000000000 to 500000000"
+          ]
+        },
+        {
+          "address": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+          "label": "To Token Account",
+          "owner": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+          "lamports": 2039280,
+          "dataSize": 165,
+          "data": {
+            "amount": 500000000
+          },
+          "changes": [
+            "Token balance increased from 0 to 500000000"
+          ]
+        }
+      ],
+      "logs": [
+        "Program TokenMint1111111111111111111111111111111 invoke [1]",
+        "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA invoke [2]",
+        "Program log: Transferred 500000000 tokens",
+        "Program TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA success",
+        "Program TokenMint1111111111111111111111111111111 success"
+      ],
+      "computeUnits": 12000
+    }
+  ]
+}

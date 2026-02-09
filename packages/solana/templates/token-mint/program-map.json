@@ -1,0 +1,148 @@
+{
+  "flow": [
+    {
+      "id": "create_mint",
+      "title": "Create Token Mint",
+      "description": "Initialize a new SPL token mint and set its authority.",
+      "lineRange": [10, 13],
+      "concepts": ["SPL Token", "Mint authority"]
+    },
+    {
+      "id": "mint_tokens",
+      "title": "Mint Supply",
+      "description": "Mint new tokens into a recipient account via CPI.",
+      "lineRange": [15, 29],
+      "concepts": ["CPI", "Minting"]
+    },
+    {
+      "id": "transfer_tokens",
+      "title": "Transfer Tokens",
+      "description": "Move tokens between accounts using the SPL Token program.",
+      "lineRange": [31, 45],
+      "concepts": ["Transfers", "Authority"]
+    }
+  ],
+  "instructions": [
+    {
+      "name": "create_mint",
+      "lineStart": 8,
+      "lineEnd": 11,
+      "accounts": [
+        {
+          "name": "mint",
+          "isMut": true,
+          "isSigner": false,
+          "isPda": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true,
+          "isPda": false
+        },
+        {
+          "name": "mint_authority",
+          "isMut": false,
+          "isSigner": true,
+          "isPda": false
+        },
+        {
+          "name": "token_program",
+          "isMut": false,
+          "isSigner": false,
+          "isPda": false
+        },
+        {
+          "name": "system_program",
+          "isMut": false,
+          "isSigner": false,
+          "isPda": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false,
+          "isPda": false
+        }
+      ],
+      "description": "Creates a new SPL token mint with 9 decimals"
+    },
+    {
+      "name": "mint_tokens",
+      "lineStart": 13,
+      "lineEnd": 30,
+      "accounts": [
+        {
+          "name": "mint",
+          "isMut": true,
+          "isSigner": false,
+          "isPda": false
+        },
+        {
+          "name": "token_account",
+          "isMut": true,
+          "isSigner": false,
+          "isPda": false
+        },
+        {
+          "name": "mint_authority",
+          "isMut": false,
+          "isSigner": true,
+          "isPda": false
+        },
+        {
+          "name": "token_program",
+          "isMut": false,
+          "isSigner": false,
+          "isPda": false
+        }
+      ],
+      "description": "Mints new tokens into a token account via CPI"
+    },
+    {
+      "name": "transfer_tokens",
+      "lineStart": 33,
+      "lineEnd": 48,
+      "accounts": [
+        {
+          "name": "from",
+          "isMut": true,
+          "isSigner": false,
+          "isPda": false
+        },
+        {
+          "name": "to",
+          "isMut": true,
+          "isSigner": false,
+          "isPda": false
+        },
+        {
+          "name": "authority",
+          "isMut": false,
+          "isSigner": true,
+          "isPda": false
+        },
+        {
+          "name": "token_program",
+          "isMut": false,
+          "isSigner": false,
+          "isPda": false
+        }
+      ],
+      "description": "Transfers tokens between token accounts via CPI"
+    }
+  ],
+  "accounts": [],
+  "cpiCalls": [
+    {
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "instruction": "mint_to",
+      "line": 14
+    },
+    {
+      "program": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA",
+      "instruction": "transfer",
+      "line": 26
+    }
+  ]
+}

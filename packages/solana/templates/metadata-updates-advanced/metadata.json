@@ -1,0 +1,18 @@
+{
+  "id": "metadata-updates-advanced",
+  "name": "Metadata Updates (Advanced)",
+  "description": "Update metadata fields and freeze metadata to make it immutable.",
+  "difficulty": "advanced",
+  "learningGoals": [
+    "Construct DataV2 payloads",
+    "Invoke Metaplex update_metadata_accounts_v2",
+    "Freeze metadata updates"
+  ],
+  "solanaConcepts": [
+    "Metadata",
+    "CPI",
+    "Authority"
+  ],
+  "estimatedTime": "30 minutes",
+  "prerequisites": ["Metadata Updates"]
+}

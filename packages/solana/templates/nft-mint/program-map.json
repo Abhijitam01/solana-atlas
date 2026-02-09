@@ -1,0 +1,77 @@
+{
+  "flow": [
+    {
+      "id": "create_nft",
+      "title": "Create NFT",
+      "description": "Initialize the mint and write metadata via the Token Metadata program.",
+      "lineRange": [14, 49],
+      "concepts": ["NFT metadata", "CPI", "Token Metadata program"]
+    }
+  ],
+  "instructions": [
+    {
+      "name": "create_nft",
+      "lineStart": 12,
+      "lineEnd": 40,
+      "accounts": [
+        {
+          "name": "mint",
+          "isMut": true,
+          "isSigner": false,
+          "isPda": false
+        },
+        {
+          "name": "mint_authority",
+          "isMut": true,
+          "isSigner": true,
+          "isPda": false
+        },
+        {
+          "name": "payer",
+          "isMut": true,
+          "isSigner": true,
+          "isPda": false
+        },
+        {
+          "name": "metadata",
+          "isMut": true,
+          "isSigner": false,
+          "isPda": true
+        },
+        {
+          "name": "token_program",
+          "isMut": false,
+          "isSigner": false,
+          "isPda": false
+        },
+        {
+          "name": "token_metadata_program",
+          "isMut": false,
+          "isSigner": false,
+          "isPda": false
+        },
+        {
+          "name": "system_program",
+          "isMut": false,
+          "isSigner": false,
+          "isPda": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false,
+          "isPda": false
+        }
+      ],
+      "description": "Creates an NFT with metadata using Metaplex Token Metadata program"
+    }
+  ],
+  "accounts": [],
+  "cpiCalls": [
+    {
+      "program": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
+      "instruction": "create_metadata_accounts_v3",
+      "line": 18
+    }
+  ]
+}

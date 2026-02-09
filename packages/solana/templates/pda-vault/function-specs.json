@@ -1,0 +1,32 @@
+[
+  {
+    "id": "initialize",
+    "title": "Initialize Vault",
+    "lineRange": [9, 15],
+    "does": "Creates the PDA vault account and stores its authority and bump.",
+    "why": "PDAs cannot sign, so the program must persist the authority that is allowed to control the vault.",
+    "breaksIfRemoved": "The vault account is never created and deposits/withdrawals have no destination or authority record.",
+    "concepts": ["PDA", "Account initialization", "Bump seeds"],
+    "securityImplications": "Sets the trusted authority. If misconfigured, anyone could control the vault."
+  },
+  {
+    "id": "deposit",
+    "title": "Deposit Lamports",
+    "lineRange": [17, 22],
+    "does": "Moves lamports from the signer to the vault PDA.",
+    "why": "Shows how to move native SOL into a PDA-controlled account without a signature from the PDA.",
+    "breaksIfRemoved": "Users cannot fund the vault, making withdrawals and balance changes impossible.",
+    "concepts": ["Lamports", "PDA ownership", "System account balances"],
+    "securityImplications": "Relies on correct lamport arithmetic; missing checks could enable overdrafts or accidental drains."
+  },
+  {
+    "id": "withdraw",
+    "title": "Withdraw Lamports",
+    "lineRange": [24, 33],
+    "does": "Validates authority and transfers lamports back to the signer.",
+    "why": "PDAs cannot sign, so the program must enforce authority checks before releasing funds.",
+    "breaksIfRemoved": "Funds are locked in the vault forever.",
+    "concepts": ["Authority validation", "Require macro", "Lamports"],
+    "securityImplications": "This is the critical gate. A missing or incorrect authority check lets anyone drain the vault."
+  }
+]

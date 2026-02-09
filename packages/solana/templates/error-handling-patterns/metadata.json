@@ -1,0 +1,19 @@
+{
+  "id": "error-handling-patterns",
+  "name": "Error Handling Patterns",
+  "description": "Learn require! checks, custom errors, and safe arithmetic in Anchor programs.",
+  "difficulty": "intermediate",
+  "learningGoals": [
+    "Use require! to enforce invariants",
+    "Define and surface custom error codes",
+    "Prevent overflow with checked arithmetic"
+  ],
+  "solanaConcepts": [
+    "Errors",
+    "Security",
+    "Overflow",
+    "State Validation"
+  ],
+  "estimatedTime": "20 minutes",
+  "prerequisites": ["Instruction Basics"]
+}
