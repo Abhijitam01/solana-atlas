@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import { createSupabaseClient } from '@/lib/supabase';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Loader2, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -153,8 +154,8 @@ export default function LoginPage() {
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Signing in...
+                  <LoadingSpinner size="sm" text="Loading..." className="text-black/70" />
+                  <span>Signing in...</span>
                 </>
               ) : (
                 'Sign in'

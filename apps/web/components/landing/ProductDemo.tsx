@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export function ProductDemo() {
   return (
-    <section className="py-24 px-6 bg-[#0A0A0A]">
+    <section className="py-24 px-6 bg-[#0A0A0A] bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]">
       <div className="max-w-[1200px] mx-auto">
         <div className="flex items-center justify-center mb-12">
            <span className="px-3 py-1 rounded-full border border-[#262626] bg-[#111111] text-xs font-mono text-[#737373] uppercase tracking-wider">

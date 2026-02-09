@@ -6,6 +6,7 @@ import { useAuth } from '@/components/providers/AuthProvider';
 import { motion } from 'framer-motion';
 import { Code2, Clock, Star, Trash2, Plus, Search } from 'lucide-react';
 import Link from 'next/link';
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function MyCodePage() {
   const { user } = useAuth();
@@ -84,7 +85,7 @@ export default function MyCodePage() {
         {/* Code Grid */}
         {isLoading ? (
           <div className="text-center py-12">
-            <div className="inline-block w-8 h-8 border-4 border-[#14F195] border-t-transparent rounded-full animate-spin" />
+            <LoadingSpinner size="md" className="text-white/60" text="Loading..." />
           </div>
         ) : filteredCode && filteredCode.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -16,6 +16,7 @@ import { CommandPalette } from "@/components/ui/CommandPalette";
 import { AITutor } from "@/components/ai/AITutor";
 import { ContextualHints } from "@/components/ai/ContextualHints";
 import { HelpIcon } from "@/components/ui/HelpIcon";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function PlaygroundPage() {
   const params = useParams();
@@ -72,7 +73,7 @@ export default function PlaygroundPage() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <LoadingSpinner size="lg" className="mx-auto" text="Loading..." />
           <p className="mt-4 text-muted-foreground">Loading template...</p>
         </div>
       </div>

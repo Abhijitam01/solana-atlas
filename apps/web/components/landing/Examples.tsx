@@ -34,7 +34,7 @@ const categories = [
 
 export function Examples() {
   return (
-    <section id="examples" className="py-24 px-6 bg-[#0A0A0A]">
+    <section id="examples" className="py-24 px-6 bg-[#0A0A0A] bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]">
       <div className="max-w-[1200px] mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6 border-b border-[#262626] pb-8">
            <div>

@@ -34,7 +34,7 @@ export function Logo({
           <span className="text-black font-bold text-xs">SA</span>
         </div>
         {showWordmark && (
-          <span className="font-semibold tracking-[0.18em] text-sm md:text-base uppercase text-[#FAFAFA]">
+          <span className="font-semibold tracking-[0.18em] text-base md:text-lg uppercase text-[#FAFAFA]">
             Solana Atlas
           </span>
         )}

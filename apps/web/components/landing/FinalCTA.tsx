@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export function FinalCTA() {
   return (
-    <section className="py-32 px-6 bg-[#0A0A0A] border-t border-[#262626] text-center">
+    <section className="py-32 px-6 bg-[#0A0A0A] border-t border-[#262626] text-center bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]">
       <div className="max-w-[600px] mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

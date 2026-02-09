@@ -3,7 +3,8 @@
 import { useState } from 'react';
 import { createSupabaseClient } from '@/lib/supabase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Mail, Lock, Loader2 } from 'lucide-react';
+import { X, Mail, Lock } from 'lucide-react';
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -115,8 +116,8 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignup }: LoginModalProp
                 >
                   {loading ? (
                     <>
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Signing in...
+                      <LoadingSpinner size="sm" text="Loading..." className="text-black/70" />
+                      <span>Signing in...</span>
                     </>
                   ) : (
                     'Sign in'

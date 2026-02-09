@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { createSupabaseClient } from '@/lib/supabase';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Loader2, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
@@ -213,8 +214,8 @@ export default function SignupPage() {
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Creating account...
+                  <LoadingSpinner size="sm" text="Loading..." className="text-black/70" />
+                  <span>Creating account...</span>
                 </>
               ) : (
                 'Create account'

@@ -317,6 +317,32 @@
   .focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
+
+  /* Loading wave text */
+  .loading-wave {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.02em;
+    letter-spacing: 0.02em;
+  }
+
+  .loading-wave__char {
+    display: inline-block;
+    animation: loading-wave-bounce 1.05s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+
+  @keyframes loading-wave-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-0.32em);
+      opacity: 1;
+    }
+  }
   
   /* Monaco Editor Breakpoint Styles */
   .breakpoint-glyph {

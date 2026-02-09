@@ -5,6 +5,7 @@ import React from "react";
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/providers/AuthProvider';
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -23,7 +24,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-black">
-        <div className="w-8 h-8 border-4 border-[#14F195] border-t-transparent rounded-full animate-spin" />
+        <LoadingSpinner size="md" className="text-white/60" text="Loading..." />
       </div>
     );
   }

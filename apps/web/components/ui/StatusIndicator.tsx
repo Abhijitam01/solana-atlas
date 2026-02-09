@@ -2,7 +2,8 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { CheckCircle2, XCircle, AlertCircle, Info, Loader2 } from "lucide-react";
+import { CheckCircle2, XCircle, AlertCircle, Info } from "lucide-react";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 
 interface StatusIndicatorProps {
   status: "success" | "error" | "warning" | "info" | "loading";
@@ -32,7 +33,6 @@ const statusConfig = {
     bg: "bg-info-light",
   },
   loading: {
-    icon: Loader2,
     color: "text-primary",
     bg: "bg-primary-light",
   },
@@ -50,8 +50,7 @@ export function StatusIndicator({
   className,
 }: StatusIndicatorProps) {
   const config = statusConfig[status];
-  const Icon = config.icon;
-  const isAnimated = status === "loading";
+  const Icon = "icon" in config ? config.icon : null;
 
   return (
     <div
@@ -61,13 +60,15 @@ export function StatusIndicator({
         className
       )}
     >
-      <Icon
-        className={cn(
-          config.color,
-          sizeConfig[size],
-          isAnimated && "animate-spin"
-        )}
-      />
+      {status === "loading" ? (
+        <LoadingSpinner
+          size={size}
+          className={cn(config.color, "px-2 py-1")}
+          text="Loading..."
+        />
+      ) : (
+        Icon && <Icon className={cn(config.color, sizeConfig[size])} />
+      )}
     </div>
   );
 }

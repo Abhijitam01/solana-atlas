@@ -31,11 +31,8 @@ export function Hero() {
   };
 
   return (
-    <section className="relative pt-32 pb-24 px-6 flex items-center justify-center bg-[#0A0A0A] text-[#FAFAFA] border-b border-[#262626]">
-      {/* Subtle Grid Background */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none" />
-
-      <div className="max-w-[800px] w-full text-center relative z-10">
+    <section className="relative pt-40 pb-32 px-6 flex items-center justify-center bg-[#0A0A0A] text-[#FAFAFA] border-b border-[#262626] min-h-[80vh] bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]">
+      <div className="max-w-[1200px] w-full text-center relative z-10 px-4">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -49,15 +46,16 @@ export function Hero() {
 
           <motion.h1
             variants={fadeUp}
-            className="text-[48px] leading-[1.1] sm:text-[64px] font-bold tracking-tight mb-6 text-white"
+            className="text-[48px] leading-[1.1] sm:text-[64px] md:text-[80px] lg:text-[96px] font-bold tracking-tight mb-8 text-white"
           >
-            The Solana Playground <br className="hidden sm:block" />
-            <span className="text-[#A3A3A3]">you needed.</span>
+            The Solana Playground
+            <br />
+            <span className="text-[#14F195]">you needed.</span>
           </motion.h1>
           
           <motion.p
             variants={fadeUp}
-            className="text-[18px] leading-[28px] text-[#A3A3A3] mb-10 max-w-[600px] mx-auto"
+            className="text-[20px] leading-[32px] sm:text-[22px] text-[#A3A3A3] mb-12 max-w-[600px] mx-auto"
           >
             Run real Solana programs. Watch state transform. 
             Understand execution—not just syntax.
@@ -66,18 +64,18 @@ export function Hero() {
           
           <motion.div
             variants={fadeUp}
-            className="flex items-center justify-center gap-4 mb-12"
+            className="flex items-center justify-center gap-5 mb-12"
           >
             <Link
               href="/playground/hello-solana"
               onClick={handlePrimaryClick}
-              className="bg-[#FAFAFA] text-[#0A0A0A] px-8 py-3 rounded text-sm font-semibold hover:bg-white transition-colors"
+              className="bg-[#FAFAFA] text-[#0A0A0A] px-10 py-4 rounded text-base font-semibold hover:bg-white transition-colors"
             >
               Open Playground
             </Link>
             <a
               href="#examples"
-              className="bg-transparent text-[#A3A3A3] border border-[#262626] px-8 py-3 rounded text-sm font-medium hover:text-[#FAFAFA] hover:border-[#525252] transition-colors"
+              className="bg-transparent text-[#A3A3A3] border border-[#262626] px-10 py-4 rounded text-base font-medium hover:text-[#FAFAFA] hover:border-[#525252] transition-colors"
             >
               Browse Examples
             </a>
