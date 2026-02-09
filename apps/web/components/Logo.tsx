@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -11,8 +11,6 @@ interface LogoProps {
   showWordmark?: boolean;
   /** Optional className for the outer wrapper */
   className?: string;
-  /** Kept for backwards compatibility, but icon + wordmark is now always used */
-  useFullLogo?: boolean;
 }
 
 /**
@@ -22,8 +20,7 @@ interface LogoProps {
 export function Logo({ 
   height = 72, 
   showWordmark = true, 
-  className = "",
-  useFullLogo = true 
+  className = ""
 }: LogoProps) {
   const [imageError, setImageError] = useState(false);
 
@@ -70,5 +67,3 @@ export function Logo({
     </Link>
   );
 }
-
-
