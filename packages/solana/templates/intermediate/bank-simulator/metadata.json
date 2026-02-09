@@ -1,6 +1,0 @@
-{
-  "name": "Bank Simulator",
-  "description": "A simulation of a banking system with deposits, withdrawals, and internal transfers.",
-  "difficulty": "intermediate",
-  "tags": ["anchor", "simulation", "crud", "pda"]
-}

@@ -1,6 +1,0 @@
-{
-  "name": "Expense Tracker",
-  "description": "Track expenses on-chain using a PDA to store a list of expenses per user.",
-  "difficulty": "beginner",
-  "tags": ["anchor", "beginner", "crud", "pda"]
-}

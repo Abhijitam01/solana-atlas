@@ -1,6 +1,0 @@
-{
-  "name": "Hello Solana (Native)",
-  "description": "A minimal native Solana program that prints a message to the logs.",
-  "difficulty": "beginner",
-  "tags": ["native", "beginner", "logs"]
-}

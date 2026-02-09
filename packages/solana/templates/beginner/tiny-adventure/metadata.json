@@ -1,6 +1,0 @@
-{
-  "name": "Tiny Adventure",
-  "description": "A simple on-chain game where you move a character left and right.",
-  "difficulty": "beginner",
-  "tags": ["anchor", "beginner", "game", "pda"]
-}

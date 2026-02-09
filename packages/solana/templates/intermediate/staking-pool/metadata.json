@@ -1,6 +1,0 @@
-{
-  "name": "Staking Pool",
-  "description": "Build a basic staking pool where users deposit lamports for shares and withdraw their stake later.",
-  "difficulty": "intermediate",
-  "tags": ["anchor", "intermediate", "staking", "pda", "math"]
-}

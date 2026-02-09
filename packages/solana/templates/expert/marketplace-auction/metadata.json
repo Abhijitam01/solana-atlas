@@ -1,6 +1,0 @@
-{
-  "name": "Marketplace Auction",
-  "description": "Build a basic auction with a vault, bidding, refunds, and settlement.",
-  "difficulty": "expert",
-  "tags": ["anchor", "expert", "auction", "pda", "spl-token"]
-}

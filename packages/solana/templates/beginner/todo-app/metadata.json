@@ -1,6 +1,0 @@
-{
-  "name": "Todo App",
-  "description": "A simple Todo application storing tasks on-chain.",
-  "difficulty": "beginner",
-  "tags": ["anchor", "beginner", "crud", "list"]
-}

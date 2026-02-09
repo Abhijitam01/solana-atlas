@@ -1,6 +1,0 @@
-{
-  "name": "Counter PDA",
-  "description": "A simple counter program using Program Derived Addresses (PDAs) to store state per user.",
-  "difficulty": "beginner",
-  "tags": ["anchor", "beginner", "pda", "state"]
-}

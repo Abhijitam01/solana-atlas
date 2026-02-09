@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useTemplate, useTemplates } from "@/hooks/use-templates";
 import { usePlaygroundStore } from "@/stores/playground";
+import { useSettingsStore } from "@/stores/settings";
 import { CodePanel } from "@/components/panels/CodePanel";
 import { MapPanel } from "@/components/panels/MapPanel";
 import { StatePanel } from "@/components/panels/StatePanel";
@@ -24,6 +25,9 @@ export default function PlaygroundPage() {
   const templateId = params.templateId as string;
   const { data: template, isLoading } = useTemplate(templateId);
   const { setTemplate, selectedLine } = usePlaygroundStore();
+  const { playgroundTheme } = useSettingsStore((state) => ({
+    playgroundTheme: state.playgroundTheme,
+  }));
   const toast = useToast();
 
   useEffect(() => {
@@ -95,11 +99,21 @@ export default function PlaygroundPage() {
     );
   }
 
+  const isGridTheme = playgroundTheme === "grid";
+
   return (
     <>
-      <div className="h-screen flex flex-col bg-background">
+      <div
+        className={`h-screen flex flex-col ${
+          isGridTheme ? "bg-[#0A0A0A]" : "bg-background"
+        } relative`}
+      >
+        {/* Grid background overlay for grid theme */}
+        {isGridTheme && (
+          <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none z-0" />
+        )}
         <TemplateHeader template={{ id: template.id, metadata: template.metadata }} />
-        <div className="flex-1 overflow-hidden p-4">
+        <div className="flex-1 overflow-hidden p-4 relative z-10">
           <div className="mb-3 flex items-center justify-between text-xs text-muted-foreground px-1">
             <div className="flex items-center gap-2">
               <span className="font-semibold text-foreground">Quick start</span>
@@ -122,9 +136,27 @@ export default function PlaygroundPage() {
             storageKey="playground-panel-sizes"
             defaultSizes={[40, 30, 30]}
           >
-            <CodePanel />
-            <MapPanel />
-            <StatePanel />
+            <div className={`h-full ${isGridTheme ? "bg-[#000000]" : ""}`}>
+              <CodePanel />
+            </div>
+            <div
+              className={`h-full ${
+                isGridTheme
+                  ? "bg-[#0A0A0A]/80 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]"
+                  : ""
+              }`}
+            >
+              <MapPanel />
+            </div>
+            <div
+              className={`h-full ${
+                isGridTheme
+                  ? "bg-[#0A0A0A]/80 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]"
+                  : ""
+              }`}
+            >
+              <StatePanel />
+            </div>
           </ResizablePanels>
         </div>
       </div>

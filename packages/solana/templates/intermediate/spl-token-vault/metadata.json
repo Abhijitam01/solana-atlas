@@ -1,6 +1,0 @@
-{
-  "name": "SPL Token Vault",
-  "description": "A vault program that allows users to deposit and withdraw SPL tokens using CPIS.",
-  "difficulty": "intermediate",
-  "tags": ["anchor", "spl-token", "cpi", "pda"]
-}

@@ -1,6 +1,0 @@
-{
-  "name": "Boss Battle",
-  "description": "Collaborative game where players attack a shared boss entity.",
-  "difficulty": "intermediate",
-  "tags": ["anchor", "game", "shared-state", "pda"]
-}

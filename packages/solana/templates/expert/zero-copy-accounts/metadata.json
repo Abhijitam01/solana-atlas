@@ -1,6 +1,0 @@
-{
-  "name": "Zero Copy Accounts",
-  "description": "Demonstrates efficient handling of large accounts using Zero Copy deserialization.",
-  "difficulty": "expert",
-  "tags": ["anchor", "advanced", "zero-copy", "performance"]
-}

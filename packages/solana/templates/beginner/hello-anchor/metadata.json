@@ -1,6 +1,0 @@
-{
-  "name": "Hello Anchor",
-  "description": "A minimal Anchor program that prints a message and logs the user's public key.",
-  "difficulty": "beginner",
-  "tags": ["anchor", "beginner", "logs"]
-}

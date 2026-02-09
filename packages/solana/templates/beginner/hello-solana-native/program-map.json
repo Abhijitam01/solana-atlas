@@ -1,9 +1,0 @@
-{
-  "functions": [
-    {
-      "name": "process_instruction",
-      "line": 10,
-      "description": "Main entrypoint for the program."
-    }
-  ]
-}

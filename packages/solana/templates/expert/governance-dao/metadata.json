@@ -1,6 +1,0 @@
-{
-  "name": "Governance DAO",
-  "description": "Create a minimal DAO with proposals, voting, and execution once quorum is met.",
-  "difficulty": "expert",
-  "tags": ["anchor", "expert", "governance", "pda", "voting"]
-}

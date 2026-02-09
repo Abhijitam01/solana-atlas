@@ -21,6 +21,7 @@ import { ProgramSidebar } from "@/components/ProgramSidebar";
 import { useProgramStore } from "@/stores/programs";
 import { useActiveProgram } from "@/hooks/use-active-program";
 import { useLayoutStore } from "@/stores/layout";
+import { useSettingsStore } from "@/stores/settings";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Panel,
@@ -56,6 +57,13 @@ export default function PlaygroundPage() {
       toggleZenMode: state.toggleZenMode,
       sidebarVisible: state.sidebarVisible,
     })
+  );
+  const { playgroundTheme, setPlaygroundTheme } = useSettingsStore(
+    (state) => ({
+      playgroundTheme: state.playgroundTheme,
+      setPlaygroundTheme: state.setPlaygroundTheme,
+    }),
+    shallow
   );
   const sidePanelRef = useRef<ImperativePanelHandle>(null);
   const anyPanelOpen =
@@ -195,15 +203,44 @@ export default function PlaygroundPage() {
     );
   }
 
+  const isGridTheme = playgroundTheme === "grid";
+
   return (
     <>
-      <div className="relative min-h-screen overflow-visible bg-[#1e1e1e] text-[#cccccc] grid-pattern-dark">
-        <div className="flex min-h-screen">
+      <div
+        className={`relative min-h-screen overflow-visible text-[#cccccc] ${
+          isGridTheme
+            ? "bg-[#0A0A0A]"
+            : "bg-[#1e1e1e] grid-pattern-dark"
+        }`}
+      >
+        {/* Theme selector - floating in top right */}
+        <div className="fixed top-4 right-4 z-50">
+          <select
+            value={playgroundTheme}
+            onChange={(e) => setPlaygroundTheme(e.target.value as "default" | "grid")}
+            className="rounded-lg border border-border/70 bg-card/90 backdrop-blur px-3 py-2 text-sm text-foreground cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary transition-all"
+          >
+            <option value="default">Default Theme</option>
+            <option value="grid">Grid Theme</option>
+          </select>
+        </div>
+
+        {/* Grid background overlay for grid theme */}
+        {isGridTheme && (
+          <div className="fixed inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none z-0" />
+        )}
+
+        <div className="flex min-h-screen relative z-10">
           {sidebarVisible && <ProgramSidebar />}
           <div className="flex flex-1 min-w-0">
             <PanelGroup direction="horizontal" className="w-full h-screen">
               <Panel minSizePercentage={60} defaultSizePercentage={70}>
-                <div className="min-w-0 h-full min-h-0">
+                <div
+                  className={`min-w-0 h-full min-h-0 ${
+                    isGridTheme ? "bg-[#000000]" : ""
+                  }`}
+                >
                   <CodePanel />
                 </div>
               </Panel>
@@ -230,7 +267,11 @@ export default function PlaygroundPage() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 16 }}
                       transition={{ duration: 0.2 }}
-                      className="h-full border-l border-border/70 bg-card/70 backdrop-blur"
+                      className={`h-full border-l border-border/70 backdrop-blur ${
+                        isGridTheme
+                          ? "bg-[#0A0A0A]/80 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]"
+                          : "bg-card/70"
+                      }`}
                     >
                       <div className="h-full overflow-y-auto space-y-4">
                         {panels.map && <MapPanel />}

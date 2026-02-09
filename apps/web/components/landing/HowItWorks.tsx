@@ -118,11 +118,11 @@ export function HowItWorks() {
   }, []);
 
   return (
-    <section className="bg-[#0a0a0a] text-white py-16 sm:py-24 md:py-28 px-4 sm:px-6 md:px-10 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]">
+    <section id="how-it-works" className="bg-[#0a0a0a] text-white py-16 sm:py-24 md:py-28 px-4 sm:px-6 md:px-10 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]">
       <div className="max-w-[1600px] mx-auto pl-0 md:pl-[200px]">
-        <div className="grid gap-6 sm:gap-10 lg:grid-cols-[400px,1fr] lg:gap-24 relative">
+        <div className="flex flex-col lg:grid gap-6 sm:gap-10 lg:grid-cols-[400px,1fr] lg:gap-24 relative">
           {/* Left: Steps sidebar with heading */}
-          <div className="lg:sticky lg:top-28 h-fit">
+          <div className="lg:sticky lg:top-28 h-fit order-2 lg:order-1">
             <div className="relative lg:pl-10">
               {/* How it works heading */}
               <div className="pb-4 sm:pb-6 pt-2 sm:pt-4 mb-6 sm:mb-10">
@@ -134,7 +134,7 @@ export function HowItWorks() {
               {/* Vertical line (desktop) */}
               <div className="hidden lg:block absolute left-[18px] top-[140px] bottom-8 w-px bg-white/10" />
 
-              <div className="flex lg:block gap-3 sm:gap-4 overflow-x-auto pb-4 lg:pb-0 lg:overflow-visible scrollbar-hide">
+              <div className="flex lg:block gap-3 sm:gap-4 overflow-x-auto pb-4 lg:pb-0 lg:overflow-visible scrollbar-hide md:overflow-x-visible">
                 {steps.map((step, index) => {
                   const isActive = index === activeIndex;
 
@@ -201,7 +201,7 @@ export function HowItWorks() {
           </div>
 
           {/* Right: Scroll sections */}
-          <div className="flex flex-col">
+          <div className="flex flex-col order-1 lg:order-2">
             {/* Section 1 */}
             <div
               ref={(el) => {
