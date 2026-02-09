@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+
 import { Check, Eye, Microscope, X } from "lucide-react";
 
 const features = [
