@@ -24,7 +24,7 @@ export function Hero() {
     // Auth-aware funnel: if not logged in, send to signup with redirect back to playground.
     if (!user) {
       e.preventDefault();
-      const next = encodeURIComponent("/playground/hello-solana");
+      const next = encodeURIComponent("/playground/hello-anchor");
       router.push(`/signup?next=${next}`);
     }
     // If logged in, the href will take them directly to the playground.

@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const code = requestUrl.searchParams.get('code');
   const error = requestUrl.searchParams.get('error');
   const errorDescription = requestUrl.searchParams.get('error_description');
-  const redirectTo = requestUrl.searchParams.get('redirect') || '/playground/hello-solana';
+  const redirectTo = requestUrl.searchParams.get('redirect') || '/playground/hello-anchor';
 
   // Handle OAuth errors from provider
   if (error) {

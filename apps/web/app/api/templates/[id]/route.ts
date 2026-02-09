@@ -72,17 +72,54 @@ async function loadTemplateLocal(id: string) {
   // Handle nested template paths like "beginner/hello-anchor"
   // Sanitize the id to prevent path traversal
   const sanitizedId = id.replace(/\.\./g, '').replace(/^\//, '');
-  const basePath = join(templatesDir, sanitizedId);
+  let basePath: string | null = null;
+  
+  // Try multiple possible locations for the template
+  const possiblePaths = [
+    // Direct path (for top-level templates like "pda-escrow")
+    join(templatesDir, sanitizedId),
+    // Nested paths (for templates in beginner/, intermediate/, expert/)
+    ...['beginner', 'intermediate', 'expert'].map(cat => join(templatesDir, cat, sanitizedId)),
+  ];
+  
+  // Find the first path that contains a valid template
+  for (const path of possiblePaths) {
+    try {
+      const testMetadataPath = join(path, 'metadata.json');
+      await readFile(testMetadataPath, 'utf-8');
+      basePath = path;
+      break;
+    } catch {
+      continue;
+    }
+  }
+  
+  if (!basePath) {
+    throw new Error(
+      `Template "${id}" not found. Searched paths: ${possiblePaths.join(', ')}`
+    );
+  }
+  
   console.log(`Loading template "${id}" from ${basePath} (CWD: ${cwd})`);
 
   try {
      const [code, metadata, explanations, programMap, precomputedState, functionSpecs] =
       await Promise.all([
-        readFile(join(basePath, "program/lib.rs"), "utf-8"),
-        readJSON(join(basePath, "metadata.json")).then((data) => TemplateMetadataSchema.parse(data)),
-        readJSON(join(basePath, "line-explanations.json")).then((data) => z.array(LocalLineExplanationSchema).parse(data)),
-        readJSON(join(basePath, "program-map.json")).then((data) => ProgramMapSchema.parse(data)),
-        readJSON(join(basePath, "precomputed-state.json")).then((data) => PrecomputedStateSchema.parse(data)),
+        readFile(join(basePath, "program/lib.rs"), "utf-8").catch((err) => {
+          throw new Error(`Failed to read program code from ${join(basePath, "program/lib.rs")}: ${err instanceof Error ? err.message : String(err)}`);
+        }),
+        readJSON(join(basePath, "metadata.json")).then((data) => TemplateMetadataSchema.parse(data)).catch((err) => {
+          throw new Error(`Failed to parse metadata.json: ${err instanceof Error ? err.message : String(err)}`);
+        }),
+        readJSON(join(basePath, "line-explanations.json")).then((data) => z.array(LocalLineExplanationSchema).parse(data)).catch((err) => {
+          throw new Error(`Failed to parse line-explanations.json: ${err instanceof Error ? err.message : String(err)}`);
+        }),
+        readJSON(join(basePath, "program-map.json")).then((data) => ProgramMapSchema.parse(data)).catch((err) => {
+          throw new Error(`Failed to parse program-map.json: ${err instanceof Error ? err.message : String(err)}`);
+        }),
+        readJSON(join(basePath, "precomputed-state.json")).then((data) => PrecomputedStateSchema.parse(data)).catch((err) => {
+          throw new Error(`Failed to parse precomputed-state.json: ${err instanceof Error ? err.message : String(err)}`);
+        }),
         readJSON(join(basePath, "function-specs.json"))
           .then((data) => z.array(FunctionSpecSchema).parse(data))
           .catch(() => []), 
@@ -98,7 +135,7 @@ async function loadTemplateLocal(id: string) {
       precomputedState,
     };
   } catch (error) {
-     console.error("Local load failed:", error);
+     console.error(`Local load failed for template "${id}" at ${basePath}:`, error);
      throw error;
   }
 }
@@ -120,21 +157,27 @@ export async function GET(
     // Check cache
     const cached = templateCache.get(id);
     if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      console.log(`Returning cached template ${id}`);
       return NextResponse.json(cached.data);
     }
 
     // Use local implementation
     const template = await loadTemplateLocal(id);
-    console.log(`Loaded template ${id}`);
+    console.log(`Successfully loaded template ${id}`);
     
     // Update cache
     templateCache.set(id, { data: template, timestamp: Date.now() });
     
     return NextResponse.json(template);
   } catch (error) {
-    console.error(`Error loading template ${params.id}:`, error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error(`Error loading template ${params.id}:`, errorMessage);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Template not found' },
+      { 
+        error: errorMessage,
+        templateId: params.id,
+        hint: 'Make sure the template exists and all required files are present'
+      },
       { status: 404 }
     );
   }

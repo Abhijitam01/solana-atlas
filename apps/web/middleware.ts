@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest) {
 
   // Redirect authenticated users away from landing/auth pages
   if (user && (request.nextUrl.pathname === '/' || request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup'))) {
-    return NextResponse.redirect(new URL('/playground/hello-solana', request.url));
+    return NextResponse.redirect(new URL('/playground/hello-anchor', request.url));
   }
 
   return response;

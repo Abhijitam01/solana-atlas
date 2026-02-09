@@ -78,11 +78,11 @@ export async function GET() {
   try {
     // Check cache
     if (templatesCache && Date.now() - templatesCache.timestamp < CACHE_TTL) {
-      // return NextResponse.json(templatesCache.data);
+      return NextResponse.json(templatesCache.data);
     }
 
     const templateIds = await listTemplatesLocal();
-    console.log(`Found ${templateIds.length} templates locally`);
+    console.log(`Found ${templateIds.length} templates locally:`, templateIds.slice(0, 10));
     
     // We need to read metadata for each template
     const templatesDir = await findTemplatesDir();
@@ -94,14 +94,17 @@ export async function GET() {
           const content = await readFile(metadataPath, 'utf-8');
           const metadata = JSON.parse(content);
           
+          // Use the id from metadata if it exists, otherwise use the path-based id
+          const templateId = metadata.id || id;
+          
           return {
-            id: id,
+            id: templateId,
             name: metadata.name,
             description: metadata.description,
             difficulty: metadata.difficulty,
           };
         } catch (error) {
-          console.error(`Error loading template metadata for ${id}:`, error);
+          console.error(`Error loading template metadata for ${id} at ${join(templatesDir, id, 'metadata.json')}:`, error);
           return null;
         }
       })
