@@ -2,7 +2,7 @@
   "name": "@solana-playground/runner",
   "version": "1.0.0",
   "private": true,
-  "main": "./dist/index.js",
+  "main": "./dist/apps/runner/src/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",

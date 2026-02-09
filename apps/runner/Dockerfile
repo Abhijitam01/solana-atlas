@@ -45,5 +45,5 @@ ENV VALIDATOR_PORT=8899
 
 EXPOSE 3002 8899
 
-CMD ["node", "apps/runner/dist/index.js"]
+CMD ["node", "apps/runner/dist/apps/runner/src/index.js"]
 
