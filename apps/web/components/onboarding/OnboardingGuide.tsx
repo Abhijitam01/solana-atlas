@@ -26,7 +26,15 @@ export function OnboardingGuide() {
   const [highlightedElement, setHighlightedElement] = useState<HTMLElement | null>(null);
   const highlightRef = useRef<HTMLDivElement | null>(null);
   
-  const { togglePanel, setLayoutMode, toggleMobileSidebar, mobileSidebarOpen, zenMode, toggleZenMode } = useLayoutStore(
+  const {
+    togglePanel,
+    setLayoutMode,
+    toggleMobileSidebar,
+    mobileSidebarOpen,
+    zenMode,
+    toggleZenMode,
+    closeAllPanels,
+  } = useLayoutStore(
     (state) => ({
       togglePanel: state.togglePanel,
       setLayoutMode: state.setLayoutMode,
@@ -34,6 +42,7 @@ export function OnboardingGuide() {
       mobileSidebarOpen: state.mobileSidebarOpen,
       zenMode: state.zenMode,
       toggleZenMode: state.toggleZenMode,
+      closeAllPanels: state.closeAllPanels,
     })
   );
 
@@ -165,6 +174,8 @@ export function OnboardingGuide() {
     setIsOpen(false);
     localStorage.setItem(ONBOARDING_KEY, "true");
     setHighlightedElement(null);
+    // After onboarding, reset layout so user can discover panels themselves
+    closeAllPanels();
   };
 
   const handleNext = () => {

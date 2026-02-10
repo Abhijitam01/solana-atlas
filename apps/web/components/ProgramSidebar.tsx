@@ -178,15 +178,18 @@ export function ProgramSidebar() {
           onClick={toggleMobileSidebar}
         />
       )}
-      <aside className={`w-64 flex-shrink-0 border-r border-border/70 backdrop-blur h-screen overflow-hidden flex flex-col fixed md:relative z-50 transition-transform duration-300 ${
-        mobileSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-      } ${
+      <aside
+        className={`w-64 flex-shrink-0 border-r border-border/70 backdrop-blur h-screen overflow-hidden flex flex-col fixed md:relative z-50 transition-transform duration-300 ${
+          mobileSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        } ${
         isGridTheme 
           ? "bg-[#0A0A0A]/80 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]"
           : isMatrixTheme
           ? "bg-[#000000] bg-[linear-gradient(rgba(0,255,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,0,0.03)_1px,transparent_1px)] bg-[size:20px_20px]"
           : "bg-card/60"
-      }`}>
+        }`}
+        style={{ top: 0, left: 0 }}
+      >
         {/* Mobile close button */}
         <div className="md:hidden flex items-center justify-between p-4 border-b border-border/70">
           <span className="text-sm font-semibold text-foreground">Menu</span>

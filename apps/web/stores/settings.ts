@@ -20,7 +20,8 @@ export const useSettingsStore = createWithEqualityFn<SettingsState>()(
     (set) => ({
       explanationsEnabled: true,
       theme: "dark",
-      playgroundTheme: "default",
+      // Use the grid playground theme by default; others remain available as options
+      playgroundTheme: "grid",
       toggleExplanations: () =>
         set((state) => ({ explanationsEnabled: !state.explanationsEnabled })),
       setExplanationsEnabled: (enabled) => set({ explanationsEnabled: enabled }),

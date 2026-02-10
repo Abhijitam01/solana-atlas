@@ -223,7 +223,7 @@ export default function PlaygroundPage() {
   return (
     <>
       <div
-        className={`relative min-h-screen overflow-visible ${
+        className={`relative h-screen overflow-hidden ${
           isGridTheme
             ? "bg-[#0A0A0A] text-[#cccccc]"
             : isMatrixTheme

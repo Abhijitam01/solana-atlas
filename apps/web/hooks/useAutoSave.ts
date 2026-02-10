@@ -8,10 +8,18 @@ interface UseAutoSaveProps {
   title: string;
   templateId: string;
   codeId?: string; // If editing existing
+  enabled?: boolean; // Optional flag to disable auto-save (e.g. for read-only templates)
   onSaveSuccess?: (id: string) => void;
 }
 
-export function useAutoSave({ code, title, templateId, codeId, onSaveSuccess }: UseAutoSaveProps) {
+export function useAutoSave({
+  code,
+  title,
+  templateId,
+  codeId,
+  enabled = true,
+  onSaveSuccess,
+}: UseAutoSaveProps) {
   const { user } = useAuth();
   const utils = trpc.useUtils();
   const saveMutation = trpc.code.save.useMutation({
@@ -27,6 +35,9 @@ export function useAutoSave({ code, title, templateId, codeId, onSaveSuccess }: 
   const initialLoad = useRef(true);
 
   useEffect(() => {
+    // Completely disable auto-save when not enabled
+    if (!enabled) return;
+
     // Skip auto-save on initial load
     if (initialLoad.current) {
       initialLoad.current = false;
@@ -50,7 +61,7 @@ export function useAutoSave({ code, title, templateId, codeId, onSaveSuccess }: 
       title,
       templateId,
     });
-  }, [debouncedCode, user, title, templateId, codeId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [debouncedCode, user, title, templateId, codeId, enabled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     isSaving: saveMutation.isPending,

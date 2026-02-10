@@ -314,11 +314,10 @@ export function CodePanel() {
     return theme === "dark" ? "solana-dark" : "solana-light";
   }, [theme, playgroundTheme]);
 
-  // Allow full interaction for viewing - no read-only restriction
-  // Auth will be checked when creating new programs or saving
+  // Templates should be read-only; only custom programs are editable/saved
   const isReadOnly = useMemo(
-    () => false, // Always allow viewing and interaction
-    []
+    () => activeProgram?.source === "template",
+    [activeProgram?.source]
   );
 
   const todoCount = useMemo(() => {
@@ -804,9 +803,11 @@ export function CodePanel() {
   // Auto-save integration
   const updateProgramSavedId = useProgramStore((state) => state.updateProgramSavedId);
   const { isSaving, lastSaved } = useAutoSave({
-    code: activeProgram?.code || '',
-    title: activeProgram?.name || 'Untitled',
-    templateId: activeProgram?.templateId || activeProgram?.typeId || 'hello-solana',
+    // Only auto-save for custom programs created via "New Program"
+    enabled: activeProgram?.source === "custom",
+    code: activeProgram?.code || "",
+    title: activeProgram?.name || "Untitled",
+    templateId: activeProgram?.templateId || activeProgram?.typeId || "hello-solana",
     codeId: activeProgram?.savedId,
     onSaveSuccess: (id) => {
       if (activeProgram && activeProgram.id) {
