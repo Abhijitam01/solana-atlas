@@ -1,13 +1,14 @@
 "use client";
 
-import { TrendingUp, Clock, Target, Award, BookOpen, Zap, LogOut } from "lucide-react";
+import { TrendingUp, Clock, Target, Award, BookOpen, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { PathProgressComponent, PathProgress } from "@/components/learning/PathProgress";
 import Link from "next/link";
 import { useAuth } from "@/components/providers/AuthProvider";
-import { useRouter } from "next/navigation";
+import { trpc } from "@/lib/trpc-client";
+import { AppHeader } from "@/components/AppHeader";
 
-// Mock data - in real implementation, this would come from API
+// Mock data for features not yet tracked
 const mockProgress: PathProgress[] = [
   {
     pathId: "beginner-path",
@@ -21,11 +22,10 @@ const mockProgress: PathProgress[] = [
   },
 ];
 
-const mockStats = {
-  templatesCompleted: 2,
-  totalTimeSpent: 120, // minutes
-  conceptsMastered: 5,
-  currentStreak: 3,
+const mockPreviewStats = {
+  totalTimeSpent: 120, // minutes — preview data
+  conceptsMastered: 5,  // preview data
+  currentStreak: 3,     // preview data
   achievements: [
     { id: "first-step", name: "First Steps", description: "Completed your first template" },
     { id: "week-warrior", name: "Week Warrior", description: "3 day learning streak" },
@@ -42,18 +42,16 @@ const stagger = {
 };
 
 export default function DashboardPage() {
-  const { signOut } = useAuth();
-  const router = useRouter();
-  const timeSpentHours = Math.floor(mockStats.totalTimeSpent / 60);
-  const timeSpentMinutes = mockStats.totalTimeSpent % 60;
-
-  const handleSignOut = async () => {
-    await signOut();
-    router.push('/');
-  };
+  const { user } = useAuth();
+  const { data: userCode } = trpc.code.getMyCode.useQuery(undefined, { enabled: !!user });
+  const programCount = userCode?.length ?? 0;
+  const favoriteCount = userCode?.filter(c => c.isFavorite).length ?? 0;
+  const timeSpentHours = Math.floor(mockPreviewStats.totalTimeSpent / 60);
+  const timeSpentMinutes = mockPreviewStats.totalTimeSpent % 60;
 
   return (
     <main className="min-h-screen bg-[#0A0A0A] text-[#FAFAFA]">
+      <AppHeader />
       {/* Header Section */}
       <section className="pt-20 sm:pt-24 pb-8 sm:pb-12 px-4 sm:px-6 border-b border-[#262626]">
         <div className="max-w-[1200px] mx-auto">
@@ -66,41 +64,21 @@ export default function DashboardPage() {
             >
               <motion.div variants={fadeUp} className="mb-3 sm:mb-4">
                 <span className="px-2 sm:px-3 py-1 text-[10px] sm:text-xs font-mono text-[#14F195] border border-[#14F195]/20 bg-[#14F195]/5 rounded uppercase tracking-wider inline-block">
-                  Preview
+                  Dashboard
                 </span>
               </motion.div>
               <motion.h1
                 variants={fadeUp}
                 className="text-[32px] leading-[1.1] sm:text-[48px] md:text-[64px] font-bold tracking-tight mb-4 sm:mb-6 text-white"
               >
-                Dashboard
+                Welcome back
               </motion.h1>
             <motion.p
               variants={fadeUp}
               className="text-[14px] sm:text-[16px] md:text-[18px] leading-[22px] sm:leading-[28px] text-[#A3A3A3] mb-2 max-w-[600px]"
             >
-              Dashboard preview with sample data – real tracking coming soon.
+              Track your progress across Solana Atlas.
             </motion.p>
-            <motion.p
-              variants={fadeUp}
-              className="text-[13px] sm:text-[14px] md:text-[16px] text-[#737373]"
-            >
-              Track your learning progress and achievements across Solana Playground.
-            </motion.p>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <button
-                onClick={handleSignOut}
-                className="flex items-center gap-2 px-3 sm:px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 hover:border-red-500/30 transition-all text-xs sm:text-sm font-medium w-full sm:w-auto"
-                aria-label="Sign Out"
-              >
-                <LogOut className="w-3 h-3 sm:w-4 sm:h-4" />
-                <span>Sign Out</span>
-              </button>
             </motion.div>
           </div>
         </div>
@@ -123,9 +101,9 @@ export default function DashboardPage() {
                 <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#14F195]" />
               </div>
               <div className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] mb-1">
-                {mockStats.templatesCompleted}
+                {programCount}
               </div>
-              <div className="text-xs sm:text-sm text-[#737373]">Templates Completed</div>
+              <div className="text-xs sm:text-sm text-[#737373]">Saved Programs</div>
             </motion.div>
 
             <motion.div
@@ -161,9 +139,9 @@ export default function DashboardPage() {
                 <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#14F195]" />
               </div>
               <div className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] mb-1">
-                {mockStats.conceptsMastered}
+                {favoriteCount}
               </div>
-              <div className="text-xs sm:text-sm text-[#737373]">Concepts Mastered</div>
+              <div className="text-xs sm:text-sm text-[#737373]">Favorites</div>
             </motion.div>
 
             <motion.div
@@ -179,9 +157,9 @@ export default function DashboardPage() {
                 <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#14F195]" />
               </div>
               <div className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] mb-1">
-                {mockStats.currentStreak}
+                {mockPreviewStats.currentStreak}
               </div>
-              <div className="text-xs sm:text-sm text-[#737373]">Day Streak</div>
+              <div className="text-xs sm:text-sm text-[#737373]">Day Streak <span className="text-[8px] text-[#14F195]/60 ml-1">PREVIEW</span></div>
             </motion.div>
           </div>
         </div>
@@ -231,7 +209,7 @@ export default function DashboardPage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#262626] border border-[#262626] rounded-lg overflow-hidden">
-            {mockStats.achievements.map((achievement, index) => (
+            {mockPreviewStats.achievements.map((achievement, index) => (
               <motion.div
                 key={achievement.id}
                 initial={{ opacity: 0, y: 10 }}

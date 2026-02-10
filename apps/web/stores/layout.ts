@@ -12,6 +12,7 @@ export type LayoutMode = "code-only" | "code-map" | "code-exec";
 interface LayoutState {
   panels: Record<PanelId, boolean>;
   sidebarVisible: boolean;
+  mobileSidebarOpen: boolean;
   zenMode: boolean;
   layoutMode: LayoutMode;
   togglePanel: (panel: PanelId) => void;
@@ -19,6 +20,8 @@ interface LayoutState {
   closeAllPanels: () => void;
   toggleZenMode: () => void;
   setLayoutMode: (mode: LayoutMode) => void;
+  toggleMobileSidebar: () => void;
+  setMobileSidebarOpen: (open: boolean) => void;
 }
 
 const initialPanels: Record<PanelId, boolean> = {
@@ -32,6 +35,7 @@ const initialPanels: Record<PanelId, boolean> = {
 export const useLayoutStore = createWithEqualityFn<LayoutState>((set) => ({
   panels: { ...initialPanels },
   sidebarVisible: true,
+  mobileSidebarOpen: false,
   zenMode: false,
   layoutMode: "code-only",
   togglePanel: (panel) =>
@@ -72,4 +76,10 @@ export const useLayoutStore = createWithEqualityFn<LayoutState>((set) => ({
         panels: { ...initialPanels },
       };
     }),
+  toggleMobileSidebar: () =>
+    set((state) => ({
+      mobileSidebarOpen: !state.mobileSidebarOpen,
+    })),
+  setMobileSidebarOpen: (open) =>
+    set({ mobileSidebarOpen: open }),
 }));

@@ -31,6 +31,7 @@ export function MapPanel() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="panel flex h-full flex-col"
+        data-panel="map"
       >
         <div className="panel-header">
           <div className="flex items-center gap-2">
@@ -55,6 +56,7 @@ export function MapPanel() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, delay: 0.1 }}
       className="panel flex min-h-[420px] flex-col"
+      data-panel="map"
     >
       <div className="panel-header">
         <div className="flex items-center gap-2">

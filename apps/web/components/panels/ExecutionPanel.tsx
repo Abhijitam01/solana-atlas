@@ -196,6 +196,7 @@ export function ExecutionPanel() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="panel flex h-full flex-col"
+        data-panel="execution"
       >
         <div className="panel-header">
           <div className="flex items-center gap-2">
@@ -211,12 +212,13 @@ export function ExecutionPanel() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: 0.25 }}
-      className="panel flex min-h-[420px] flex-col"
-    >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.25 }}
+        className="panel flex min-h-[420px] flex-col"
+        data-panel="execution"
+      >
       <div className="panel-header">
         <div className="flex items-center gap-2">
           <Rocket className="h-4 w-4 text-primary" />

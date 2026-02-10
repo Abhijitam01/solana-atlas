@@ -16,6 +16,10 @@ import { shallow } from "zustand/shallow";
 import { useLayoutStore } from "@/stores/layout";
 import { generateCodeCompletion } from "@/app/actions/ai";
 import { useAutoSave } from "@/hooks/useAutoSave";
+import { registerSolanaCompletionProvider } from "@/lib/solana-completions";
+import { useAuth } from "@/components/providers/AuthProvider";
+import { useRouter } from "next/navigation";
+import { LayoutDashboard } from "lucide-react";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
@@ -258,11 +262,12 @@ export function CodePanel() {
     shallow
   );
 
-  const { explanationsEnabled, theme, playgroundTheme } = useSettingsStore(
+  const { explanationsEnabled, theme, playgroundTheme, setPlaygroundTheme } = useSettingsStore(
     (state) => ({
       explanationsEnabled: state.explanationsEnabled,
       theme: state.theme,
       playgroundTheme: state.playgroundTheme,
+      setPlaygroundTheme: state.setPlaygroundTheme,
     }),
     shallow
   );
@@ -283,6 +288,9 @@ export function CodePanel() {
     shallow
   );
 
+  const { user } = useAuth();
+  const router = useRouter();
+
   // Refs for editor state
   const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
   const monacoRef = useRef<typeof Monaco | null>(null);
@@ -293,6 +301,7 @@ export function CodePanel() {
 
   const lastHoverLineRef = useRef<number | null>(null);
   const completionProviderRef = useRef<Monaco.IDisposable | null>(null);
+  const solanaCompletionRef = useRef<Monaco.IDisposable | null>(null);
 
   // Computed values
   const monacoTheme = useMemo(() => {
@@ -475,6 +484,12 @@ export function CodePanel() {
       // Handle mouse leave
       editor.onMouseLeave(handleMouseLeave);
 
+      // Register Solana/Anchor tab completion provider
+      if (solanaCompletionRef.current) {
+        solanaCompletionRef.current.dispose();
+      }
+      solanaCompletionRef.current = registerSolanaCompletionProvider(monaco);
+
       // Register inline completion provider
       if (completionProviderRef.current) {
         completionProviderRef.current.dispose();
@@ -515,7 +530,7 @@ export function CodePanel() {
                   position.lineNumber,
                   position.column,
                   position.lineNumber,
-                  position.column + completion.length
+                  position.column
                 )
               }]
             };
@@ -711,6 +726,9 @@ export function CodePanel() {
       if (completionProviderRef.current) {
         completionProviderRef.current.dispose();
       }
+      if (solanaCompletionRef.current) {
+        solanaCompletionRef.current.dispose();
+      }
     };
   }, [clearHoverTimeout]);
 
@@ -744,6 +762,7 @@ export function CodePanel() {
     <motion.div
       {...PANEL_ANIMATION}
       className="editor-shell flex h-full min-h-0 flex-col"
+      data-panel="code"
     >
       {/* Panel Header */}
       <div className="editor-header">
@@ -763,6 +782,33 @@ export function CodePanel() {
           )}
         </div>
         <div className="editor-actions">
+          {/* Theme Selector */}
+          <select
+            value={playgroundTheme}
+            onChange={(e) => setPlaygroundTheme(e.target.value as "default" | "grid" | "matrix")}
+            className="rounded-lg border border-border/70 bg-background/80 backdrop-blur px-2 py-1.5 text-xs font-medium text-foreground cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary transition-all mr-2"
+          >
+            <option value="default">Default</option>
+            <option value="grid">Grid</option>
+            <option value="matrix">Matrix</option>
+          </select>
+
+          {/* Dashboard Button */}
+          <button
+            onClick={() => {
+              if (user) {
+                router.push("/dashboard");
+              } else {
+                router.push("/login");
+              }
+            }}
+            className="icon-btn mr-2"
+            aria-label={user ? "Go to dashboard" : "Go to login"}
+            title={user ? "Dashboard" : "Login"}
+          >
+            <LayoutDashboard className="h-4 w-4" />
+          </button>
+
           {zenMode && (
             <button
               onClick={toggleZenMode}

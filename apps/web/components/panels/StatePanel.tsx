@@ -78,6 +78,7 @@ export function StatePanel() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="panel flex h-full flex-col"
+        data-panel="explanation"
       >
       <div className="panel-header">
         <div className="flex items-center gap-2">

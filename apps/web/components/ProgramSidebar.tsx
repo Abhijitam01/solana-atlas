@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   ListChecks,
   PanelLeftClose,
+  X,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { shallow } from "zustand/shallow";
@@ -45,7 +46,7 @@ export function ProgramSidebar() {
     }),
     shallow
   );
-  const { panels, togglePanel, toggleZenMode, zenMode, layoutMode, setLayoutMode } =
+  const { panels, togglePanel, toggleZenMode, zenMode, layoutMode, setLayoutMode, mobileSidebarOpen, toggleMobileSidebar } =
     useLayoutStore(
       (state) => ({
         panels: state.panels,
@@ -54,6 +55,8 @@ export function ProgramSidebar() {
         zenMode: state.zenMode,
         layoutMode: state.layoutMode,
         setLayoutMode: state.setLayoutMode,
+        mobileSidebarOpen: state.mobileSidebarOpen,
+        toggleMobileSidebar: state.toggleMobileSidebar,
       })
     );
 
@@ -167,13 +170,34 @@ export function ProgramSidebar() {
   const isMatrixTheme = playgroundTheme === "matrix";
 
   return (
-    <aside className={`w-64 flex-shrink-0 border-r border-border/70 backdrop-blur h-screen overflow-hidden flex flex-col ${
-      isGridTheme 
-        ? "bg-[#0A0A0A]/80 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]"
-        : isMatrixTheme
-        ? "bg-[#000000] bg-[linear-gradient(rgba(0,255,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,0,0.03)_1px,transparent_1px)] bg-[size:20px_20px]"
-        : "bg-card/60"
-    }`}>
+    <>
+      {/* Mobile overlay */}
+      {mobileSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={toggleMobileSidebar}
+        />
+      )}
+      <aside className={`w-64 flex-shrink-0 border-r border-border/70 backdrop-blur h-screen overflow-hidden flex flex-col fixed md:relative z-50 transition-transform duration-300 ${
+        mobileSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+      } ${
+        isGridTheme 
+          ? "bg-[#0A0A0A]/80 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:64px_64px]"
+          : isMatrixTheme
+          ? "bg-[#000000] bg-[linear-gradient(rgba(0,255,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,0,0.03)_1px,transparent_1px)] bg-[size:20px_20px]"
+          : "bg-card/60"
+      }`}>
+        {/* Mobile close button */}
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-border/70">
+          <span className="text-sm font-semibold text-foreground">Menu</span>
+          <button
+            onClick={toggleMobileSidebar}
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="Close sidebar"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
       <div className="p-4 border-b border-border/70">
         <button
           onClick={handleNewProgramClick}
@@ -200,7 +224,13 @@ export function ProgramSidebar() {
               return (
                 <button
                   key={panel.id}
-                  onClick={() => togglePanel(panel.id)}
+                  onClick={() => {
+                    togglePanel(panel.id);
+                    // Close mobile sidebar after toggling panel
+                    if (typeof window !== "undefined" && window.innerWidth < 768) {
+                      toggleMobileSidebar();
+                    }
+                  }}
                   className={`w-full text-left rounded-lg px-3 py-2 transition-colors flex items-center justify-between ${
                     isOpen
                       ? isMatrixTheme
@@ -295,6 +325,10 @@ export function ProgramSidebar() {
                     setActiveProgram(existing.id);
                   }
                   router.push(`/playground/${template.id}`);
+                  // Close mobile sidebar
+                  if (typeof window !== "undefined" && window.innerWidth < 768) {
+                    toggleMobileSidebar();
+                  }
                 }}
                 className={`w-full text-left rounded-lg px-3 py-2 transition-colors ${
                   activeProgramId === `template-${template.id}`
@@ -323,17 +357,24 @@ export function ProgramSidebar() {
           </div>
         </div>
 
-        <div>
-          <div className={`text-xs font-semibold uppercase tracking-wider mb-2 flex items-center gap-2 ${
-            isMatrixTheme ? "text-[#00ff00]" : "text-muted-foreground"
-          }`}>
-            My Programs
-          </div>
-          <div className="space-y-1">
-            {resolvedPrograms.map((program) => (
+        {customPrograms.length > 0 && (
+          <div>
+            <div className={`text-xs font-semibold uppercase tracking-wider mb-2 flex items-center gap-2 ${
+              isMatrixTheme ? "text-[#00ff00]" : "text-muted-foreground"
+            }`}>
+              My Programs
+            </div>
+            <div className="space-y-1">
+              {resolvedPrograms.map((program) => (
               <button
                 key={program.id}
-                onClick={() => setActiveProgram(program.id)}
+                onClick={() => {
+                  setActiveProgram(program.id);
+                  // Close mobile sidebar
+                  if (typeof window !== "undefined" && window.innerWidth < 768) {
+                    toggleMobileSidebar();
+                  }
+                }}
                 className={`w-full text-left rounded-lg px-3 py-2 transition-colors ${
                   activeProgramId === program.id
                     ? isMatrixTheme
@@ -347,19 +388,17 @@ export function ProgramSidebar() {
                 {program.name}
               </button>
             ))}
-            {customPrograms.length === 0 && (
-              <div className={`text-xs ${isMatrixTheme ? "text-[#00ff00]" : "text-muted-foreground"}`}>No drafts yet.</div>
-            )}
-            {overflowPrograms.length > 0 && (
-              <button
-                onClick={() => setMoreSection("programs")}
-                className="w-full text-left rounded-lg px-3 py-2 transition-colors text-muted-foreground hover:bg-[#14F195]/20 hover:text-[#14F195]"
-              >
-                +{overflowPrograms.length} more
-              </button>
-            )}
+              {overflowPrograms.length > 0 && (
+                <button
+                  onClick={() => setMoreSection("programs")}
+                  className="w-full text-left rounded-lg px-3 py-2 transition-colors text-muted-foreground hover:bg-[#14F195]/20 hover:text-[#14F195]"
+                >
+                  +{overflowPrograms.length} more
+                </button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
         <div>
           <div className={`text-xs font-semibold uppercase tracking-wider mb-2 flex items-center gap-2 ${
             isMatrixTheme ? "text-[#00ff00]" : "text-muted-foreground"
@@ -368,6 +407,7 @@ export function ProgramSidebar() {
           </div>
           <button
             onClick={toggleZenMode}
+            data-zen-toggle
             className={`w-full text-left rounded-lg px-3 py-2 transition-colors flex items-center gap-2 ${
               zenMode
                 ? isMatrixTheme
@@ -509,13 +549,17 @@ export function ProgramSidebar() {
                   templates?.map((template) => (
                     <button
                       key={template.id}
-                      onClick={() => {
+                        onClick={() => {
                         const existing = programs[`template-${template.id}`];
                         if (existing) {
                           setActiveProgram(existing.id);
                         }
                         router.push(`/playground/${template.id}`);
                         setMoreSection(null);
+                        // Close mobile sidebar
+                        if (typeof window !== "undefined" && window.innerWidth < 768) {
+                          toggleMobileSidebar();
+                        }
                       }}
                       className={`w-full text-left rounded-lg px-3 py-2 transition-colors ${
                         activeProgramId === `template-${template.id}`
@@ -530,9 +574,13 @@ export function ProgramSidebar() {
                   customPrograms.map((program) => (
                     <button
                       key={program.id}
-                      onClick={() => {
+                        onClick={() => {
                         setActiveProgram(program.id);
                         setMoreSection(null);
+                        // Close mobile sidebar
+                        if (typeof window !== "undefined" && window.innerWidth < 768) {
+                          toggleMobileSidebar();
+                        }
                       }}
                       className={`w-full text-left rounded-lg px-3 py-2 transition-colors ${
                         activeProgramId === program.id
@@ -555,5 +603,6 @@ export function ProgramSidebar() {
         onClose={() => setShowAuthModal(false)}
       />
     </aside>
+    </>
   );
 }

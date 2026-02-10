@@ -116,7 +116,9 @@ export default function SolanaAtlasLanding() {
       <main className="divide-y divide-[#262626] relative z-10">
         <Hero />
         <ProductDemo />
-        <WhySwitch />
+        <div className="hidden md:block">
+          <WhySwitch />
+        </div>
         <HowItWorks />
         <Examples />
         <Trust />

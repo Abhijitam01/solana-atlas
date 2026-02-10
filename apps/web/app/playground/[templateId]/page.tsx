@@ -23,12 +23,14 @@ import { useActiveProgram } from "@/hooks/use-active-program";
 import { useLayoutStore } from "@/stores/layout";
 import { useSettingsStore } from "@/stores/settings";
 import { AnimatePresence, motion } from "framer-motion";
+import { OnboardingGuide } from "@/components/onboarding/OnboardingGuide";
 import {
   Panel,
   PanelGroup,
   PanelResizeHandle,
   type ImperativePanelHandle,
 } from "react-resizable-panels";
+import { Menu } from "lucide-react";
 
 export default function PlaygroundPage() {
   const params = useParams();
@@ -51,11 +53,12 @@ export default function PlaygroundPage() {
     shallow
   );
   const toast = useToast();
-  const { panels, toggleZenMode, sidebarVisible } = useLayoutStore(
+  const { panels, toggleZenMode, sidebarVisible, toggleMobileSidebar } = useLayoutStore(
     (state) => ({
       panels: state.panels,
       toggleZenMode: state.toggleZenMode,
       sidebarVisible: state.sidebarVisible,
+      toggleMobileSidebar: state.toggleMobileSidebar,
     })
   );
   const { playgroundTheme, setPlaygroundTheme } = useSettingsStore(
@@ -217,18 +220,6 @@ export default function PlaygroundPage() {
             : "bg-[#1e1e1e] text-[#cccccc] grid-pattern-dark"
         }`}
       >
-        {/* Theme selector - floating in top right */}
-        <div className="fixed top-4 right-4 z-50">
-          <select
-            value={playgroundTheme}
-            onChange={(e) => setPlaygroundTheme(e.target.value as "default" | "grid" | "matrix")}
-            className="rounded-lg border border-border/70 bg-card/90 backdrop-blur px-3 py-2 text-sm text-foreground cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary transition-all"
-          >
-            <option value="default">Default Theme</option>
-            <option value="grid">Grid Theme</option>
-            <option value="matrix">Matrix Theme</option>
-          </select>
-        </div>
 
         {/* Grid background overlay for grid theme */}
         {isGridTheme && (
@@ -244,6 +235,14 @@ export default function PlaygroundPage() {
         )}
 
         <div className="flex min-h-screen relative z-10">
+          {/* Mobile sidebar toggle button */}
+          <button
+            onClick={toggleMobileSidebar}
+            className="fixed top-4 left-4 z-50 md:hidden p-2 rounded-lg bg-card/90 backdrop-blur border border-border/70 text-foreground hover:bg-card transition-colors"
+            aria-label="Toggle sidebar"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
           {sidebarVisible && <ProgramSidebar />}
           <div className="flex flex-1 min-w-0">
             <PanelGroup direction="horizontal" className="w-full h-screen">
@@ -283,6 +282,7 @@ export default function PlaygroundPage() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 16 }}
                       transition={{ duration: 0.2 }}
+                      data-panel-container
                       className={`h-full border-l border-border/70 backdrop-blur ${
                         isGridTheme
                           ? "bg-[#000000]"
@@ -308,6 +308,7 @@ export default function PlaygroundPage() {
       </div>
       <CommandPalette />
       <ToastContainer toasts={toast.toasts} onDismiss={toast.dismissToast} />
+      <OnboardingGuide />
     </>
   );
 }
