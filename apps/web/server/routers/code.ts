@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { router, protectedProcedure } from '../trpc';
 import { db } from '@solana-playground/db';
-import { userCode } from '@solana-playground/db';
+import { userCode, profiles } from '@solana-playground/db';
 import { eq, and, desc } from 'drizzle-orm';
 import { TRPCError } from '@trpc/server';
 
@@ -44,6 +44,40 @@ export const codeRouter = router({
     }))
     .mutation(async ({ ctx, input }) => {
       if (!db) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Database not connected' });
+      
+      // Ensure profile exists before saving code (fixes foreign key constraint)
+      const existingProfile = await db
+        .select()
+        .from(profiles)
+        .where(eq(profiles.id, ctx.user.id))
+        .limit(1);
+      
+      if (existingProfile.length === 0) {
+        // Create profile if it doesn't exist
+        try {
+          await db
+            .insert(profiles)
+            .values({
+              id: ctx.user.id,
+              username: ctx.user.email?.split('@')[0] || `user-${ctx.user.id.slice(0, 8)}`,
+              displayName: ctx.user.email || 'User',
+              avatarUrl: ctx.user.user_metadata?.avatar_url || 'https://www.gravatar.com/avatar?d=identicon',
+            })
+            .onConflictDoNothing();
+        } catch (error) {
+          // If insert fails (e.g., username conflict), try with unique username
+          await db
+            .insert(profiles)
+            .values({
+              id: ctx.user.id,
+              username: `user-${ctx.user.id.slice(0, 8)}-${Date.now().toString(36)}`,
+              displayName: ctx.user.email || 'User',
+              avatarUrl: ctx.user.user_metadata?.avatar_url || 'https://www.gravatar.com/avatar?d=identicon',
+            })
+            .onConflictDoNothing();
+        }
+      }
+      
       const now = new Date();
 
       if (input.id) {

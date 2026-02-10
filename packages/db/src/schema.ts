@@ -68,4 +68,14 @@ export type NewUserCode = typeof userCode.$inferInsert;
 export type Profile = typeof profiles.$inferSelect;
 export type NewProfile = typeof profiles.$inferInsert;
 
+// Re-export missing tables from schema directory
+export { cohorts, cohortMembers, analyticsEvents } from "./schema/legacy";
+export type {
+  Cohort,
+  NewCohort,
+  CohortMember,
+  NewCohortMember,
+  AnalyticsEvent,
+  NewAnalyticsEvent,
+} from "./schema/legacy";
 

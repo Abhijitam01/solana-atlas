@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/Badge";
 import { usePlaygroundStore } from "@/stores/playground";
 import { shallow } from "zustand/shallow";
 import { generateAIResponse } from "@/app/actions/ai";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 interface Message {
   id: string;
@@ -31,6 +32,7 @@ export function AITutor({ }: AITutorProps) {
     (state) => ({ selectedLine: state.selectedLine }),
     shallow
   );
+  const { user } = useAuth();
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -68,7 +70,7 @@ export function AITutor({ }: AITutorProps) {
     setIsLoading(true);
 
     try {
-      const responseText = await generateAIResponse(userMessage.content);
+      const responseText = await generateAIResponse(userMessage.content, user?.id);
       
       const assistantMessage: Message = {
         id: `assistant-${Date.now()}`,

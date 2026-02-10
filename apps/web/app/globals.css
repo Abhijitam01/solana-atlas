@@ -318,28 +318,26 @@
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
 
-  /* Loading wave text */
-  .loading-wave {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.02em;
-    letter-spacing: 0.02em;
-  }
-
-  .loading-wave__char {
+  /* Loading dots */
+  .loading-dot {
     display: inline-block;
-    animation: loading-wave-bounce 1.05s ease-in-out infinite;
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    background-color: currentColor;
+    animation: loading-dot-bounce 1.4s ease-in-out infinite;
     will-change: transform, opacity;
   }
 
-  @keyframes loading-wave-bounce {
+  @keyframes loading-dot-bounce {
     0%,
+    80%,
     100% {
-      transform: translateY(0);
-      opacity: 0.6;
+      transform: scale(0.8);
+      opacity: 0.5;
     }
-    50% {
-      transform: translateY(-0.32em);
+    40% {
+      transform: scale(1);
       opacity: 1;
     }
   }

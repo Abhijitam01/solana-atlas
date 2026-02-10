@@ -17,21 +17,14 @@ export function LoadingSpinner({
 
   return (
     <span
-      className={`loading-wave font-medium text-foreground/70 ${sizeClasses[size]} ${className}`}
+      className={`inline-flex items-center gap-1 font-medium text-foreground/70 ${sizeClasses[size]} ${className}`}
       role="status"
       aria-live="polite"
       aria-label={text}
     >
-      {Array.from(text).map((char, idx) => (
-        <span
-          // eslint-disable-next-line react/no-array-index-key
-          key={`${char}-${idx}`}
-          className="loading-wave__char"
-          style={{ animationDelay: `${idx * 0.08}s` }}
-        >
-          {char === " " ? "\u00A0" : char}
-        </span>
-      ))}
+      <span className="loading-dot" style={{ animationDelay: "0s" }} />
+      <span className="loading-dot" style={{ animationDelay: "0.2s" }} />
+      <span className="loading-dot" style={{ animationDelay: "0.4s" }} />
     </span>
   );
 }

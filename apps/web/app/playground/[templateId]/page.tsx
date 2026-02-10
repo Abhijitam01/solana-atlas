@@ -61,10 +61,9 @@ export default function PlaygroundPage() {
       toggleMobileSidebar: state.toggleMobileSidebar,
     })
   );
-  const { playgroundTheme, setPlaygroundTheme } = useSettingsStore(
+  const { playgroundTheme } = useSettingsStore(
     (state) => ({
       playgroundTheme: state.playgroundTheme,
-      setPlaygroundTheme: state.setPlaygroundTheme,
     }),
     shallow
   );

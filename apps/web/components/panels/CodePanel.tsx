@@ -495,6 +495,11 @@ export function CodePanel() {
         completionProviderRef.current.dispose();
       }
 
+      // Debounce for AI completion to avoid too many API calls
+      let lastCompletionRequest = 0;
+      const COMPLETION_DEBOUNCE_MS = 1000; // Wait 1 second between requests
+      let pendingCompletion: Promise<string | null> | null = null;
+
       completionProviderRef.current = monaco.languages.registerInlineCompletionsProvider("rust", {
         provideInlineCompletions: async (model, position, _context, token) => {
           const textUntilPosition = model.getValueInRange({
@@ -511,21 +516,83 @@ export function CodePanel() {
             endColumn: model.getLineMaxColumn(model.getLineCount()),
           });
 
+          // Don't suggest if no code before cursor
           if (!textUntilPosition.trim()) return { items: [] };
+          
+          // Don't suggest in comments or strings
+          const currentLine = model.getLineContent(position.lineNumber);
+          const beforeCursor = currentLine.substring(0, position.column - 1);
+          if (beforeCursor.includes('//') || beforeCursor.match(/"[^"]*$/)) {
+            return { items: [] };
+          }
+
           if (token.isCancellationRequested) return { items: [] };
 
-          console.log("[AI Completion] Requesting completion...");
+          // Debounce: Only request if enough time has passed
+          const now = Date.now();
+          if (now - lastCompletionRequest < COMPLETION_DEBOUNCE_MS) {
+            return { items: [] };
+          }
+          lastCompletionRequest = now;
+
+          // Reuse pending request if available
+          if (pendingCompletion) {
+            try {
+              const completion = await pendingCompletion;
+              if (token.isCancellationRequested) return { items: [] };
+              if (!completion) return { items: [] };
+              
+              return {
+                items: [{
+                  insertText: completion,
+                  range: new monaco.Range(
+                    position.lineNumber,
+                    position.column,
+                    position.lineNumber,
+                    position.column
+                  )
+                }]
+              };
+            } catch {
+              return { items: [] };
+            }
+          }
+
+          // Make new request
+          pendingCompletion = (async () => {
+            try {
+              console.log("[AI Completion] Requesting completion...");
+              const completion = await generateCodeCompletion(textUntilPosition, textAfterPosition, user?.id);
+              console.log("[AI Completion] Got completion:", completion ? completion.substring(0, 50) + "..." : "null");
+              return completion;
+            } catch (error) {
+              console.error("[AI Completion] Error:", error);
+              return null;
+            } finally {
+              // Clear pending after a delay
+              setTimeout(() => {
+                pendingCompletion = null;
+              }, 2000);
+            }
+          })();
 
           try {
-            const completion = await generateCodeCompletion(textUntilPosition, textAfterPosition);
+            const completion = await pendingCompletion;
             
-            console.log("[AI Completion] Got completion:", completion);
-            
-            if (!completion || token.isCancellationRequested) return { items: [] };
+            if (token.isCancellationRequested) return { items: [] };
+            if (!completion) return { items: [] };
+
+            // Clean up completion text
+            const cleanedCompletion = completion
+              .replace(/```rust\n?/gi, '')
+              .replace(/```\n?/g, '')
+              .trim();
+
+            if (!cleanedCompletion) return { items: [] };
 
             return {
               items: [{
-                insertText: completion,
+                insertText: cleanedCompletion,
                 range: new monaco.Range(
                   position.lineNumber,
                   position.column,
@@ -535,11 +602,13 @@ export function CodePanel() {
               }]
             };
           } catch (error) {
-            console.error("Error providing inline completion:", error);
+            console.error("[AI Completion] Error providing inline completion:", error);
             return { items: [] };
           }
         },
-        disposeInlineCompletions: () => {},
+        disposeInlineCompletions: () => {
+          pendingCompletion = null;
+        },
       });
     },
     [
@@ -855,7 +924,9 @@ export function CodePanel() {
             overviewRulerBorder: false,
             hideCursorInOverviewRuler: true,
             glyphMargin: true,
-            cursorBlinking: "smooth",
+            cursorBlinking: "blink", // VS Code style: traditional blinking cursor
+            cursorStyle: "line", // VS Code style: line cursor (not block)
+            cursorWidth: 2, // VS Code default: 2px wide
             cursorSmoothCaretAnimation: "on",
             smoothScrolling: true,
             renderWhitespace: "selection",
