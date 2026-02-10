@@ -190,7 +190,10 @@ export function OnboardingGuide() {
     localStorage.setItem(ONBOARDING_KEY, "true");
     setHighlightedElement(null);
     // After onboarding, reset layout so user can discover panels themselves
-    closeAllPanels();
+    // Delay slightly to allow close animation to start/finish smoothly
+    setTimeout(() => {
+      closeAllPanels();
+    }, 100);
   };
 
   const handleNext = () => {

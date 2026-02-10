@@ -1,0 +1,7 @@
+[
+  "Review the `Auction` and `Bid` structs.",
+  "Implement `start_auction` to set start/end times.",
+  "Implement `place_bid` to update the highest bidder.",
+  "Implement `close_auction` to transfer assets to the winner.",
+  "Run `anchor test` to simulate competitive bidding."
+]

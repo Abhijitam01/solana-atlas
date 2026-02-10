@@ -1,0 +1,7 @@
+[
+  "Review the multi-party escrow logic.",
+  "Implement `initialize` for multiple participants.",
+  "Implement `deposit` for each party.",
+  "Implement `finalize` to distribute funds once all deposits are in.",
+  "Run `anchor test` with 3+ participants."
+]

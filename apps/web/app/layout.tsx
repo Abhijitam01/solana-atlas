@@ -95,11 +95,12 @@ export const metadata: Metadata = {
     // yahoo: "your-yahoo-verification-code",
   },
   category: "education",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-  },
+};
+
+export const viewport: Metadata["viewport"] = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({

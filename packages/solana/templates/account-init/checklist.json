@@ -1,0 +1,7 @@
+[
+  "Familiarize yourself with the `Initialize` struct.",
+  "Implement the `initialize` function to set the `data` field.",
+  "Verify that the `NewAccount` struct has the correct `#[account(init, ...)]` macro attributes.",
+  "Run `anchor test` to confirm account creation works.",
+  "Deploy to Devnet to verify account initialization on-chain."
+]

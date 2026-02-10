@@ -1,0 +1,6 @@
+[
+  "Review the `Metadata` struct from `mpl-token-metadata`.",
+  "Implement `create_metadata` using CPI to the Metaplex Metadata program.",
+  "Ensure `seeds` for the PDA are correctly derived.",
+  "Run `anchor test` to mint a token and create its metadata."
+]

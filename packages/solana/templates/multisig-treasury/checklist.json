@@ -1,0 +1,7 @@
+[
+  "Review the `Multisig` struct and `owners` array.",
+  "Implement `create_transaction` to propose a spend.",
+  "Implement `approve` to add a signer to a transaction.",
+  "Implement `execute` to run the transaction when threshold is met.",
+  "Run `anchor test` to verify m-of-n signing logic."
+]

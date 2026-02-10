@@ -1,0 +1,6 @@
+[
+  "Review the `Vesting` struct (start_ts, cliff_ts, end_ts).",
+  "Implement `initialize_vesting` to set the schedule.",
+  "Implement `claim` to calculate and transfer vested amount.",
+  "Run `anchor test` to verify vesting schedule math."
+]

@@ -1,0 +1,6 @@
+[
+  "Review the `Escrow` struct and its fields.",
+  "Implement `initialize_escrow` to lock funds and set conditions.",
+  "Implement `complete_exchange` to swap assets between parties.",
+  "Run `anchor test` to verify funds are moved correctly."
+]

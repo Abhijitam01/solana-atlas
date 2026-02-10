@@ -16,7 +16,7 @@ import { shallow } from "zustand/shallow";
 import { useLayoutStore } from "@/stores/layout";
 import { generateCodeCompletion } from "@/app/actions/ai";
 import { useAutoSave } from "@/hooks/useAutoSave";
-import { registerSolanaCompletionProvider } from "@/lib/solana-completions";
+import { registerSolanaCompletionProvider, registerSolanaHoverProvider } from "@/lib/solana-completions";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { useRouter } from "next/navigation";
 import { LayoutDashboard } from "lucide-react";
@@ -483,11 +483,20 @@ export function CodePanel() {
       // Handle mouse leave
       editor.onMouseLeave(handleMouseLeave);
 
-      // Register Solana/Anchor tab completion provider
+      // Register Solana/Anchor tab completion & hover provider
       if (solanaCompletionRef.current) {
         solanaCompletionRef.current.dispose();
       }
-      solanaCompletionRef.current = registerSolanaCompletionProvider(monaco);
+      
+      const completionDisposable = registerSolanaCompletionProvider(monaco);
+      const hoverDisposable = registerSolanaHoverProvider(monaco);
+
+      solanaCompletionRef.current = {
+        dispose: () => {
+          completionDisposable.dispose();
+          hoverDisposable.dispose();
+        }
+      };
 
       // Register inline completion provider
       if (completionProviderRef.current) {
@@ -515,6 +524,36 @@ export function CodePanel() {
             endColumn: model.getLineMaxColumn(model.getLineCount()),
           });
 
+          // Helper to turn raw text into inline suggestion payload
+          const buildInlineSuggestion = (raw: string | null) => {
+            if (!raw) return null;
+            const cleanedCompletion = raw
+              .replace(/```rust\n?/gi, "")
+              .replace(/```\n?/g, "")
+              .trim();
+
+            if (!cleanedCompletion) return null;
+
+            const inlineRange = new monaco.Range(
+              position.lineNumber,
+              position.column,
+              position.lineNumber,
+              position.column
+            );
+
+            return {
+              items: [{
+                insertText: cleanedCompletion,
+                text: cleanedCompletion,
+                range: inlineRange,
+                command: {
+                  id: "editor.action.inlineSuggest.commit",
+                  title: "Accept AI suggestion",
+                },
+              }],
+            };
+          };
+
           // Don't suggest if no code before cursor
           if (!textUntilPosition.trim()) return { items: [] };
           
@@ -541,17 +580,8 @@ export function CodePanel() {
               if (token.isCancellationRequested) return { items: [] };
               if (!completion) return { items: [] };
               
-              return {
-                items: [{
-                  insertText: completion,
-                  range: new monaco.Range(
-                    position.lineNumber,
-                    position.column,
-                    position.lineNumber,
-                    position.column
-                  )
-                }]
-              };
+              const suggestion = buildInlineSuggestion(completion);
+              return suggestion ?? { items: [] };
             } catch {
               return { items: [] };
             }
@@ -577,29 +607,9 @@ export function CodePanel() {
 
           try {
             const completion = await pendingCompletion;
-            
             if (token.isCancellationRequested) return { items: [] };
-            if (!completion) return { items: [] };
-
-            // Clean up completion text
-            const cleanedCompletion = completion
-              .replace(/```rust\n?/gi, '')
-              .replace(/```\n?/g, '')
-              .trim();
-
-            if (!cleanedCompletion) return { items: [] };
-
-            return {
-              items: [{
-                insertText: cleanedCompletion,
-                range: new monaco.Range(
-                  position.lineNumber,
-                  position.column,
-                  position.lineNumber,
-                  position.column
-                )
-              }]
-            };
+            const suggestion = buildInlineSuggestion(completion);
+            return suggestion ?? { items: [] };
           } catch (error) {
             console.error("[AI Completion] Error providing inline completion:", error);
             return { items: [] };
@@ -621,8 +631,25 @@ export function CodePanel() {
       updateProgramCode,
       handleMouseMove,
       handleMouseLeave,
+      user?.id,
     ]
   );
+
+  /**
+   * Sync active program changes to playground store
+   */
+  useEffect(() => {
+    if (!activeProgram) return;
+    
+    const { setTemplate } = usePlaygroundStore.getState();
+    const currentCode = usePlaygroundStore.getState().code;
+    
+    // Only update if the code is different to avoid unnecessary updates
+    if (currentCode !== activeProgram.code) {
+      console.log("Syncing active program code to playground store:", activeProgram.id, activeProgram.code.length);
+      setTemplate(activeProgram.id, activeProgram.code);
+    }
+  }, [activeProgram?.id, activeProgram?.code]);
 
   /**
    * Sync external code changes to editor
@@ -635,7 +662,21 @@ export function CodePanel() {
 
     const currentValue = model.getValue();
     if (currentValue !== code) {
-      model.setValue(code);
+      console.log("Updating editor content, code length:", code.length, "current length:", currentValue.length);
+      // Save cursor position and scroll state
+      const viewState = editorRef.current.saveViewState();
+      // Update the model value
+      model.setValue(code || "");
+      // Restore view state if available
+      if (viewState) {
+        setTimeout(() => {
+          if (editorRef.current) {
+            editorRef.current.restoreViewState(viewState);
+          }
+        }, 0);
+      }
+      // Force editor to recognize the change
+      editorRef.current.focus();
     }
   }, [code]);
 
@@ -838,7 +879,7 @@ export function CodePanel() {
       <div className="editor-header">
         <div className="editor-title">
           <Code className="h-4 w-4 text-primary" aria-hidden="true" />
-          <h2 className="text-sm font-semibold text-foreground">Code</h2>
+          <h2 className="text-sm font-semibold text-foreground">{activeProgram?.name || "Code"}</h2>
           {todoCount > 0 && (
             <span className="todo-badge" aria-label={`${todoCount} TODO items`}>
               {todoCount} TODO
@@ -912,11 +953,11 @@ export function CodePanel() {
           }
           options={{
             readOnly: isReadOnly,
-            minimap: { enabled: false },
+            minimap: { enabled: true, scale: 0.75, renderCharacters: false },
             fontSize: EDITOR_CONFIG.fontSize,
             lineHeight: EDITOR_CONFIG.lineHeight,
             lineNumbers: "on",
-            scrollBeyondLastLine: false,
+            scrollBeyondLastLine: true,
             wordWrap: "on",
             fontFamily: "var(--font-mono)",
             fontLigatures: true,
@@ -948,13 +989,13 @@ export function CodePanel() {
             formatOnPaste: true,
             formatOnType: true,
             scrollbar: {
-              vertical: "auto",
-              horizontal: "auto",
+              vertical: "visible",
+              horizontal: "visible",
               useShadows: false,
-              verticalScrollbarSize: 10,
-              horizontalScrollbarSize: 10,
+              verticalScrollbarSize: 12,
+              horizontalScrollbarSize: 12,
             },
-            mouseWheelZoom: false,
+            mouseWheelZoom: true,
             contextmenu: true,
             accessibilitySupport: "auto",
             inlineSuggest: {

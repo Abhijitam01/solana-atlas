@@ -348,7 +348,6 @@ export function registerSolanaCompletionProvider(
         };
       }
 
-      // ── General: return all Solana/Anchor completions ──
       const allEntries: CompletionEntry[] = [
         ...SOLANA_KEYWORDS,
         ...ANCHOR_MACROS,
@@ -360,6 +359,57 @@ export function registerSolanaCompletionProvider(
       return {
         suggestions: allEntries.map((entry) => toCompletionItem(monaco, entry, range)),
       };
+    },
+  });
+}
+
+/**
+ * Register hover provider for Solana/Anchor
+ */
+export function registerSolanaHoverProvider(
+  monaco: typeof Monaco
+): Monaco.IDisposable {
+  return monaco.languages.registerHoverProvider("rust", {
+    provideHover: (model, position) => {
+      const word = model.getWordAtPosition(position);
+      if (!word) return null;
+
+      const range = new monaco.Range(
+        position.lineNumber,
+        word.startColumn,
+        position.lineNumber,
+        word.endColumn
+      );
+
+      // Check macros
+      const macro = ANCHOR_MACROS.find((m) => m.label === word.word || m.label === `#[${word.word}]`);
+      if (macro) {
+        return {
+          range,
+          contents: [
+            { value: `**${macro.label}**` },
+            { value: macro.detail },
+            { value: macro.documentation || "" },
+          ],
+        };
+      }
+
+      // Check keywords/types
+      const entry = [...SOLANA_KEYWORDS, ...SOLANA_TYPES, ...ANCHOR_ACCOUNT_TYPES].find(
+        (e) => e.label === word.word
+      );
+      if (entry) {
+        return {
+          range,
+          contents: [
+            { value: `**${entry.label}**` },
+            { value: entry.detail },
+            { value: entry.documentation || "" },
+          ],
+        };
+      }
+
+      return null;
     },
   });
 }

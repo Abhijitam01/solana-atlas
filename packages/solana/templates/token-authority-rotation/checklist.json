@@ -1,0 +1,6 @@
+[
+  "Review the `TokenConfig` struct.",
+  "Implement `rotate_authority` to change the control of a mint/account.",
+  "Validate that the current authority signed the request.",
+  "Run `anchor test` to verify the new authority works."
+]

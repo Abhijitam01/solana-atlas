@@ -1,22 +1,25 @@
 "use client";
 
-import { useTemplate } from "@/hooks/use-templates";
-import { useParams } from "next/navigation";
+import { useProgramStore } from "@/stores/programs";
 import { useMemo, useState } from "react";
 import { GitBranch, Network } from "lucide-react";
 import { motion } from "framer-motion";
 import { FlowChart, FlowNode, FlowEdge } from "@/components/ui/FlowChart";
 import { HelpIcon } from "@/components/ui/HelpIcon";
+import { shallow } from "zustand/shallow";
 
 export function FlowPanel() {
-  const params = useParams();
-  const templateId = params.templateId as string;
-  const { data: template } = useTemplate(templateId);
+  const { activeProgram } = useProgramStore(
+    (state) => ({
+      activeProgram: state.activeProgramId ? state.programs[state.activeProgramId] : null,
+    }),
+    shallow
+  );
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"control" | "data">("control");
 
   const { nodes, edges } = useMemo(() => {
-    if (!template?.programMap) {
+    if (!activeProgram?.programMap) {
       return { nodes: [], edges: [] };
     }
 
@@ -33,7 +36,7 @@ export function FlowPanel() {
     });
 
     // Add instruction nodes
-    const instructions = template.programMap.instructions;
+    const instructions = activeProgram.programMap.instructions;
     instructions.forEach((instruction: typeof instructions[number], index: number) => {
       const x = 100 + (index % 3) * 200;
       const y = 150 + Math.floor(index / 3) * 150;
@@ -54,10 +57,13 @@ export function FlowPanel() {
           to: instruction.name,
         });
       } else {
-        flowEdges.push({
-          from: instructions[index - 1].name,
-          to: instruction.name,
-        });
+        const prevInstruction = instructions[index - 1];
+        if (prevInstruction) {
+          flowEdges.push({
+            from: prevInstruction.name,
+            to: instruction.name,
+          });
+        }
       }
 
       // Add account nodes for this instruction
@@ -83,14 +89,14 @@ export function FlowPanel() {
     });
 
     // Add CPI call nodes
-    if (template.programMap.cpiCalls) {
-      template.programMap.cpiCalls.forEach((cpi: typeof template.programMap.cpiCalls[number], index: number) => {
+    if (activeProgram.programMap.cpiCalls) {
+      activeProgram.programMap.cpiCalls.forEach((cpi: typeof activeProgram.programMap.cpiCalls[number], index: number) => {
         const cpiX = 700;
         const cpiY = 150 + index * 100;
 
         flowNodes.push({
           id: `cpi-${index}`,
-          label: `${cpi.program} → ${cpi.instruction}`,
+          label: `${cpi?.program} → ${cpi?.instruction}`,
           type: "cpi",
           x: cpiX,
           y: cpiY,
@@ -98,11 +104,14 @@ export function FlowPanel() {
 
         // Connect to relevant instruction (simplified - would need actual mapping)
         if (instructions.length > 0) {
-          flowEdges.push({
-            from: instructions[instructions.length - 1].name,
-            to: `cpi-${index}`,
-            label: "CPI",
-          });
+          const lastInstruction = instructions[instructions.length - 1];
+          if (lastInstruction) {
+            flowEdges.push({
+              from: lastInstruction.name,
+              to: `cpi-${index}`,
+              label: "CPI",
+            });
+          }
         }
       });
     }
@@ -128,9 +137,9 @@ export function FlowPanel() {
     }
 
     return { nodes: flowNodes, edges: flowEdges };
-  }, [template]);
+  }, [activeProgram]);
 
-  if (!template?.programMap) {
+  if (!activeProgram?.programMap) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -144,7 +153,7 @@ export function FlowPanel() {
           </div>
         </div>
         <div className="flex-1 p-4 text-sm text-muted-foreground flex items-center justify-center">
-          <div className="animate-pulse">Loading...</div>
+          <div className="">No flow data available</div>
         </div>
       </motion.div>
     );

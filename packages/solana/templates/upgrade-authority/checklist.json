@@ -1,0 +1,6 @@
+[
+  "Review the `UpgradeState` struct.",
+  "Implement `rotate_authority`.",
+  "Implement `freeze_authority` to permanently lock the program/account.",
+  "Run `anchor test` to verify upgrade control."
+]

@@ -1,0 +1,6 @@
+[
+  "Review the `MintNFT` context and required accounts.",
+  "Implement `mint_nft` to mint a token, create metadata, and verify master edition.",
+  "Ensure correct PDAs for metadata and edition are used.",
+  "Run `anchor test` to mint your own NFT on localnet."
+]

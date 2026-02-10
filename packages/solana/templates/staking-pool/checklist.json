@@ -1,0 +1,6 @@
+[
+  "Review the `StakeInfo` and `Pool` structs.",
+  "Implement `stake` to lock tokens and record start time.",
+  "Implement `unstake` to calculate rewards based on time elapsed.",
+  "Run `anchor test` to verify reward calculations."
+]

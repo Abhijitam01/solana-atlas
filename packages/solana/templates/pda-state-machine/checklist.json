@@ -1,0 +1,6 @@
+[
+  "Review the `GameState` enum or status fields.",
+  "Implement state transitions (e.g., Init -> Active -> Finished).",
+  "Add checks to prevent invalid transitions (e.g., Active -> Init).",
+  "Run `anchor test` to map out the state machine lifecycle."
+]

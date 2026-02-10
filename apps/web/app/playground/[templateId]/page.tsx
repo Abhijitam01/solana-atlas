@@ -38,7 +38,7 @@ export default function PlaygroundPage() {
   const router = useRouter();
   const templateId = params.templateId as string;
   const { data: routeTemplate, isLoading: isRouteLoading } = useTemplate(templateId);
-  const { template, isLoading } = useActiveProgram();
+  const { activeProgram, template, isLoading } = useActiveProgram();
   const { setTemplate } = usePlaygroundStore(
     (state) => ({
       setTemplate: state.setTemplate,
@@ -53,7 +53,7 @@ export default function PlaygroundPage() {
     }),
     shallow
   );
-  const toast = useToast();
+  const { toasts, dismissToast, error: showToastError } = useToast();
   const { panels, toggleZenMode, sidebarVisible, toggleMobileSidebar } = useLayoutStore(
     (state) => ({
       panels: state.panels,
@@ -87,11 +87,11 @@ export default function PlaygroundPage() {
   useEffect(() => {
     if (userCode) {
       if (routeTemplate) {
-        // userCode.code will be populated from Gist if needed (handled by getById endpoint)
         if (!userCode.code) {
-          toast.error('Failed to load code. Please try again.');
+          showToastError("Failed to load code. Please try again.");
           return;
         }
+        console.log("Opening user program:", userCode.id);
         openUserProgram({
           id: userCode.id,
           templateId: userCode.templateId,
@@ -100,20 +100,52 @@ export default function PlaygroundPage() {
           template: routeTemplate,
         });
       }
-    } else if (routeTemplate && !codeId && !isUserCodeLoading) {
-      openTemplateProgram(routeTemplate);
+      return;
     }
-  }, [routeTemplate, userCode, codeId, openTemplateProgram, openUserProgram, isUserCodeLoading, toast]);
+
+    if (!routeTemplate || codeId || isUserCodeLoading) {
+      return;
+    }
+
+    const shouldSkipAutoload =
+      activeProgram?.source === "custom" ||
+      (activeProgram?.source === "template" && activeProgram.templateId === routeTemplate.id);
+
+    if (shouldSkipAutoload) {
+      return;
+    }
+
+    console.log("Opening template program:", routeTemplate.id);
+    try {
+      openTemplateProgram(routeTemplate);
+      console.log("Template program opened successfully");
+    } catch (error) {
+      console.error("Error opening template program:", error);
+      showToastError(`Failed to open template: ${routeTemplate.metadata.name}`);
+    }
+  }, [
+    routeTemplate,
+    userCode,
+    codeId,
+    openTemplateProgram,
+    openUserProgram,
+    isUserCodeLoading,
+    showToastError,
+    activeProgram?.id,
+    activeProgram?.source,
+    activeProgram?.templateId,
+  ]);
 
   // Handle error loading user code
   useEffect(() => {
     if (userCodeError && codeId) {
-      toast.error('Failed to load your saved code. Please try again.');
+      showToastError("Failed to load your saved code. Please try again.");
     }
-  }, [userCodeError, codeId, toast]);
+  }, [userCodeError, codeId, showToastError]);
 
   useEffect(() => {
     if (template) {
+      console.log("Setting template in playground store:", template.id, "Code length:", template.code.length);
       setTemplate(template.id, template.code);
     }
   }, [template, setTemplate]);
@@ -195,10 +227,61 @@ export default function PlaygroundPage() {
   }, [anyPanelOpen]);
 
   if (isLoading || isRouteLoading || (codeId && isUserCodeLoading)) {
-    // Simple text-based loading
+    // Skeleton loading state for playground (sidebar + code + right panels)
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#1e1e1e] text-[#cccccc] font-mono">
-        <div className="text-sm">Loading...</div>
+      <div className="h-screen flex bg-[#000000] text-[#cccccc]">
+        {/* Left sidebar skeleton */}
+        <div className="hidden md:flex w-64 flex-shrink-0 border-r border-border/70 bg-card/60">
+          <div className="p-4 w-full space-y-4 animate-pulse">
+            <div className="h-10 rounded-lg bg-[#1f2933]" />
+            <div className="space-y-2">
+              <div className="h-3 w-24 rounded bg-[#1f2933]" />
+              <div className="h-3 w-32 rounded bg-[#1f2933]" />
+              <div className="h-3 w-20 rounded bg-[#1f2933]" />
+            </div>
+            <div className="space-y-2 pt-2 border-t border-border/50">
+              <div className="h-3 w-28 rounded bg-[#1f2933]" />
+              <div className="h-3 w-36 rounded bg-[#1f2933]" />
+              <div className="h-3 w-24 rounded bg-[#1f2933]" />
+            </div>
+          </div>
+        </div>
+
+        {/* Main code + right panels skeleton */}
+        <div className="flex-1 flex flex-col">
+          {/* Top bar skeleton */}
+          <div className="h-11 border-b border-border/70 bg-[#0b0f14] flex items-center px-4 animate-pulse">
+            <div className="h-4 w-24 rounded bg-[#1f2933]" />
+            <div className="h-3 w-16 rounded bg-[#1f2933] ml-3" />
+          </div>
+
+          <div className="flex flex-1 min-h-0">
+            {/* Code editor skeleton */}
+            <div className="flex-1 border-r border-border/70 bg-[#05070a] p-4 space-y-3 animate-pulse">
+              <div className="h-4 w-40 rounded bg-[#1f2933]" />
+              <div className="space-y-2">
+                <div className="h-3 w-full rounded bg-[#111827]" />
+                <div className="h-3 w-[92%] rounded bg-[#111827]" />
+                <div className="h-3 w-[88%] rounded bg-[#111827]" />
+                <div className="h-3 w-[96%] rounded bg-[#111827]" />
+                <div className="h-3 w-[75%] rounded bg-[#111827]" />
+              </div>
+              <div className="space-y-2 pt-4">
+                <div className="h-3 w-[90%] rounded bg-[#111827]" />
+                <div className="h-3 w-[85%] rounded bg-[#111827]" />
+                <div className="h-3 w-[70%] rounded bg-[#111827]" />
+              </div>
+            </div>
+
+            {/* Right panels skeleton */}
+            <div className="hidden lg:flex w-[30%] flex-col bg-[#05070a] border-l border-border/70 p-4 space-y-4 animate-pulse">
+              <div className="h-4 w-28 rounded bg-[#1f2933]" />
+              <div className="h-20 rounded-lg bg-[#111827]" />
+              <div className="h-4 w-24 rounded bg-[#1f2933]" />
+              <div className="h-24 rounded-lg bg-[#111827]" />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -311,8 +394,8 @@ export default function PlaygroundPage() {
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 16 }}
                       transition={{ duration: 0.2 }}
-                      data-panel-container
-                      className={`h-full border-l border-border/70 backdrop-blur ${
+                    data-panel-container
+                    className={`h-full border-l border-border/70 backdrop-blur flex flex-col overflow-hidden max-h-screen ${
                         isGridTheme
                           ? "bg-[#000000]"
                           : isMatrixTheme
@@ -320,7 +403,7 @@ export default function PlaygroundPage() {
                           : "bg-card/70"
                       }`}
                     >
-                      <div className="h-full overflow-y-auto space-y-4">
+                      <div className="flex-1 overflow-y-auto space-y-4 p-4 pb-8 max-h-full overscroll-contain">
                         {panels.map && <MapPanel />}
                         {panels.explanation && <StatePanel />}
                         {panels.checklist && <ProgramChecklistPanel />}
@@ -336,7 +419,7 @@ export default function PlaygroundPage() {
         </div>
       </div>
       <CommandPalette />
-      <ToastContainer toasts={toast.toasts} onDismiss={toast.dismissToast} />
+      <ToastContainer toasts={toasts} onDismiss={dismissToast} />
       <OnboardingGuide />
     </>
   );

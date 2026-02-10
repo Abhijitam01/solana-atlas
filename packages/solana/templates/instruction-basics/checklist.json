@@ -1,0 +1,6 @@
+[
+  "Review the `Initialize` and `Update` structs.",
+  "Implement `initialize` to set initial state.",
+  "Implement `update_state` to modify account data.",
+  "Run `anchor test` to verify state persistence."
+]

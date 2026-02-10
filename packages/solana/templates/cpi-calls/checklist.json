@@ -1,0 +1,7 @@
+[
+  "Review how `CpiContext` is constructed.",
+  "Implement `transfer_sol` using `anchor_lang::solana_program::program::invoke`.",
+  "Implement `transfer_spl` using `anchor_spl::token::transfer`.",
+  "Verify that the correct program IDs are passed to the CPI.",
+  "Run `anchor test` to verify transfers succeed."
+]

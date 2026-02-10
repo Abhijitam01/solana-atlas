@@ -1,0 +1,7 @@
+[
+  "Understand why `Signer` is used instead of `UncheckedAccount` for authority.",
+  "Implement the `update_data` function.",
+  "Add a check: `require!(ctx.accounts.authority.key() == ctx.accounts.data_account.authority, ...)`.",
+  "Run `anchor test` to confirm unauthorized updates fail.",
+  "Deploy and test with different wallets."
+]

@@ -1,0 +1,8 @@
+[
+  "Review the `Pool` struct and understand the `token_a`, `token_b` reserves.",
+  "Implement the `initialize_pool` function to set up token accounts.",
+  "Implement the `swap` logic using the constant product formula (x * y = k).",
+  "Add checks to ensure `amount_in` > 0 and sufficient liquidity.",
+  "Run `anchor test` to verify swap calculations and balances.",
+  "Simulate a swap on local validator."
+]

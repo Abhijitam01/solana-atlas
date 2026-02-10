@@ -1,0 +1,6 @@
+[
+  "Review the `MintToken` context.",
+  "Implement `mint_token` to issue new tokens to a destination.",
+  "Verify the mint authority signature.",
+  "Run `anchor test` to check token balances increaes."
+]

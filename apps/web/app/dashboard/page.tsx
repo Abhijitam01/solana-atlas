@@ -1,12 +1,14 @@
 "use client";
 
-import { TrendingUp, Clock, Target, Award, BookOpen, Zap } from "lucide-react";
+import { TrendingUp, Clock, Target, Award, BookOpen, Zap, Trash2, Code2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { PathProgressComponent, PathProgress } from "@/components/learning/PathProgress";
 import Link from "next/link";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { trpc } from "@/lib/trpc-client";
 import { AppHeader } from "@/components/AppHeader";
+import { useToast } from "@/hooks/use-toast";
+import { useProgramStore } from "@/stores/programs";
 
 // Mock data for features not yet tracked
 const mockProgress: PathProgress[] = [
@@ -43,9 +45,24 @@ const stagger = {
 
 export default function DashboardPage() {
   const { user } = useAuth();
-  const { data: userCode } = trpc.code.getMyCode.useQuery(undefined, { enabled: !!user });
+  const { data: userCode, isLoading } = trpc.code.getMyCode.useQuery(undefined, { enabled: !!user });
   const programCount = userCode?.length ?? 0;
   const favoriteCount = userCode?.filter(c => c.isFavorite).length ?? 0;
+  const { success: showSuccess, error: showError } = useToast();
+  const utils = trpc.useContext();
+  const deleteMutation = trpc.code.delete.useMutation();
+  const removeProgram = useProgramStore((state) => state.removeProgramBySavedId);
+  const handleDelete = (id: string) => {
+    if (!confirm("Delete this code permanently?")) return;
+    deleteMutation.mutate({ id }, {
+      onSuccess: () => {
+        utils.code.getMyCode.invalidate();
+        removeProgram(id);
+        showSuccess("Program deleted");
+      },
+      onError: (err) => showError(err.message),
+    });
+  };
   const timeSpentHours = Math.floor(mockPreviewStats.totalTimeSpent / 60);
   const timeSpentMinutes = mockPreviewStats.totalTimeSpent % 60;
 
@@ -88,79 +105,100 @@ export default function DashboardPage() {
       <section className="py-16 sm:py-24 px-4 sm:px-6 bg-[#0A0A0A]">
         <div className="max-w-[1200px] mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#262626] border border-[#262626] rounded-lg overflow-hidden mb-12 sm:mb-16">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-[#0A0A0A] p-4 sm:p-6 hover:bg-[#111111] transition-colors group relative"
-            >
-              <div className="flex items-center justify-between mb-3 sm:mb-4">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-[#1A1A1A] border border-[#262626] flex items-center justify-center text-[#FAFAFA]">
-                  <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
+            {isLoading ? (
+              // Skeleton cards while dashboard data loads
+              Array.from({ length: 4 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="bg-[#0A0A0A] p-4 sm:p-6 transition-colors group relative animate-pulse"
+                >
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-[#1A1A1A]" />
+                    <div className="w-6 h-3 rounded bg-[#1A1A1A]" />
+                  </div>
+                  <div className="h-6 sm:h-7 w-20 rounded bg-[#1A1A1A] mb-2" />
+                  <div className="h-3 w-24 rounded bg-[#1A1A1A]" />
                 </div>
-                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#14F195]" />
-              </div>
-              <div className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] mb-1">
-                {programCount}
-              </div>
-              <div className="text-xs sm:text-sm text-[#737373]">Saved Programs</div>
-            </motion.div>
+              ))
+            ) : (
+              <>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="bg-[#0A0A0A] p-4 sm:p-6 hover:bg-[#111111] transition-colors group relative"
+                >
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-[#1A1A1A] border border-[#262626] flex items-center justify-center text-[#FAFAFA]">
+                      <BookOpen className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#14F195]" />
+                  </div>
+                  <div className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] mb-1">
+                    {programCount}
+                  </div>
+                  <div className="text-xs sm:text-sm text-[#737373]">Saved Programs</div>
+                </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="bg-[#0A0A0A] p-4 sm:p-6 hover:bg-[#111111] transition-colors group relative"
-            >
-              <div className="flex items-center justify-between mb-3 sm:mb-4">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-[#1A1A1A] border border-[#262626] flex items-center justify-center text-[#FAFAFA]">
-                  <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#14F195]" />
-              </div>
-              <div className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] mb-1">
-                {timeSpentHours > 0
-                  ? `${timeSpentHours}h ${timeSpentMinutes}m`
-                  : `${timeSpentMinutes}m`}
-              </div>
-              <div className="text-xs sm:text-sm text-[#737373]">Time Spent</div>
-            </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-[#0A0A0A] p-4 sm:p-6 hover:bg-[#111111] transition-colors group relative"
+                >
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-[#1A1A1A] border border-[#262626] flex items-center justify-center text-[#FAFAFA]">
+                      <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#14F195]" />
+                  </div>
+                  <div className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] mb-1">
+                    {timeSpentHours > 0
+                      ? `${timeSpentHours}h ${timeSpentMinutes}m`
+                      : `${timeSpentMinutes}m`}
+                  </div>
+                  <div className="text-xs sm:text-sm text-[#737373]">Time Spent</div>
+                </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-[#0A0A0A] p-4 sm:p-6 hover:bg-[#111111] transition-colors group relative"
-            >
-              <div className="flex items-center justify-between mb-3 sm:mb-4">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-[#1A1A1A] border border-[#262626] flex items-center justify-center text-[#FAFAFA]">
-                  <Target className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#14F195]" />
-              </div>
-              <div className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] mb-1">
-                {favoriteCount}
-              </div>
-              <div className="text-xs sm:text-sm text-[#737373]">Favorites</div>
-            </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="bg-[#0A0A0A] p-4 sm:p-6 hover:bg-[#111111] transition-colors group relative"
+                >
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-[#1A1A1A] border border-[#262626] flex items-center justify-center text-[#FAFAFA]">
+                      <Target className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#14F195]" />
+                  </div>
+                  <div className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] mb-1">
+                    {favoriteCount}
+                  </div>
+                  <div className="text-xs sm:text-sm text-[#737373]">Favorites</div>
+                </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="bg-[#0A0A0A] p-4 sm:p-6 hover:bg-[#111111] transition-colors group relative"
-            >
-              <div className="flex items-center justify-between mb-3 sm:mb-4">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-[#1A1A1A] border border-[#262626] flex items-center justify-center text-[#FAFAFA]">
-                  <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-                <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#14F195]" />
-              </div>
-              <div className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] mb-1">
-                {mockPreviewStats.currentStreak}
-              </div>
-              <div className="text-xs sm:text-sm text-[#737373]">Day Streak <span className="text-[8px] text-[#14F195]/60 ml-1">PREVIEW</span></div>
-            </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  className="bg-[#0A0A0A] p-4 sm:p-6 hover:bg-[#111111] transition-colors group relative"
+                >
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded bg-[#1A1A1A] border border-[#262626] flex items-center justify-center text-[#FAFAFA]">
+                      <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
+                    </div>
+                    <TrendingUp className="w-3 h-3 sm:w-4 sm:h-4 text-[#14F195]" />
+                  </div>
+                  <div className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] mb-1">
+                    {mockPreviewStats.currentStreak}
+                  </div>
+                  <div className="text-xs sm:text-sm text-[#737373]">
+                    Day Streak <span className="text-[8px] text-[#14F195]/60 ml-1">PREVIEW</span>
+                  </div>
+                </motion.div>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -237,7 +275,78 @@ export default function DashboardPage() {
           </div>
         </div>
       </section>
+
+      <section className="py-16 sm:py-24 px-4 sm:px-6 bg-[#0A0A0A] border-t border-[#262626]">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-3">
+            <div>
+              <h2 className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#FAFAFA] leading-tight flex items-center gap-2">
+                <Code2 className="w-6 h-6 text-[#14F195]" />
+                Your Programs
+              </h2>
+              <p className="text-sm text-white/50">
+                Delete anything you no longer need straight from the dashboard.
+              </p>
+            </div>
+            <Link
+              href="/my-code"
+              className="text-[#14F195] hover:text-white transition-colors text-sm font-semibold uppercase tracking-wide"
+            >
+              Manage all →
+            </Link>
+          </div>
+          {isLoading ? (
+            <div className="text-center text-white/50 py-8">
+              Loading saved programs...
+            </div>
+          ) : userCode && userCode.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {userCode
+                .slice()
+                .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+                .slice(0, 6)
+                .map((code) => (
+                  <div
+                    key={code.id}
+                    className="relative rounded-2xl bg-white/[0.02] border border-white/5 p-5 hover:border-white/10 transition-all"
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-4">
+                      <div className="flex items-center gap-2 text-xs text-white/40">
+                        <Clock className="w-3 h-3" />
+                        {new Date(code.updatedAt).toLocaleDateString()}
+                      </div>
+                      <button
+                        onClick={() => handleDelete(code.id)}
+                        disabled={deleteMutation.isPending}
+                        className="p-2 rounded-lg hover:bg-white/10 transition-colors disabled:opacity-50"
+                      >
+                        <Trash2 className="w-4 h-4 text-white/50" />
+                      </button>
+                    </div>
+                    <h3 className="text-lg font-semibold text-white mb-2">{code.title}</h3>
+                    <p className="text-sm text-white/60 line-clamp-3 mb-4 font-mono">
+                      {code.code
+                        ? `${code.code.split("\n")[0]}...`
+                        : code.gistId
+                          ? "Stored in GitHub Gist"
+                          : "No preview"}
+                    </p>
+                    <Link
+                      href={`/playground/${code.templateId}?code=${code.id}`}
+                      className="text-xs uppercase tracking-wide text-[#14F195] font-semibold"
+                    >
+                      Open in playground →
+                    </Link>
+                  </div>
+                ))}
+            </div>
+          ) : (
+            <div className="text-center text-white/50 py-8">
+              You haven’t saved any programs yet.
+            </div>
+          )}
+        </div>
+      </section>
     </main>
   );
 }
-

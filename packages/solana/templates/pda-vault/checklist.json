@@ -1,0 +1,6 @@
+[
+  "Understand how PDAs work as program signers.",
+  "Implement `deposit` to move user funds to the vault.",
+  "Implement `withdraw` where the PDA signs to return funds.",
+  "Run `anchor test` to verify the vault holds and returns funds."
+]

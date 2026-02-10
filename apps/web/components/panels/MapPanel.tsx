@@ -1,8 +1,7 @@
 "use client";
 
 import { usePlaygroundStore } from "@/stores/playground";
-import { useTemplate } from "@/hooks/use-templates";
-import { useParams } from "next/navigation";
+import { useProgramStore } from "@/stores/programs";
 import { Map, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/Badge";
@@ -12,9 +11,13 @@ import { trackEvent } from "@/lib/analytics";
 import { shallow } from "zustand/shallow";
 
 export function MapPanel() {
-  const params = useParams();
-  const templateId = params.templateId as string;
-  const { data: template } = useTemplate(templateId);
+  const { activeProgram } = useProgramStore(
+    (state) => ({
+      activeProgram: state.activeProgramId ? state.programs[state.activeProgramId] : null,
+    }),
+    shallow
+  );
+
   const { selectedFlowStepId, setSelectedFlowStepId, setSelectedLine } =
     usePlaygroundStore(
       (state) => ({
@@ -25,7 +28,7 @@ export function MapPanel() {
       shallow
     );
 
-  if (!template?.programMap) {
+  if (!activeProgram?.programMap) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -40,15 +43,15 @@ export function MapPanel() {
           </div>
         </div>
         <div className="flex-1 p-4 text-sm text-muted-foreground flex items-center justify-center">
-          <div className="animate-pulse">Loading...</div>
+          <div className="">No program map available</div>
         </div>
       </motion.div>
     );
   }
 
-  const flow: FlowStep[] = template.programMap.flow ?? [];
-  const accounts: AccountDefinition[] = template.programMap.accounts;
-  const cpiCalls: CpiCall[] | undefined = template.programMap.cpiCalls;
+  const flow: FlowStep[] = activeProgram.programMap.flow ?? [];
+  const accounts: AccountDefinition[] = activeProgram.programMap.accounts;
+  const cpiCalls: CpiCall[] | undefined = activeProgram.programMap.cpiCalls;
 
   return (
     <motion.div
@@ -88,7 +91,7 @@ export function MapPanel() {
                     }
                     void trackEvent({
                       event: "step_start",
-                      templateId,
+                      templateId: activeProgram.templateId || "custom",
                       stepId: step.id,
                     });
                   }}

@@ -1,0 +1,6 @@
+[
+  "Understand the basic `HelloAnchor` program structure.",
+  "Implement the `initialize` function to print a message.",
+  "Run `anchor build` to compile the program.",
+  "Run `anchor test` to see your message in the logs."
+]

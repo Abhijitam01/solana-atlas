@@ -26,7 +26,16 @@ export interface ProgramSession {
 interface ProgramState {
   programs: Record<string, ProgramSession>;
   activeProgramId: string | null;
-  createProgram: (name: string, typeId: ProgramTypeId) => ProgramSession;
+  createProgram: (
+    name: string,
+    typeId: ProgramTypeId,
+    customCode?: string,
+    checklist?: string[],
+    metadata?: TemplateMetadata,
+    programMap?: ProgramMap,
+    functionSpecs?: FunctionSpec[],
+    precomputedState?: PrecomputedState
+  ) => ProgramSession;
   openTemplateProgram: (template: {
     id: string;
     code: string;
@@ -34,6 +43,7 @@ interface ProgramState {
     functionSpecs: FunctionSpec[];
     programMap: ProgramMap;
     precomputedState: PrecomputedState;
+    checklist?: string[];
   }) => ProgramSession;
   setActiveProgram: (id: string) => void;
   updateProgramCode: (id: string, code: string) => void;
@@ -51,6 +61,7 @@ interface ProgramState {
       checklist: string[];
     };
   }) => ProgramSession;
+  removeProgramBySavedId: (savedId: string) => void;
 }
 
 const nowIso = () => new Date().toISOString();
@@ -63,7 +74,16 @@ export const useProgramStore = createWithEqualityFn<ProgramState>()(
     (set, get) => ({
       programs: {},
       activeProgramId: null,
-      createProgram: (name, typeId) => {
+      createProgram: (
+        name,
+        typeId,
+        customCode,
+        checklist,
+        metadata,
+        programMap,
+        functionSpecs,
+        precomputedState
+      ) => {
         const definition = PROGRAM_TYPE_MAP.get(typeId);
         if (!definition) {
           throw new Error(`Unknown program type: ${typeId}`);
@@ -75,15 +95,15 @@ export const useProgramStore = createWithEqualityFn<ProgramState>()(
           name,
           source: "custom",
           typeId,
-          code: definition.scaffold,
-          metadata: {
+          code: customCode || definition.scaffold,
+          metadata: metadata || {
             ...definition.metadata,
             id,
           },
-          functionSpecs: definition.functionSpecs,
-          programMap: definition.programMap,
-          precomputedState: definition.precomputedState,
-          checklist: definition.checklist,
+          functionSpecs: functionSpecs || definition.functionSpecs,
+          programMap: programMap || definition.programMap,
+          precomputedState: precomputedState || definition.precomputedState,
+          checklist: checklist || definition.checklist,
           createdAt: nowIso(),
           updatedAt: nowIso(),
           isDirty: false,
@@ -117,7 +137,7 @@ export const useProgramStore = createWithEqualityFn<ProgramState>()(
           functionSpecs: template.functionSpecs,
           programMap: template.programMap,
           precomputedState: template.precomputedState,
-          checklist: [],
+          checklist: template.checklist || [],
           createdAt: nowIso(),
           updatedAt: nowIso(),
           isDirty: false,
@@ -164,6 +184,25 @@ export const useProgramStore = createWithEqualityFn<ProgramState>()(
         return session;
       },
       setActiveProgram: (id) => set({ activeProgramId: id }),
+      removeProgramBySavedId: (savedId) =>
+        set((state) => {
+          const targetProgram = Object.values(state.programs).find(
+            (program) => program.savedId === savedId
+          );
+
+          if (!targetProgram) {
+            return state;
+          }
+
+          const { [targetProgram.id]: _, ...remaining } = state.programs;
+          const nextActive =
+            state.activeProgramId === targetProgram.id ? null : state.activeProgramId;
+
+          return {
+            programs: remaining,
+            activeProgramId: nextActive,
+          };
+        }),
       updateProgramCode: (id, code) =>
         set((state) => {
           const program = state.programs[id];

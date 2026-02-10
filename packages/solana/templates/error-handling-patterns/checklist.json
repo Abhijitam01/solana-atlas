@@ -1,0 +1,6 @@
+[
+  "Define a custom `ErrorCode` enum with meaningful error messages.",
+  "Implement `require!` checks in `risky_operation`.",
+  "Return `Err(ErrorCode::MyError.into())` when conditions fail.",
+  "Run `anchor test` to assert that specific errors are thrown."
+]

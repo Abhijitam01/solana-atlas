@@ -1,0 +1,6 @@
+[
+  "Review advanced metadata fields (attributes, files).",
+  "Implement complex metadata updates using CPI.",
+  "Handle larger data structures in the update logic.",
+  "Run `anchor test` to verify the metadata reflects changes."
+]

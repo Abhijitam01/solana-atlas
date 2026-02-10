@@ -1,0 +1,7 @@
+[
+  "Review the `Proposal` and `Vote` structs.",
+  "Implement `create_proposal` to initialize a new vote.",
+  "Implement `cast_vote` to record user choices.",
+  "Implement `execute_proposal` to run the action if the vote passes.",
+  "Run `anchor test` to simulate a full voting cycle."
+]

@@ -1,0 +1,6 @@
+[
+  "Review the Metaplex metadata update instructions.",
+  "Implement the `update_metadata_item` instruction.",
+  "Ensure only the update authority can sign.",
+  "Run `anchor test` to verify metadata changes."
+]

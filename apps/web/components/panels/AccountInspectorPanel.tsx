@@ -1,20 +1,21 @@
-"use client";
-
 import { useMemo, useState } from "react";
-import { useParams } from "next/navigation";
 import { Wallet, Layers, Shield, ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { useTemplate } from "@/hooks/use-templates";
 import { usePlaygroundStore } from "@/stores/playground";
+import { useProgramStore } from "@/stores/programs";
 import { Badge } from "@/components/ui/Badge";
 import { HelpIcon } from "@/components/ui/HelpIcon";
 import type { AccountState, AccountStateAfter, ExecutionScenario, Instruction } from "@solana-playground/types";
 import { shallow } from "zustand/shallow";
 
 export function AccountInspectorPanel() {
-  const params = useParams();
-  const templateId = params.templateId as string;
-  const { data: template, isLoading } = useTemplate(templateId);
+  const { activeProgram } = useProgramStore(
+    (state) => ({
+      activeProgram: state.activeProgramId ? state.programs[state.activeProgramId] : null,
+    }),
+    shallow
+  );
+
   const { executionMode, currentScenario, executionResult } = usePlaygroundStore(
     (state) => ({
       executionMode: state.executionMode,
@@ -25,9 +26,12 @@ export function AccountInspectorPanel() {
   );
   const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
 
+  // Use precomputed state from active program
+  const precomputedState = activeProgram?.precomputedState;
+
   const scenarios: ExecutionScenario[] = useMemo(
-    () => template?.precomputedState?.scenarios ?? [],
-    [template?.precomputedState?.scenarios]
+    () => precomputedState?.scenarios ?? [],
+    [precomputedState?.scenarios]
   );
 
   const scenario = useMemo(() => {
@@ -59,7 +63,7 @@ export function AccountInspectorPanel() {
   }, [accountsAfter, accountsBefore]);
 
   const pdaSeeds = useMemo(() => {
-    const instructions: Instruction[] = template?.programMap?.instructions ?? [];
+    const instructions: Instruction[] = activeProgram?.programMap?.instructions ?? [];
     const seedMap = new Map<string, string[]>();
     instructions.forEach((instruction) => {
       instruction.accounts.forEach((account) => {
@@ -69,7 +73,7 @@ export function AccountInspectorPanel() {
       });
     });
     return seedMap;
-  }, [template?.programMap?.instructions]);
+  }, [activeProgram?.programMap?.instructions]);
 
   const owners = useMemo(() => {
     const map = new Map<string, AccountStateAfter[]>();
@@ -82,23 +86,11 @@ export function AccountInspectorPanel() {
     return Array.from(map.entries()).map(([owner, list]) => ({ owner, list }));
   }, [accountsAfter]);
 
-  if (isLoading) {
+  if (!activeProgram) {
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="panel flex h-full flex-col"
-      >
-        <div className="panel-header">
-          <div className="flex items-center gap-2">
-            <Layers className="h-4 w-4 text-primary" />
-            <h2 className="text-sm font-semibold text-foreground">Account Inspector</h2>
-          </div>
-        </div>
-        <div className="flex-1 flex items-center justify-center">
-          <div className="animate-pulse text-muted-foreground">Loading...</div>
-        </div>
-      </motion.div>
+      <div className="panel flex h-full flex-col items-center justify-center p-4 text-muted-foreground text-sm">
+        No active program selected.
+      </div>
     );
   }
 

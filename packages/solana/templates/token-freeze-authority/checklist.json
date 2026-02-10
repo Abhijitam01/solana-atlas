@@ -1,0 +1,6 @@
+[
+  "Review the standard Token Freeze instructions.",
+  "Implement `freeze_account` using CPI to SPL Token.",
+  "Implement `thaw_account`.",
+  "Run `anchor test` to verify funds cannot be moved when frozen."
+]
