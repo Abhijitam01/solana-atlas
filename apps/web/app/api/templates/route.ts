@@ -16,8 +16,6 @@ async function findTemplatesDir(): Promise<string> {
     // Standalone build (production) - templates should be copied to .next/standalone
     join(cwd, 'packages', 'solana', 'templates'),
     join(cwd, '..', 'packages', 'solana', 'templates'),
-    // FALLBACK: Local development (if running from root) - deprecated, use packages/solana/templates
-    join(cwd, 'apps', 'web', 'packages', 'solana', 'templates'),
   ];
   
   // Find the first path that exists as a directory

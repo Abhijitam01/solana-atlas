@@ -78,12 +78,10 @@ async function loadTemplateLocal(id: string) {
   const sanitizedId = id.replace(/\.\./g, '').replace(/^\//, '');
   let basePath: string | null = null;
   
-  // Try multiple possible locations for the template
+  // Templates are in flat structure (no categories)
   const templateSearchPaths = [
-    // Direct path (for top-level templates like "pda-escrow")
+    // Direct path (flat structure)
     join(templatesDir, sanitizedId),
-    // Nested paths (for templates in beginner/, intermediate/, expert/)
-    ...['beginner', 'intermediate', 'expert'].map(cat => join(templatesDir, cat, sanitizedId)),
   ];
   
   // Find the first path that contains a valid template

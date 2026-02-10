@@ -1,0 +1,1046 @@
+[
+  {
+    "lineNumber": 1,
+    "what": "Import Anchor prelude types and macros.",
+    "why": "Provides Context, Result, and account helpers.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 3,
+    "what": "Declare the program ID.",
+    "why": "Identifies the on-chain program.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 5,
+    "what": "Mark the module as the Anchor program entry point.",
+    "why": "Mark the module as the Anchor program entry point.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 6,
+    "what": "Define the program module namespace.",
+    "why": "Define the program module namespace.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 7,
+    "what": "Bring parent symbols into scope.",
+    "why": "Bring parent symbols into scope.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 9,
+    "what": "Define the initialize_multisig instruction handler.",
+    "why": "Creates the multisig and vault.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 10,
+    "what": "Validate the multisig threshold.",
+    "why": "Must be between 1 and 3 for fixed owner set.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 11,
+    "what": "Create a mutable reference to the multisig account.",
+    "why": "Create a mutable reference to the multisig account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 12,
+    "what": "Start the owners array assignment.",
+    "why": "Start the owners array assignment.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 13,
+    "what": "Store owner one public key.",
+    "why": "Store owner one public key.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 14,
+    "what": "Store owner two public key.",
+    "why": "Store owner two public key.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 15,
+    "what": "Store owner three public key.",
+    "why": "Store owner three public key.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 16,
+    "what": "End owners array assignment.",
+    "why": "End owners array assignment.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 17,
+    "what": "Store the approval threshold.",
+    "why": "Store the approval threshold.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 18,
+    "what": "Store the vault PDA bump.",
+    "why": "Store the vault PDA bump.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 20,
+    "what": "Create a mutable reference to the vault account.",
+    "why": "Create a mutable reference to the vault account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 21,
+    "what": "Record the multisig that owns the vault.",
+    "why": "Record the multisig that owns the vault.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 22,
+    "what": "Store the vault bump.",
+    "why": "Store the vault bump.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 23,
+    "what": "Log multisig initialization.",
+    "why": "Log multisig initialization.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 24,
+    "what": "Return success from initialize_multisig.",
+    "why": "Return success from initialize_multisig.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 25,
+    "what": "End of initialize_multisig handler.",
+    "why": "End of initialize_multisig handler.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 27,
+    "what": "Define the deposit instruction handler.",
+    "why": "Funds the multisig vault with lamports.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 28,
+    "what": "Increase the vault lamports by the deposit amount.",
+    "why": "Increase the vault lamports by the deposit amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 29,
+    "what": "Decrease the depositor lamports by the deposit amount.",
+    "why": "Decrease the depositor lamports by the deposit amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 30,
+    "what": "Log the deposit.",
+    "why": "Log the deposit.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 31,
+    "what": "Return success from deposit.",
+    "why": "Return success from deposit.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 32,
+    "what": "End of deposit handler.",
+    "why": "End of deposit handler.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 34,
+    "what": "Define the create_proposal instruction handler.",
+    "why": "Creates a proposal to move funds.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 35,
+    "what": "Validate that the amount is non-zero.",
+    "why": "Validate that the amount is non-zero.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 36,
+    "what": "Create a mutable reference to the proposal account.",
+    "why": "Create a mutable reference to the proposal account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 37,
+    "what": "Link the proposal to the multisig.",
+    "why": "Link the proposal to the multisig.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 38,
+    "what": "Set the proposal recipient.",
+    "why": "Set the proposal recipient.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 39,
+    "what": "Set the proposal amount.",
+    "why": "Set the proposal amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 40,
+    "what": "Initialize approvals to false.",
+    "why": "Initialize approvals to false.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 41,
+    "what": "Mark the proposal as not executed.",
+    "why": "Mark the proposal as not executed.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 42,
+    "what": "Log proposal creation.",
+    "why": "Log proposal creation.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 43,
+    "what": "Return success from create_proposal.",
+    "why": "Return success from create_proposal.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 44,
+    "what": "End of create_proposal handler.",
+    "why": "End of create_proposal handler.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 46,
+    "what": "Define the approve instruction handler.",
+    "why": "Records an owner’s approval.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 47,
+    "what": "Resolve the owner index for the signer.",
+    "why": "Resolve the owner index for the signer.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 48,
+    "what": "Create a mutable reference to the proposal.",
+    "why": "Create a mutable reference to the proposal.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 49,
+    "what": "Reject approvals for executed proposals.",
+    "why": "Reject approvals for executed proposals.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 50,
+    "what": "Mark the signer’s approval as true.",
+    "why": "Mark the signer’s approval as true.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 51,
+    "what": "Log proposal approval.",
+    "why": "Log proposal approval.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 52,
+    "what": "Return success from approve.",
+    "why": "Return success from approve.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 53,
+    "what": "End of approve handler.",
+    "why": "End of approve handler.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 55,
+    "what": "Define the execute instruction handler.",
+    "why": "Transfers lamports once enough approvals exist.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 56,
+    "what": "Create a mutable reference to the proposal.",
+    "why": "Create a mutable reference to the proposal.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 57,
+    "what": "Ensure the proposal has not executed.",
+    "why": "Ensure the proposal has not executed.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 58,
+    "what": "Ensure the proposal amount is valid.",
+    "why": "Ensure the proposal amount is valid.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 59,
+    "what": "Ensure the proposal matches the multisig.",
+    "why": "Ensure the proposal matches the multisig.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 61,
+    "what": "Count approvals on the proposal.",
+    "why": "Count approvals on the proposal.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 62,
+    "what": "Require enough approvals to execute.",
+    "why": "Require enough approvals to execute.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 64,
+    "what": "Subtract lamports from the vault.",
+    "why": "Subtract lamports from the vault.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 65,
+    "what": "Add lamports to the recipient.",
+    "why": "Add lamports to the recipient.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 66,
+    "what": "Mark the proposal as executed.",
+    "why": "Mark the proposal as executed.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 67,
+    "what": "Log proposal execution.",
+    "why": "Log proposal execution.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 68,
+    "what": "Return success from execute.",
+    "why": "Return success from execute.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 69,
+    "what": "End of execute handler.",
+    "why": "End of execute handler.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 70,
+    "what": "End of program module.",
+    "why": "End of program module.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 72,
+    "what": "Define a helper to find the owner index.",
+    "why": "Define a helper to find the owner index.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 73,
+    "what": "Check if signer matches owner one.",
+    "why": "Check if signer matches owner one.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 74,
+    "what": "Return index 0 for owner one.",
+    "why": "Return index 0 for owner one.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 75,
+    "what": "End owner one branch.",
+    "why": "End owner one branch.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 76,
+    "what": "Check if signer matches owner two.",
+    "why": "Check if signer matches owner two.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 77,
+    "what": "Return index 1 for owner two.",
+    "why": "Return index 1 for owner two.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 78,
+    "what": "End owner two branch.",
+    "why": "End owner two branch.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 79,
+    "what": "Check if signer matches owner three.",
+    "why": "Check if signer matches owner three.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 80,
+    "what": "Return index 2 for owner three.",
+    "why": "Return index 2 for owner three.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 81,
+    "what": "End owner three branch.",
+    "why": "End owner three branch.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 82,
+    "what": "Return unauthorized if signer is not an owner.",
+    "why": "Return unauthorized if signer is not an owner.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 83,
+    "what": "End owner_index helper.",
+    "why": "End owner_index helper.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 85,
+    "what": "Derive account validation for InitializeMultisig.",
+    "why": "Derive account validation for InitializeMultisig.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 86,
+    "what": "Define accounts required to initialize the multisig.",
+    "why": "Define accounts required to initialize the multisig.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 87,
+    "what": "Initialize the multisig account.",
+    "why": "Initialize the multisig account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 88,
+    "what": "Multisig state account.",
+    "why": "Multisig state account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 89,
+    "what": "Begin vault initialization constraints.",
+    "why": "Begin vault initialization constraints.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 90,
+    "what": "Initialize the vault account.",
+    "why": "Initialize the vault account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 91,
+    "what": "Set the payer for vault creation.",
+    "why": "Set the payer for vault creation.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 92,
+    "what": "Set the vault account size.",
+    "why": "Set the vault account size.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 93,
+    "what": "Derive the vault PDA seeds.",
+    "why": "Derive the vault PDA seeds.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 94,
+    "what": "Capture the PDA bump.",
+    "why": "Capture the PDA bump.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 95,
+    "what": "End vault initialization constraints.",
+    "why": "End vault initialization constraints.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 96,
+    "what": "Vault account.",
+    "why": "Vault account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 97,
+    "what": "Mark payer mutable for rent and fees.",
+    "why": "Mark payer mutable for rent and fees.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 98,
+    "what": "Payer signer account.",
+    "why": "Payer signer account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 99,
+    "what": "Owner one signer.",
+    "why": "Owner one signer.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 100,
+    "what": "Owner two signer.",
+    "why": "Owner two signer.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 101,
+    "what": "Owner three signer.",
+    "why": "Owner three signer.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 102,
+    "what": "System Program account.",
+    "why": "System Program account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 103,
+    "what": "End of InitializeMultisig accounts struct.",
+    "why": "End of InitializeMultisig accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 105,
+    "what": "Derive account validation for Deposit.",
+    "why": "Derive account validation for Deposit.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 106,
+    "what": "Define accounts required to deposit.",
+    "why": "Define accounts required to deposit.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 107,
+    "what": "Multisig state account.",
+    "why": "Multisig state account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 108,
+    "what": "Derive the vault PDA for deposits.",
+    "why": "Derive the vault PDA for deposits.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 109,
+    "what": "Vault account for deposits.",
+    "why": "Vault account for deposits.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 110,
+    "what": "Mark depositor as mutable.",
+    "why": "Mark depositor as mutable.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 111,
+    "what": "Depositor signer account.",
+    "why": "Depositor signer account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 112,
+    "what": "System Program account.",
+    "why": "System Program account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 113,
+    "what": "End of Deposit accounts struct.",
+    "why": "End of Deposit accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 115,
+    "what": "Derive account validation for CreateProposal.",
+    "why": "Derive account validation for CreateProposal.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 116,
+    "what": "Define accounts required to create proposals.",
+    "why": "Define accounts required to create proposals.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 117,
+    "what": "Multisig state account.",
+    "why": "Multisig state account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 118,
+    "what": "Derive the vault PDA for proposals.",
+    "why": "Derive the vault PDA for proposals.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 119,
+    "what": "Vault account used by proposals.",
+    "why": "Vault account used by proposals.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 120,
+    "what": "Initialize the proposal account.",
+    "why": "Initialize the proposal account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 121,
+    "what": "Proposal account.",
+    "why": "Proposal account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 122,
+    "what": "Document unchecked recipient account.",
+    "why": "Document unchecked recipient account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 123,
+    "what": "Recipient account.",
+    "why": "Recipient account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 124,
+    "what": "Mark proposer as mutable.",
+    "why": "Mark proposer as mutable.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 125,
+    "what": "Proposer signer account.",
+    "why": "Proposer signer account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 126,
+    "what": "System Program account.",
+    "why": "System Program account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 127,
+    "what": "End of CreateProposal accounts struct.",
+    "why": "End of CreateProposal accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 129,
+    "what": "Derive account validation for Approve.",
+    "why": "Derive account validation for Approve.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 130,
+    "what": "Define accounts required to approve a proposal.",
+    "why": "Define accounts required to approve a proposal.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 131,
+    "what": "Multisig state account.",
+    "why": "Multisig state account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 132,
+    "what": "Proposal account (mutable for approvals).",
+    "why": "Proposal account (mutable for approvals).",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 133,
+    "what": "Proposal account passed in.",
+    "why": "Proposal account passed in.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 134,
+    "what": "Owner signer account.",
+    "why": "Owner signer account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 135,
+    "what": "End of Approve accounts struct.",
+    "why": "End of Approve accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 137,
+    "what": "Derive account validation for Execute.",
+    "why": "Derive account validation for Execute.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 138,
+    "what": "Define accounts required to execute a proposal.",
+    "why": "Define accounts required to execute a proposal.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 139,
+    "what": "Multisig state account.",
+    "why": "Multisig state account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 140,
+    "what": "Vault account (mutable for lamport transfer).",
+    "why": "Vault account (mutable for lamport transfer).",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 141,
+    "what": "Vault account passed in.",
+    "why": "Vault account passed in.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 142,
+    "what": "Proposal account (mutable for executed flag).",
+    "why": "Proposal account (mutable for executed flag).",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 143,
+    "what": "Proposal account passed in.",
+    "why": "Proposal account passed in.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 144,
+    "what": "Document unchecked recipient account.",
+    "why": "Document unchecked recipient account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 145,
+    "what": "Mark recipient as mutable for lamport credit.",
+    "why": "Mark recipient as mutable for lamport credit.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 146,
+    "what": "Recipient account.",
+    "why": "Recipient account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 147,
+    "what": "End of Execute accounts struct.",
+    "why": "End of Execute accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 149,
+    "what": "Mark Multisig as an account.",
+    "why": "Mark Multisig as an account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 150,
+    "what": "Define the Multisig state struct.",
+    "why": "Define the Multisig state struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 151,
+    "what": "Owners array for the multisig.",
+    "why": "Owners array for the multisig.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 152,
+    "what": "Approval threshold.",
+    "why": "Approval threshold.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 153,
+    "what": "Vault PDA bump.",
+    "why": "Vault PDA bump.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 154,
+    "what": "End of Multisig struct.",
+    "why": "End of Multisig struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 156,
+    "what": "Implement helper constants for Multisig.",
+    "why": "Implement helper constants for Multisig.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 157,
+    "what": "Define the serialized size of Multisig.",
+    "why": "Define the serialized size of Multisig.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 158,
+    "what": "End of Multisig impl block.",
+    "why": "End of Multisig impl block.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 160,
+    "what": "Mark Vault as an account.",
+    "why": "Mark Vault as an account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 161,
+    "what": "Define the Vault state struct.",
+    "why": "Define the Vault state struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 162,
+    "what": "Multisig that owns the vault.",
+    "why": "Multisig that owns the vault.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 163,
+    "what": "Vault PDA bump.",
+    "why": "Vault PDA bump.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 164,
+    "what": "End of Vault struct.",
+    "why": "End of Vault struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 166,
+    "what": "Implement helper constants for Vault.",
+    "why": "Implement helper constants for Vault.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 167,
+    "what": "Define the serialized size of Vault.",
+    "why": "Define the serialized size of Vault.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 168,
+    "what": "End of Vault impl block.",
+    "why": "End of Vault impl block.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 170,
+    "what": "Mark Proposal as an account.",
+    "why": "Mark Proposal as an account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 171,
+    "what": "Define the Proposal state struct.",
+    "why": "Define the Proposal state struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 172,
+    "what": "Multisig this proposal belongs to.",
+    "why": "Multisig this proposal belongs to.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 173,
+    "what": "Recipient of the proposal transfer.",
+    "why": "Recipient of the proposal transfer.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 174,
+    "what": "Lamport amount to transfer.",
+    "why": "Lamport amount to transfer.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 175,
+    "what": "Approval flags for each owner.",
+    "why": "Approval flags for each owner.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 176,
+    "what": "Execution status flag.",
+    "why": "Execution status flag.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 177,
+    "what": "End of Proposal struct.",
+    "why": "End of Proposal struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 179,
+    "what": "Implement helper constants for Proposal.",
+    "why": "Implement helper constants for Proposal.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 180,
+    "what": "Define the serialized size of Proposal.",
+    "why": "Define the serialized size of Proposal.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 181,
+    "what": "End of Proposal impl block.",
+    "why": "End of Proposal impl block.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 183,
+    "what": "Start custom error definitions.",
+    "why": "Start custom error definitions.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 184,
+    "what": "Define the ErrorCode enum.",
+    "why": "Define the ErrorCode enum.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 185,
+    "what": "Message for invalid thresholds.",
+    "why": "Message for invalid thresholds.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 186,
+    "what": "Error when threshold is out of range.",
+    "why": "Error when threshold is out of range.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 187,
+    "what": "Message for invalid amount.",
+    "why": "Message for invalid amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 188,
+    "what": "Error when amount is zero.",
+    "why": "Error when amount is zero.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 189,
+    "what": "Message for unauthorized owner.",
+    "why": "Message for unauthorized owner.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 190,
+    "what": "Error when signer is not an owner.",
+    "why": "Error when signer is not an owner.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 191,
+    "what": "Message for executed proposal.",
+    "why": "Message for executed proposal.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 192,
+    "what": "Error when proposal already executed.",
+    "why": "Error when proposal already executed.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 193,
+    "what": "Message for invalid proposal.",
+    "why": "Message for invalid proposal.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 194,
+    "what": "Error when proposal does not match multisig.",
+    "why": "Error when proposal does not match multisig.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 195,
+    "what": "Message for insufficient approvals.",
+    "why": "Message for insufficient approvals.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 196,
+    "what": "Error when approvals are below threshold.",
+    "why": "Error when approvals are below threshold.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 197,
+    "what": "End of ErrorCode enum.",
+    "why": "End of ErrorCode enum.",
+    "isImportant": false
+  }
+]

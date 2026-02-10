@@ -4,17 +4,18 @@ import { TRPCError } from '@trpc/server';
 import fs from 'fs';
 import path from 'path';
 
+// Templates are stored in packages/solana/templates/ (flat structure, no categories)
 const TEMPLATES_DIR = path.join(process.cwd(), '../../packages/solana/templates');
 
-// Helper to read template metadata
-const getTemplateMetadata = (category: string, templateId: string) => {
-  const metadataPath = path.join(TEMPLATES_DIR, category, templateId, 'metadata.json');
+// Helper to read template metadata (flat structure)
+const getTemplateMetadata = (templateId: string) => {
+  const metadataPath = path.join(TEMPLATES_DIR, templateId, 'metadata.json');
   if (!fs.existsSync(metadataPath)) return null;
   
   try {
     const content = fs.readFileSync(metadataPath, 'utf-8');
     const metadata = JSON.parse(content);
-    return { ...metadata, id: templateId, category };
+    return { ...metadata, id: templateId };
   } catch (e) {
     console.error(`Failed to parse metadata for ${templateId}`, e);
     return null;
@@ -22,9 +23,8 @@ const getTemplateMetadata = (category: string, templateId: string) => {
 };
 
 // Helper to read all files in a template
-// TODO: optimize this to maybe lazily load or cache
-const getTemplateFiles = (category: string, templateId: string) => {
-    const programDir = path.join(TEMPLATES_DIR, category, templateId, 'program');
+const getTemplateFiles = (templateId: string) => {
+    const programDir = path.join(TEMPLATES_DIR, templateId, 'program');
     const libRsPath = path.join(programDir, 'lib.rs');
     
     if (!fs.existsSync(libRsPath)) return null;
@@ -32,7 +32,7 @@ const getTemplateFiles = (category: string, templateId: string) => {
     const libRs = fs.readFileSync(libRsPath, 'utf-8');
     
     // We also need the other JSON files
-    const baseDir = path.join(TEMPLATES_DIR, category, templateId);
+    const baseDir = path.join(TEMPLATES_DIR, templateId);
     const readJson = (filename: string) => {
         const p = path.join(baseDir, filename);
         return fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf-8')) : {};
@@ -50,21 +50,23 @@ const getTemplateFiles = (category: string, templateId: string) => {
 export const templateRouter = router({
   getAll: publicProcedure
     .query(async () => {
-      const categories = ['beginner', 'intermediate', 'expert'];
-      const templates = [];
+      const templates: Array<{ id: string; name?: string; description?: string; difficulty?: string; [key: string]: any }> = [];
 
-      for (const category of categories) {
-        const categoryPath = path.join(TEMPLATES_DIR, category);
-        if (fs.existsSync(categoryPath)) {
-          const params = fs.readdirSync(categoryPath);
-          for (const templateId of params) {
-            // Skip hidden files/dirs
-            if (templateId.startsWith('.')) continue; // .DS_Store etc
-            
-            const metadata = getTemplateMetadata(category, templateId);
-            if (metadata) {
-              templates.push(metadata);
-            }
+      if (!fs.existsSync(TEMPLATES_DIR)) {
+        console.warn(`Templates directory not found: ${TEMPLATES_DIR}`);
+        return templates;
+      }
+
+      const templateDirs = fs.readdirSync(TEMPLATES_DIR);
+      for (const templateId of templateDirs) {
+        // Skip hidden files/dirs and category folders (if any remain)
+        if (templateId.startsWith('.') || templateId === 'beginner' || templateId === 'intermediate' || templateId === 'expert') continue;
+        
+        const templatePath = path.join(TEMPLATES_DIR, templateId);
+        if (fs.statSync(templatePath).isDirectory()) {
+          const metadata = getTemplateMetadata(templateId);
+          if (metadata) {
+            templates.push(metadata);
           }
         }
       }
@@ -75,26 +77,23 @@ export const templateRouter = router({
   getById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
-       const categories = ['beginner', 'intermediate', 'expert'];
+       const potentialPath = path.join(TEMPLATES_DIR, input.id);
        
-       for (const category of categories) {
-           const potentialPath = path.join(TEMPLATES_DIR, category, input.id);
-            if (fs.existsSync(potentialPath)) {
-                const metadata = getTemplateMetadata(category, input.id);
-                const files = getTemplateFiles(category, input.id);
-                
-                if (!metadata || !files) {
-                     throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to load template files' });
-                }
+       if (fs.existsSync(potentialPath) && fs.statSync(potentialPath).isDirectory()) {
+           const metadata = getTemplateMetadata(input.id);
+           const files = getTemplateFiles(input.id);
+           
+           if (!metadata || !files) {
+                throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to load template files' });
+           }
 
-                // Construct response to match store expectations
-                return {
-                    id: input.id,
-                    metadata: metadata, // nested metadata
-                    ...files,
-                    // lineExplanations are returned as part of keys in files
-                };
-            }
+           // Construct response to match store expectations
+           return {
+               id: input.id,
+               metadata: metadata, // nested metadata
+               ...files,
+               // lineExplanations are returned as part of keys in files
+           };
        }
 
        throw new TRPCError({ code: 'NOT_FOUND', message: `Template ${input.id} not found` });

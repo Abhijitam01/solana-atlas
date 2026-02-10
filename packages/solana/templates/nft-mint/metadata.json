@@ -1,0 +1,24 @@
+{
+  "id": "nft-mint",
+  "name": "NFT Minting",
+  "description": "Learn how to create NFTs on Solana using the Metaplex Token Metadata program. This template demonstrates NFT minting with metadata.",
+  "difficulty": "intermediate",
+  "learningGoals": [
+    "Understand NFT creation on Solana",
+    "Learn about Metaplex Token Metadata program",
+    "Understand NFT metadata structure",
+    "Learn about CPI calls to Metaplex",
+    "Understand the difference between fungible and non-fungible tokens"
+  ],
+  "solanaConcepts": [
+    "NFTs",
+    "Metaplex",
+    "Token Metadata",
+    "Non-Fungible Tokens",
+    "CPI with Metaplex",
+    "Metadata Accounts"
+  ],
+  "estimatedTime": "30 minutes",
+  "prerequisites": ["token-mint"]
+}
+

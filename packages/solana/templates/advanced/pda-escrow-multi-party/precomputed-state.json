@@ -1,0 +1,28 @@
+{
+  "scenarios": [
+    {
+      "name": "Create Multi-Party Escrow",
+      "description": "Buyer funds the escrow PDA.",
+      "instruction": "create",
+      "args": ["amount"],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: Escrow funded by buyer"
+      ],
+      "computeUnits": 9500
+    },
+    {
+      "name": "Release Escrow",
+      "description": "Arbiter releases escrow to seller.",
+      "instruction": "release",
+      "args": [],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: Escrow released to seller"
+      ],
+      "computeUnits": 9000
+    }
+  ]
+}

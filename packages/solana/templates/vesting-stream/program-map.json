@@ -1,0 +1,90 @@
+{
+  "flow": [
+    {
+      "id": "initialize",
+      "title": "Initialize Vesting",
+      "description": "Create the vesting schedule and its vault PDA.",
+      "lineRange": [9, 36],
+      "concepts": ["Vesting", "PDA"]
+    },
+    {
+      "id": "fund",
+      "title": "Fund Vault",
+      "description": "Deposit lamports into the vesting vault.",
+      "lineRange": [38, 44],
+      "concepts": ["Lamports"]
+    },
+    {
+      "id": "claim",
+      "title": "Claim Vested",
+      "description": "Compute vested amount, subtract released, and transfer available funds.",
+      "lineRange": [46, 76],
+      "concepts": ["Vesting", "Time", "Safe Math"]
+    }
+  ],
+  "instructions": [
+    {
+      "name": "initialize_vesting",
+      "lineStart": 9,
+      "lineEnd": 36,
+      "accounts": [
+        {"name": "vesting", "isMut": true, "isSigner": false, "isPda": false},
+        {"name": "vault", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["vault", "vesting.key()"]},
+        {"name": "authority", "isMut": true, "isSigner": true, "isPda": false},
+        {"name": "beneficiary", "isMut": false, "isSigner": false, "isPda": false},
+        {"name": "system_program", "isMut": false, "isSigner": false, "isPda": false}
+      ],
+      "description": "Creates vesting schedule state and its vault PDA."
+    },
+    {
+      "name": "fund",
+      "lineStart": 38,
+      "lineEnd": 44,
+      "accounts": [
+        {"name": "vesting", "isMut": false, "isSigner": false, "isPda": false},
+        {"name": "vault", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["vault", "vesting.key()"]},
+        {"name": "funder", "isMut": true, "isSigner": true, "isPda": false},
+        {"name": "system_program", "isMut": false, "isSigner": false, "isPda": false}
+      ],
+      "description": "Funds the vesting vault with lamports."
+    },
+    {
+      "name": "claim",
+      "lineStart": 46,
+      "lineEnd": 76,
+      "accounts": [
+        {"name": "vesting", "isMut": true, "isSigner": false, "isPda": false},
+        {"name": "vault", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["vault", "vesting.key()"]},
+        {"name": "beneficiary", "isMut": true, "isSigner": false, "isPda": false}
+      ],
+      "description": "Claims vested lamports after the cliff and updates released amounts."
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Vesting",
+      "lineStart": 120,
+      "lineEnd": 130,
+      "fields": [
+        {"name": "authority", "type": "Pubkey", "description": "Authority that created the vesting"},
+        {"name": "beneficiary", "type": "Pubkey", "description": "Recipient of vested funds"},
+        {"name": "total_amount", "type": "u64", "description": "Total lamports to vest"},
+        {"name": "released_amount", "type": "u64", "description": "Amount already claimed"},
+        {"name": "start_ts", "type": "i64", "description": "Vesting start time"},
+        {"name": "cliff_ts", "type": "i64", "description": "Cliff time"},
+        {"name": "end_ts", "type": "i64", "description": "Vesting end time"},
+        {"name": "bump", "type": "u8", "description": "Vault PDA bump"}
+      ]
+    },
+    {
+      "name": "Vault",
+      "lineStart": 136,
+      "lineEnd": 140,
+      "fields": [
+        {"name": "vesting", "type": "Pubkey", "description": "Owning vesting account"},
+        {"name": "bump", "type": "u8", "description": "Vault PDA bump"}
+      ]
+    }
+  ],
+  "cpiCalls": []
+}

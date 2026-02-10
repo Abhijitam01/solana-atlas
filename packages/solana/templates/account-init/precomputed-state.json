@@ -1,0 +1,126 @@
+{
+  "scenarios": [
+    {
+      "name": "Initialize Account",
+      "description": "Initialize a new account with data value 42",
+      "instruction": "initialize",
+      "args": [42],
+      "accountsBefore": [
+        {
+          "address": "11111111111111111111111111111111",
+          "label": "System Program",
+          "owner": "11111111111111111111111111111111",
+          "lamports": 0,
+          "dataSize": 0
+        },
+        {
+          "address": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+          "label": "User",
+          "owner": "11111111111111111111111111111111",
+          "lamports": 1000000000,
+          "dataSize": 0
+        }
+      ],
+      "accountsAfter": [
+        {
+          "address": "11111111111111111111111111111111",
+          "label": "System Program",
+          "owner": "11111111111111111111111111111111",
+          "lamports": 0,
+          "dataSize": 0,
+          "changes": []
+        },
+        {
+          "address": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+          "label": "User",
+          "owner": "11111111111111111111111111111111",
+          "lamports": 999999200,
+          "dataSize": 0,
+          "changes": [
+            "Lamports decreased by 800 (rent for new account + transaction fee)"
+          ]
+        },
+        {
+          "address": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+          "label": "My Account",
+          "owner": "AccountInit1111111111111111111111111111111",
+          "lamports": 1461600,
+          "dataSize": 48,
+          "data": {
+            "data": 42,
+            "authority": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
+          },
+          "changes": [
+            "Account created",
+            "Data initialized to 42",
+            "Authority set to user's public key"
+          ]
+        }
+      ],
+      "logs": [
+        "Program AccountInit1111111111111111111111111111111 invoke [1]",
+        "Program log: Initialized account with data: 42",
+        "Program AccountInit1111111111111111111111111111111 success"
+      ],
+      "computeUnits": 12000
+    },
+    {
+      "name": "Update Account",
+      "description": "Update the account data to 100",
+      "instruction": "update",
+      "args": [100],
+      "accountsBefore": [
+        {
+          "address": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+          "label": "My Account",
+          "owner": "AccountInit1111111111111111111111111111111",
+          "lamports": 1461600,
+          "dataSize": 48,
+          "data": {
+            "data": 42,
+            "authority": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
+          }
+        },
+        {
+          "address": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+          "label": "User",
+          "owner": "11111111111111111111111111111111",
+          "lamports": 999999200,
+          "dataSize": 0
+        }
+      ],
+      "accountsAfter": [
+        {
+          "address": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+          "label": "My Account",
+          "owner": "AccountInit1111111111111111111111111111111",
+          "lamports": 1461600,
+          "dataSize": 48,
+          "data": {
+            "data": 100,
+            "authority": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
+          },
+          "changes": [
+            "Data updated from 42 to 100"
+          ]
+        },
+        {
+          "address": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+          "label": "User",
+          "owner": "11111111111111111111111111111111",
+          "lamports": 999998700,
+          "dataSize": 0,
+          "changes": [
+            "Lamports decreased by 500 (transaction fee)"
+          ]
+        }
+      ],
+      "logs": [
+        "Program AccountInit1111111111111111111111111111111 invoke [1]",
+        "Program log: Updated account data to: 100",
+        "Program AccountInit1111111111111111111111111111111 success"
+      ],
+      "computeUnits": 8000
+    }
+  ]
+}

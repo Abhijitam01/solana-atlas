@@ -1,0 +1,26 @@
+{
+  "id": "token-mint",
+  "name": "Basic Token Mint",
+  "description": "Learn how to create and manage SPL tokens in Solana. This template demonstrates token mint creation, minting tokens, and transferring tokens between accounts.",
+  "difficulty": "intermediate",
+  "learningGoals": [
+    "Understand SPL Token program basics",
+    "Learn how to create a token mint",
+    "Understand token accounts",
+    "Learn how to mint tokens",
+    "Understand token transfers",
+    "Learn about Cross-Program Invocations (CPI) with SPL Token"
+  ],
+  "solanaConcepts": [
+    "SPL Token",
+    "Token Mint",
+    "Token Accounts",
+    "Minting",
+    "Token Transfers",
+    "Cross-Program Invocation (CPI)",
+    "Token Authority"
+  ],
+  "estimatedTime": "30 minutes",
+  "prerequisites": ["account-init", "pda-vault"]
+}
+

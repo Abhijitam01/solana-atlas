@@ -1,0 +1,830 @@
+[
+  {
+    "lineNumber": 1,
+    "what": "Import Anchor prelude types and macros.",
+    "why": "Provides Context, Result, and account helpers.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 3,
+    "what": "Declare the program ID.",
+    "why": "Identifies the on-chain program.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 5,
+    "what": "Mark the module as the Anchor program entry point.",
+    "why": "Mark the module as the Anchor program entry point.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 6,
+    "what": "Define the program module namespace.",
+    "why": "Define the program module namespace.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 7,
+    "what": "Bring parent symbols into scope.",
+    "why": "Bring parent symbols into scope.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 9,
+    "what": "Define the initialize_vesting instruction handler.",
+    "why": "Creates the vesting schedule and vault.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 10,
+    "what": "Bind the InitializeVesting accounts.",
+    "why": "Bind the InitializeVesting accounts.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 11,
+    "what": "Read the total amount parameter.",
+    "why": "Read the total amount parameter.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 12,
+    "what": "Read the start timestamp parameter.",
+    "why": "Read the start timestamp parameter.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 13,
+    "what": "Read the cliff timestamp parameter.",
+    "why": "Read the cliff timestamp parameter.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 14,
+    "what": "Read the end timestamp parameter.",
+    "why": "Read the end timestamp parameter.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 15,
+    "what": "Start the initialize_vesting handler.",
+    "why": "Start the initialize_vesting handler.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 16,
+    "what": "Validate a non-zero total amount.",
+    "why": "Validate a non-zero total amount.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 17,
+    "what": "Ensure start is before end.",
+    "why": "Ensure start is before end.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 18,
+    "what": "Ensure cliff lies within the schedule.",
+    "why": "Ensure cliff lies within the schedule.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 20,
+    "what": "Create a mutable reference to the vesting account.",
+    "why": "Create a mutable reference to the vesting account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 21,
+    "what": "Store the vesting authority.",
+    "why": "Store the vesting authority.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 22,
+    "what": "Store the beneficiary address.",
+    "why": "Store the beneficiary address.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 23,
+    "what": "Store the total vesting amount.",
+    "why": "Store the total vesting amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 24,
+    "what": "Initialize released amount to zero.",
+    "why": "Initialize released amount to zero.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 25,
+    "what": "Store the schedule start timestamp.",
+    "why": "Store the schedule start timestamp.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 26,
+    "what": "Store the schedule cliff timestamp.",
+    "why": "Store the schedule cliff timestamp.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 27,
+    "what": "Store the schedule end timestamp.",
+    "why": "Store the schedule end timestamp.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 28,
+    "what": "Store the vault PDA bump.",
+    "why": "Store the vault PDA bump.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 30,
+    "what": "Create a mutable reference to the vault account.",
+    "why": "Create a mutable reference to the vault account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 31,
+    "what": "Link the vault to the vesting account.",
+    "why": "Link the vault to the vesting account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 32,
+    "what": "Store the vault bump.",
+    "why": "Store the vault bump.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 34,
+    "what": "Log vesting initialization.",
+    "why": "Log vesting initialization.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 35,
+    "what": "Return success from initialize_vesting.",
+    "why": "Return success from initialize_vesting.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 36,
+    "what": "End of initialize_vesting handler.",
+    "why": "End of initialize_vesting handler.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 38,
+    "what": "Define the fund instruction handler.",
+    "why": "Transfers lamports into the vesting vault.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 39,
+    "what": "Validate a non-zero funding amount.",
+    "why": "Validate a non-zero funding amount.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 40,
+    "what": "Credit the vault lamports with the funded amount.",
+    "why": "Credit the vault lamports with the funded amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 41,
+    "what": "Debit the funder lamports by the funded amount.",
+    "why": "Debit the funder lamports by the funded amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 42,
+    "what": "Log the funding action.",
+    "why": "Log the funding action.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 43,
+    "what": "Return success from fund.",
+    "why": "Return success from fund.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 44,
+    "what": "End of fund handler.",
+    "why": "End of fund handler.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 46,
+    "what": "Define the claim instruction handler.",
+    "why": "Releases vested lamports to the beneficiary.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 47,
+    "what": "Create a mutable reference to the vesting account.",
+    "why": "Create a mutable reference to the vesting account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 48,
+    "what": "Read the current unix timestamp.",
+    "why": "Read the current unix timestamp.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 49,
+    "what": "Ensure the cliff has been reached.",
+    "why": "Ensure the cliff has been reached.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 51,
+    "what": "Check if vesting is fully complete.",
+    "why": "Check if vesting is fully complete.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 52,
+    "what": "If complete, vested equals total amount.",
+    "why": "If complete, vested equals total amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 53,
+    "what": "Otherwise compute a proportional vesting amount.",
+    "why": "Otherwise compute a proportional vesting amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 54,
+    "what": "Compute elapsed time since start.",
+    "why": "Compute elapsed time since start.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 55,
+    "what": "Compute total schedule duration.",
+    "why": "Compute total schedule duration.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 56,
+    "what": "Start fixed-point style math using i128.",
+    "why": "Start fixed-point style math using i128.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 57,
+    "what": "Multiply total amount by elapsed time.",
+    "why": "Multiply total amount by elapsed time.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 58,
+    "what": "Divide by total duration.",
+    "why": "Divide by total duration.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 59,
+    "what": "Convert overflow into an error.",
+    "why": "Convert overflow into an error.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 60,
+    "what": "Cast the vested amount back to u64.",
+    "why": "Cast the vested amount back to u64.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 61,
+    "what": "End the vesting calculation branch.",
+    "why": "End the vesting calculation branch.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 63,
+    "what": "Compute available amount by subtracting released.",
+    "why": "Compute available amount by subtracting released.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 64,
+    "what": "Subtract released from vested safely.",
+    "why": "Subtract released from vested safely.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 65,
+    "what": "Convert underflow into an error.",
+    "why": "Convert underflow into an error.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 66,
+    "what": "Reject claims when nothing is available.",
+    "why": "Reject claims when nothing is available.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 68,
+    "what": "Debit lamports from the vault.",
+    "why": "Debit lamports from the vault.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 69,
+    "what": "Credit lamports to the beneficiary.",
+    "why": "Credit lamports to the beneficiary.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 70,
+    "what": "Start updating released amount.",
+    "why": "Start updating released amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 71,
+    "what": "Add the claimed amount safely.",
+    "why": "Add the claimed amount safely.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 72,
+    "what": "Continue safe addition for released amount.",
+    "why": "Continue safe addition for released amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 73,
+    "what": "Convert overflow into an error.",
+    "why": "Convert overflow into an error.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 75,
+    "what": "Log the claim amount.",
+    "why": "Log the claim amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 76,
+    "what": "Return success from claim.",
+    "why": "Return success from claim.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 77,
+    "what": "End of claim handler.",
+    "why": "End of claim handler.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 78,
+    "what": "End of program module.",
+    "why": "End of program module.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 80,
+    "what": "Derive account validation for InitializeVesting.",
+    "why": "Derive account validation for InitializeVesting.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 81,
+    "what": "Define accounts required to initialize vesting.",
+    "why": "Define accounts required to initialize vesting.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 82,
+    "what": "Initialize the vesting account.",
+    "why": "Initialize the vesting account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 83,
+    "what": "Vesting account being created.",
+    "why": "Vesting account being created.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 84,
+    "what": "Begin vault initialization constraints.",
+    "why": "Begin vault initialization constraints.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 85,
+    "what": "Initialize the vault account.",
+    "why": "Initialize the vault account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 86,
+    "what": "Set authority as payer for vault creation.",
+    "why": "Set authority as payer for vault creation.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 87,
+    "what": "Set vault account size.",
+    "why": "Set vault account size.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 88,
+    "what": "Derive vault PDA seeds.",
+    "why": "Derive vault PDA seeds.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 89,
+    "what": "Capture vault PDA bump.",
+    "why": "Capture vault PDA bump.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 90,
+    "what": "End vault initialization constraints.",
+    "why": "End vault initialization constraints.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 91,
+    "what": "Vault account.",
+    "why": "Vault account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 92,
+    "what": "Mark authority mutable for rent.",
+    "why": "Mark authority mutable for rent.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 93,
+    "what": "Authority signer account.",
+    "why": "Authority signer account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 94,
+    "what": "Document unchecked beneficiary account.",
+    "why": "Document unchecked beneficiary account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 95,
+    "what": "Beneficiary account.",
+    "why": "Beneficiary account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 96,
+    "what": "System Program account.",
+    "why": "System Program account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 97,
+    "what": "End of InitializeVesting accounts struct.",
+    "why": "End of InitializeVesting accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 99,
+    "what": "Derive account validation for Fund.",
+    "why": "Derive account validation for Fund.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 100,
+    "what": "Define accounts required to fund vesting.",
+    "why": "Define accounts required to fund vesting.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 101,
+    "what": "Vesting account.",
+    "why": "Vesting account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 102,
+    "what": "Vault account with PDA constraint.",
+    "why": "Vault account with PDA constraint.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 103,
+    "what": "Vault account passed in.",
+    "why": "Vault account passed in.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 104,
+    "what": "Mark funder mutable for lamports.",
+    "why": "Mark funder mutable for lamports.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 105,
+    "what": "Funder signer account.",
+    "why": "Funder signer account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 106,
+    "what": "System Program account.",
+    "why": "System Program account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 107,
+    "what": "End of Fund accounts struct.",
+    "why": "End of Fund accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 109,
+    "what": "Derive account validation for Claim.",
+    "why": "Derive account validation for Claim.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 110,
+    "what": "Define accounts required to claim vested funds.",
+    "why": "Define accounts required to claim vested funds.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 111,
+    "what": "Vesting account (mutable for released amount).",
+    "why": "Vesting account (mutable for released amount).",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 112,
+    "what": "Vesting account passed in.",
+    "why": "Vesting account passed in.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 113,
+    "what": "Vault account with PDA constraint.",
+    "why": "Vault account with PDA constraint.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 114,
+    "what": "Vault account passed in.",
+    "why": "Vault account passed in.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 115,
+    "what": "Document unchecked beneficiary account.",
+    "why": "Document unchecked beneficiary account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 116,
+    "what": "Mark beneficiary mutable for lamports.",
+    "why": "Mark beneficiary mutable for lamports.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 117,
+    "what": "Beneficiary account.",
+    "why": "Beneficiary account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 118,
+    "what": "End of Claim accounts struct.",
+    "why": "End of Claim accounts struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 120,
+    "what": "Mark Vesting as an account.",
+    "why": "Mark Vesting as an account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 121,
+    "what": "Define the Vesting state struct.",
+    "why": "Define the Vesting state struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 122,
+    "what": "Authority public key.",
+    "why": "Authority public key.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 123,
+    "what": "Beneficiary public key.",
+    "why": "Beneficiary public key.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 124,
+    "what": "Total vesting amount.",
+    "why": "Total vesting amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 125,
+    "what": "Total amount released so far.",
+    "why": "Total amount released so far.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 126,
+    "what": "Start timestamp.",
+    "why": "Start timestamp.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 127,
+    "what": "Cliff timestamp.",
+    "why": "Cliff timestamp.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 128,
+    "what": "End timestamp.",
+    "why": "End timestamp.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 129,
+    "what": "Vault PDA bump.",
+    "why": "Vault PDA bump.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 130,
+    "what": "End of Vesting struct.",
+    "why": "End of Vesting struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 132,
+    "what": "Implement helper constants for Vesting.",
+    "why": "Implement helper constants for Vesting.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 133,
+    "what": "Define the serialized size of Vesting.",
+    "why": "Define the serialized size of Vesting.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 134,
+    "what": "End of Vesting impl block.",
+    "why": "End of Vesting impl block.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 136,
+    "what": "Mark Vault as an account.",
+    "why": "Mark Vault as an account.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 137,
+    "what": "Define the Vault state struct.",
+    "why": "Define the Vault state struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 138,
+    "what": "Vesting account that owns the vault.",
+    "why": "Vesting account that owns the vault.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 139,
+    "what": "Vault PDA bump.",
+    "why": "Vault PDA bump.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 140,
+    "what": "End of Vault struct.",
+    "why": "End of Vault struct.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 142,
+    "what": "Implement helper constants for Vault.",
+    "why": "Implement helper constants for Vault.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 143,
+    "what": "Define the serialized size of Vault.",
+    "why": "Define the serialized size of Vault.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 144,
+    "what": "End of Vault impl block.",
+    "why": "End of Vault impl block.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 146,
+    "what": "Start custom error definitions.",
+    "why": "Start custom error definitions.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 147,
+    "what": "Define the ErrorCode enum.",
+    "why": "Define the ErrorCode enum.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 148,
+    "what": "Message for invalid amount.",
+    "why": "Message for invalid amount.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 149,
+    "what": "Error when amount is zero.",
+    "why": "Error when amount is zero.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 150,
+    "what": "Message for invalid schedule.",
+    "why": "Message for invalid schedule.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 151,
+    "what": "Error when schedule is invalid.",
+    "why": "Error when schedule is invalid.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 152,
+    "what": "Message for math overflow.",
+    "why": "Message for math overflow.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 153,
+    "what": "Error when math overflows.",
+    "why": "Error when math overflows.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 154,
+    "what": "Message for cliff not reached.",
+    "why": "Message for cliff not reached.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 155,
+    "what": "Error when cliff has not been reached.",
+    "why": "Error when cliff has not been reached.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 156,
+    "what": "Message for empty claim.",
+    "why": "Message for empty claim.",
+    "isImportant": false
+  },
+  {
+    "lineNumber": 157,
+    "what": "Error when nothing is claimable.",
+    "why": "Error when nothing is claimable.",
+    "isImportant": true
+  },
+  {
+    "lineNumber": 158,
+    "what": "End of ErrorCode enum.",
+    "why": "End of ErrorCode enum.",
+    "isImportant": false
+  }
+]

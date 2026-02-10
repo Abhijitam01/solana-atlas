@@ -1,0 +1,139 @@
+{
+  "flow": [
+    {
+      "id": "initialize",
+      "title": "Initialize Multisig",
+      "description": "Create the multisig account, store owners, and initialize the vault.",
+      "lineRange": [9, 24],
+      "concepts": ["Multisig", "PDA"]
+    },
+    {
+      "id": "deposit",
+      "title": "Fund Vault",
+      "description": "Deposit lamports into the multisig vault.",
+      "lineRange": [27, 31],
+      "concepts": ["Lamports"]
+    },
+    {
+      "id": "proposal",
+      "title": "Create Proposal",
+      "description": "Create a proposal to transfer lamports.",
+      "lineRange": [34, 43],
+      "concepts": ["Proposals"]
+    },
+    {
+      "id": "approve",
+      "title": "Collect Approvals",
+      "description": "Record owner approvals for a proposal.",
+      "lineRange": [46, 52],
+      "concepts": ["Multisig", "Access Control"]
+    },
+    {
+      "id": "execute",
+      "title": "Execute Proposal",
+      "description": "Transfer lamports once approvals reach the threshold.",
+      "lineRange": [55, 68],
+      "concepts": ["Lamports", "Threshold"]
+    }
+  ],
+  "instructions": [
+    {
+      "name": "initialize_multisig",
+      "lineStart": 9,
+      "lineEnd": 24,
+      "accounts": [
+        {"name": "multisig", "isMut": true, "isSigner": false, "isPda": false},
+        {"name": "vault", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["vault", "multisig.key()"]},
+        {"name": "payer", "isMut": true, "isSigner": true, "isPda": false},
+        {"name": "owner_one", "isMut": false, "isSigner": true, "isPda": false},
+        {"name": "owner_two", "isMut": false, "isSigner": true, "isPda": false},
+        {"name": "owner_three", "isMut": false, "isSigner": true, "isPda": false},
+        {"name": "system_program", "isMut": false, "isSigner": false, "isPda": false}
+      ],
+      "description": "Creates a 3-owner multisig and its vault PDA."
+    },
+    {
+      "name": "deposit",
+      "lineStart": 27,
+      "lineEnd": 31,
+      "accounts": [
+        {"name": "multisig", "isMut": false, "isSigner": false, "isPda": false},
+        {"name": "vault", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["vault", "multisig.key()"]},
+        {"name": "depositor", "isMut": true, "isSigner": true, "isPda": false},
+        {"name": "system_program", "isMut": false, "isSigner": false, "isPda": false}
+      ],
+      "description": "Transfers lamports into the vault."
+    },
+    {
+      "name": "create_proposal",
+      "lineStart": 34,
+      "lineEnd": 43,
+      "accounts": [
+        {"name": "multisig", "isMut": false, "isSigner": false, "isPda": false},
+        {"name": "vault", "isMut": false, "isSigner": false, "isPda": true, "seeds": ["vault", "multisig.key()"]},
+        {"name": "proposal", "isMut": true, "isSigner": false, "isPda": false},
+        {"name": "recipient", "isMut": false, "isSigner": false, "isPda": false},
+        {"name": "proposer", "isMut": true, "isSigner": true, "isPda": false},
+        {"name": "system_program", "isMut": false, "isSigner": false, "isPda": false}
+      ],
+      "description": "Creates a proposal with recipient and amount."
+    },
+    {
+      "name": "approve",
+      "lineStart": 46,
+      "lineEnd": 52,
+      "accounts": [
+        {"name": "multisig", "isMut": false, "isSigner": false, "isPda": false},
+        {"name": "proposal", "isMut": true, "isSigner": false, "isPda": false},
+        {"name": "owner", "isMut": false, "isSigner": true, "isPda": false}
+      ],
+      "description": "Records an owner approval."
+    },
+    {
+      "name": "execute",
+      "lineStart": 55,
+      "lineEnd": 68,
+      "accounts": [
+        {"name": "multisig", "isMut": false, "isSigner": false, "isPda": false},
+        {"name": "vault", "isMut": true, "isSigner": false, "isPda": true},
+        {"name": "proposal", "isMut": true, "isSigner": false, "isPda": false},
+        {"name": "recipient", "isMut": true, "isSigner": false, "isPda": false}
+      ],
+      "description": "Executes the proposal once approvals reach the threshold."
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Multisig",
+      "lineStart": 149,
+      "lineEnd": 154,
+      "fields": [
+        {"name": "owners", "type": "[Pubkey; 3]", "description": "Owners who can approve proposals"},
+        {"name": "threshold", "type": "u8", "description": "Approvals required to execute"},
+        {"name": "bump", "type": "u8", "description": "Vault PDA bump"}
+      ]
+    },
+    {
+      "name": "Vault",
+      "lineStart": 160,
+      "lineEnd": 164,
+      "fields": [
+        {"name": "multisig", "type": "Pubkey", "description": "Owning multisig"},
+        {"name": "bump", "type": "u8", "description": "Vault PDA bump"}
+      ]
+    },
+    {
+      "name": "Proposal",
+      "lineStart": 170,
+      "lineEnd": 177,
+      "fields": [
+        {"name": "multisig", "type": "Pubkey", "description": "Owning multisig"},
+        {"name": "recipient", "type": "Pubkey", "description": "Recipient of the transfer"},
+        {"name": "amount", "type": "u64", "description": "Lamports to transfer"},
+        {"name": "approvals", "type": "[bool; 3]", "description": "Approval flags"},
+        {"name": "executed", "type": "bool", "description": "Execution status"}
+      ]
+    }
+  ],
+  "cpiCalls": []
+}

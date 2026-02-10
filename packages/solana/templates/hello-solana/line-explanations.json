@@ -1,0 +1,20 @@
+[
+  {"line":1,"type":"macro","summary":"Import Anchor prelude types and macros.","why":"Provides Context, Result, and Anchor account types.","concepts":["Anchor"]},
+  {"line":3,"type":"macro","summary":"Declare the program ID for this program.","why":"Solana uses this ID to route instructions and set account ownership.","risk":"Program will not compile without a declared ID.","concepts":["Program ID"]},
+  {"line":5,"type":"macro","summary":"Mark the module as the Anchor program entry point.","why":"Anchor generates instruction dispatch from this module.","concepts":["Instructions"]},
+  {"line":6,"type":"instruction","summary":"Define the program module namespace.","why":"Groups instruction handlers for this program.","concepts":["Program Structure"]},
+  {"line":7,"type":"logic","summary":"Bring parent module symbols into scope.","why":"Allows using types defined outside this module.","concepts":["Rust Modules"]},
+  {"line":9,"type":"instruction","summary":"Define the say_hello instruction handler.","why":"Entry point executed when the instruction is invoked.","concepts":["Instructions"]},
+  {"line":10,"type":"macro","summary":"Log a greeting to the transaction log.","why":"Demonstrates how programs emit logs.","concepts":["Logs"]},
+  {"line":11,"type":"macro","summary":"Log the program ID from the context.","why":"Shows access to program metadata at runtime.","concepts":["Program ID"]},
+  {"line":12,"type":"macro","summary":"Log the user’s public key.","why":"Shows how to read accounts from the instruction context.","concepts":["Accounts","Signers"]},
+  {"line":13,"type":"logic","summary":"Return success from the instruction.","why":"Signals the program executed without errors.","concepts":["Result"]},
+  {"line":14,"type":"logic","summary":"End of the say_hello function.","concepts":["Rust"]},
+  {"line":15,"type":"logic","summary":"End of the program module.","concepts":["Rust Modules"]},
+  {"line":17,"type":"macro","summary":"Derive account validation for SayHello context.","why":"Anchor validates these accounts before execution.","concepts":["Accounts"]},
+  {"line":18,"type":"account","summary":"Define accounts required by say_hello.","concepts":["Accounts"]},
+  {"line":19,"type":"account","summary":"Mark the user account as mutable.","why":"Allows the account to be modified if needed.","concepts":["Mutability"]},
+  {"line":20,"type":"account","summary":"Require the user to be a signer.","why":"Ensures the transaction is authorized by this key.","concepts":["Signer"]},
+  {"line":21,"type":"account","summary":"Include the System Program account.","why":"Provides access to core system instructions if needed.","concepts":["System Program"]},
+  {"line":22,"type":"logic","summary":"End of the SayHello accounts struct.","concepts":["Accounts"]}
+]

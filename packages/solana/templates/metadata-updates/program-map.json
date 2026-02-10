@@ -1,0 +1,35 @@
+{
+  "flow": [
+    {
+      "id": "compose",
+      "title": "Compose Metadata",
+      "description": "Build the new DataV2 payload for metadata.",
+      "lineRange": [18, 26],
+      "concepts": ["Metadata"]
+    },
+    {
+      "id": "cpi",
+      "title": "Update Metadata",
+      "description": "Invoke the Token Metadata program to update on-chain metadata.",
+      "lineRange": [28, 38],
+      "concepts": ["CPI", "Authority"]
+    }
+  ],
+  "instructions": [
+    {
+      "name": "update_metadata",
+      "lineStart": 13,
+      "lineEnd": 39,
+      "accounts": [
+        { "name": "metadata", "isMut": true, "isSigner": false, "isPda": false },
+        { "name": "update_authority", "isMut": false, "isSigner": true, "isPda": false },
+        { "name": "token_metadata_program", "isMut": false, "isSigner": false, "isPda": false }
+      ],
+      "description": "Updates the metadata account via CPI."
+    }
+  ],
+  "accounts": [],
+  "cpiCalls": [
+    { "program": "Token Metadata", "instruction": "update_metadata_accounts_v2" }
+  ]
+}

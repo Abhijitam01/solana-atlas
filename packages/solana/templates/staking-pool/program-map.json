@@ -1,0 +1,86 @@
+{
+  "flow": [
+    {
+      "id": "initialize",
+      "title": "Initialize Pool",
+      "description": "Create the pool PDA and set initial totals.",
+      "lineRange": [9, 16],
+      "concepts": ["PDA", "Staking"]
+    },
+    {
+      "id": "deposit",
+      "title": "Deposit For Shares",
+      "description": "Deposit lamports, compute shares, and update pool totals.",
+      "lineRange": [19, 42],
+      "concepts": ["Staking", "Shares", "Safe Math"]
+    },
+    {
+      "id": "withdraw",
+      "title": "Withdraw From Shares",
+      "description": "Convert shares back into lamports and update totals.",
+      "lineRange": [45, 65],
+      "concepts": ["Staking", "Shares", "Safe Math"]
+    }
+  ],
+  "instructions": [
+    {
+      "name": "initialize_pool",
+      "lineStart": 9,
+      "lineEnd": 16,
+      "accounts": [
+        {"name": "pool", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["pool", "authority.key()"]},
+        {"name": "authority", "isMut": true, "isSigner": true, "isPda": false},
+        {"name": "system_program", "isMut": false, "isSigner": false, "isPda": false}
+      ],
+      "description": "Initializes the staking pool PDA."
+    },
+    {
+      "name": "deposit",
+      "lineStart": 19,
+      "lineEnd": 42,
+      "accounts": [
+        {"name": "pool", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["pool", "authority.key()"]},
+        {"name": "stake_account", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["stake", "pool.key()", "staker.key()"]},
+        {"name": "staker", "isMut": true, "isSigner": true, "isPda": false},
+        {"name": "authority", "isMut": false, "isSigner": false, "isPda": false},
+        {"name": "system_program", "isMut": false, "isSigner": false, "isPda": false}
+      ],
+      "description": "Deposits lamports and mints staking shares."
+    },
+    {
+      "name": "withdraw",
+      "lineStart": 45,
+      "lineEnd": 65,
+      "accounts": [
+        {"name": "pool", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["pool", "authority.key()"]},
+        {"name": "stake_account", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["stake", "pool.key()", "staker.key()"]},
+        {"name": "staker", "isMut": true, "isSigner": true, "isPda": false},
+        {"name": "authority", "isMut": false, "isSigner": false, "isPda": false}
+      ],
+      "description": "Burns shares and returns lamports."
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Pool",
+      "lineStart": 115,
+      "lineEnd": 121,
+      "fields": [
+        {"name": "authority", "type": "Pubkey", "description": "Pool authority"},
+        {"name": "total_staked", "type": "u64", "description": "Lamports staked in the pool"},
+        {"name": "total_shares", "type": "u64", "description": "Total shares issued"},
+        {"name": "bump", "type": "u8", "description": "Pool PDA bump"}
+      ]
+    },
+    {
+      "name": "StakeAccount",
+      "lineStart": 127,
+      "lineEnd": 131,
+      "fields": [
+        {"name": "owner", "type": "Pubkey", "description": "Owner of the stake account"},
+        {"name": "shares", "type": "u64", "description": "Shares owned by the staker"}
+      ]
+    }
+  ],
+  "cpiCalls": []
+}

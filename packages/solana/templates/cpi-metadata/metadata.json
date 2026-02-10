@@ -1,0 +1,18 @@
+{
+  "id": "cpi-metadata",
+  "name": "CPI Metadata",
+  "description": "Update Metaplex metadata via CPI and understand authority requirements.",
+  "difficulty": "intermediate",
+  "learningGoals": [
+    "Invoke Token Metadata CPI",
+    "Pass update authority accounts",
+    "Update metadata URI"
+  ],
+  "solanaConcepts": [
+    "CPI",
+    "Metadata",
+    "Authority"
+  ],
+  "estimatedTime": "20 minutes",
+  "prerequisites": ["NFT Minting"]
+}

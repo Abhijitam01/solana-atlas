@@ -1,0 +1,42 @@
+{
+  "flow": [
+    {
+      "id": "invoke",
+      "title": "Invoke Program",
+      "description": "Client sends the Say Hello instruction to the program.",
+      "lineRange": [9, 14],
+      "concepts": ["Program entrypoint", "Instruction dispatch"]
+    },
+    {
+      "id": "log",
+      "title": "Log Context",
+      "description": "Program logs the greeting and account identities for observability.",
+      "lineRange": [10, 12],
+      "concepts": ["Logging", "Accounts"]
+    }
+  ],
+  "instructions": [
+    {
+      "name": "say_hello",
+      "lineStart": 8,
+      "lineEnd": 13,
+      "accounts": [
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true,
+          "isPda": false
+        },
+        {
+          "name": "system_program",
+          "isMut": false,
+          "isSigner": false,
+          "isPda": false
+        }
+      ],
+      "description": "Logs a greeting message and program information. Demonstrates basic account access and logging."
+    }
+  ],
+  "accounts": [],
+  "cpiCalls": []
+}

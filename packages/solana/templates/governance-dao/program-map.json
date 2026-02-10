@@ -1,0 +1,117 @@
+{
+  "flow": [
+    {
+      "id": "initialize",
+      "title": "Initialize DAO",
+      "description": "Create the DAO account and set quorum and counters.",
+      "lineRange": [9, 17],
+      "concepts": ["Governance", "PDA"]
+    },
+    {
+      "id": "proposal",
+      "title": "Create Proposal",
+      "description": "Create a proposal PDA and increment the counter.",
+      "lineRange": [20, 31],
+      "concepts": ["Proposals", "PDA"]
+    },
+    {
+      "id": "vote",
+      "title": "Cast Vote",
+      "description": "Record a vote and update counts while preventing double voting.",
+      "lineRange": [34, 50],
+      "concepts": ["Voting", "Access Control"]
+    },
+    {
+      "id": "execute",
+      "title": "Execute Proposal",
+      "description": "Mark a proposal executed once quorum is met.",
+      "lineRange": [53, 60],
+      "concepts": ["Quorum", "Governance"]
+    }
+  ],
+  "instructions": [
+    {
+      "name": "initialize_dao",
+      "lineStart": 9,
+      "lineEnd": 17,
+      "accounts": [
+        {"name": "dao", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["dao", "authority.key()"]},
+        {"name": "authority", "isMut": true, "isSigner": true, "isPda": false},
+        {"name": "system_program", "isMut": false, "isSigner": false, "isPda": false}
+      ],
+      "description": "Initializes the DAO account with quorum and counters."
+    },
+    {
+      "name": "create_proposal",
+      "lineStart": 20,
+      "lineEnd": 31,
+      "accounts": [
+        {"name": "dao", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["dao", "authority.key()"]},
+        {"name": "proposal", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["proposal", "dao.key()", "proposal_id"]},
+        {"name": "creator", "isMut": true, "isSigner": true, "isPda": false},
+        {"name": "authority", "isMut": false, "isSigner": false, "isPda": false},
+        {"name": "system_program", "isMut": false, "isSigner": false, "isPda": false}
+      ],
+      "description": "Creates a proposal PDA and increments the counter."
+    },
+    {
+      "name": "cast_vote",
+      "lineStart": 34,
+      "lineEnd": 50,
+      "accounts": [
+        {"name": "dao", "isMut": false, "isSigner": false, "isPda": false},
+        {"name": "proposal", "isMut": true, "isSigner": false, "isPda": false},
+        {"name": "vote_record", "isMut": true, "isSigner": false, "isPda": true, "seeds": ["vote", "proposal.key()", "voter.key()"]},
+        {"name": "voter", "isMut": true, "isSigner": true, "isPda": false},
+        {"name": "system_program", "isMut": false, "isSigner": false, "isPda": false}
+      ],
+      "description": "Records a vote and prevents double voting via a PDA record."
+    },
+    {
+      "name": "execute_proposal",
+      "lineStart": 53,
+      "lineEnd": 60,
+      "accounts": [
+        {"name": "dao", "isMut": false, "isSigner": false, "isPda": false},
+        {"name": "proposal", "isMut": true, "isSigner": false, "isPda": false}
+      ],
+      "description": "Marks a proposal as executed when quorum is met."
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Dao",
+      "lineStart": 124,
+      "lineEnd": 130,
+      "fields": [
+        {"name": "authority", "type": "Pubkey", "description": "DAO authority"},
+        {"name": "quorum", "type": "u64", "description": "Votes required to execute"},
+        {"name": "proposal_count", "type": "u64", "description": "Total proposals created"},
+        {"name": "bump", "type": "u8", "description": "DAO PDA bump"}
+      ]
+    },
+    {
+      "name": "Proposal",
+      "lineStart": 136,
+      "lineEnd": 143,
+      "fields": [
+        {"name": "dao", "type": "Pubkey", "description": "Owning DAO"},
+        {"name": "id", "type": "u64", "description": "Proposal identifier"},
+        {"name": "yes", "type": "u64", "description": "Yes votes"},
+        {"name": "no", "type": "u64", "description": "No votes"},
+        {"name": "executed", "type": "bool", "description": "Execution status"}
+      ]
+    },
+    {
+      "name": "VoteRecord",
+      "lineStart": 149,
+      "lineEnd": 154,
+      "fields": [
+        {"name": "voter", "type": "Pubkey", "description": "Voter public key"},
+        {"name": "proposal", "type": "Pubkey", "description": "Proposal public key"},
+        {"name": "voted", "type": "bool", "description": "Whether the vote has been cast"}
+      ]
+    }
+  ],
+  "cpiCalls": []
+}

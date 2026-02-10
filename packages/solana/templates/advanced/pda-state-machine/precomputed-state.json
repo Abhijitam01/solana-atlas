@@ -1,0 +1,40 @@
+{
+  "scenarios": [
+    {
+      "name": "Initialize Machine",
+      "description": "Create the state machine PDA.",
+      "instruction": "initialize",
+      "args": [],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: State machine initialized"
+      ],
+      "computeUnits": 8000
+    },
+    {
+      "name": "Advance Machine",
+      "description": "Advance to the next state.",
+      "instruction": "advance",
+      "args": [],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: State advanced"
+      ],
+      "computeUnits": 7000
+    },
+    {
+      "name": "Reset Machine",
+      "description": "Reset state back to Idle.",
+      "instruction": "reset",
+      "args": [],
+      "accountsBefore": [],
+      "accountsAfter": [],
+      "logs": [
+        "Program log: State reset"
+      ],
+      "computeUnits": 7000
+    }
+  ]
+}
