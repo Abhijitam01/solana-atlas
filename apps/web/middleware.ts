@@ -26,9 +26,9 @@ export async function middleware(request: NextRequest) {
   // IMPORTANT: Refresh session (updates cookies if needed)
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Redirect authenticated users away from landing/auth pages
-  // But allow unauthenticated access to playground routes
-  if (user && (request.nextUrl.pathname === '/' || request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup'))) {
+  // Redirect authenticated users away from login/signup pages
+  // But allow authenticated users to view the landing page (/)
+  if (user && (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/signup'))) {
     // Default authenticated landing should open the hello-solana template
     return NextResponse.redirect(new URL('/playground/hello-solana', request.url));
   }

@@ -261,7 +261,7 @@ export function ProgramSidebar() {
         finalName,
         typeId as any,
         code,
-        checklist,
+        checklist, // Pass the populated checklist
         templateData?.metadata,
         templateData?.programMap,
         templateData?.functionSpecs,
