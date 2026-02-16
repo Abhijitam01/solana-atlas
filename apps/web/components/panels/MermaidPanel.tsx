@@ -65,8 +65,37 @@ export function MermaidPanel() {
     if (!diagramRef.current || !definition) return;
 
     try {
-      // Clear previous content
+      // Clear previous content and errors
       diagramRef.current.innerHTML = "";
+      setError(null);
+
+      // Re-initialize mermaid to clear any previous error state
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: "dark",
+        themeVariables: {
+          primaryColor: "#14F195",
+          primaryTextColor: "#ffffff",
+          primaryBorderColor: "#14F195",
+          lineColor: "#8b949e",
+          secondaryColor: "#1f2933",
+          tertiaryColor: "#0d1117",
+          fontFamily: "ui-monospace, monospace",
+          fontSize: "14px",
+          background: "#0d1117",
+          mainBkg: "#161b22",
+          nodeBorder: "#14F195",
+          clusterBkg: "#161b22",
+          clusterBorder: "#30363d",
+          titleColor: "#c9d1d9",
+          edgeLabelBackground: "#0d1117",
+        },
+        flowchart: {
+          htmlLabels: true,
+          curve: "basis",
+          padding: 16,
+        },
+      });
 
       const { svg } = await mermaid.render(
         `mermaid-diagram-${Date.now()}`,
@@ -75,7 +104,7 @@ export function MermaidPanel() {
       diagramRef.current.innerHTML = svg;
     } catch (err) {
       console.error("Mermaid render error:", err);
-      setError("Failed to render diagram. The generated definition may have syntax issues.");
+      setError("Diagram had syntax issues. Click 'Generate' again to retry with a fresh diagram.");
     }
   }, []);
 
