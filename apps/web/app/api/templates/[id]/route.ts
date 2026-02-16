@@ -24,7 +24,7 @@ async function readJSON<T>(path: string): Promise<T> {
 
 const LocalLineExplanationSchema = z.object({
   line: z.number(),
-  type: z.enum(["instruction", "account", "macro", "logic", "security"]),
+  type: z.enum(["instruction", "account", "macro", "logic", "security", "import", "module", "log"]),
   summary: z.string(),
   why: z.string().optional(),
   risk: z.string().optional(),

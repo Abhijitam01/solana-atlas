@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { getGroqClient, GROQ_MODELS } from '@/lib/groq';
 import { loadTemplate } from '@solana-playground/solana';
 import { z } from 'zod';
 
@@ -80,17 +80,15 @@ export async function POST(
       return NextResponse.json(precomputed);
     }
 
-    // Generate with Gemini for missing lines
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
+    // Generate with Groq for missing lines
+    if (!process.env.GROQ_API_KEY) {
       return NextResponse.json(
         { error: 'AI service not configured' },
         { status: 503 }
       );
     }
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const client = getGroqClient();
 
     const codeLines = template.code.split('\n');
     const selectedCode = lineNumbers
@@ -100,9 +98,7 @@ export async function POST(
       })
       .join('\n');
 
-    const prompt = `${SYSTEM_PROMPT}
-
-Explain these lines from a Solana Anchor program:
+    const userPrompt = `Explain these lines from a Solana Anchor program:
 
 \`\`\`rust
 ${selectedCode}
@@ -114,9 +110,17 @@ Program context:
 
 Return ONLY the JSON array, no markdown, no code blocks.`;
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    let text = response.text().trim();
+    const response = await client.chat.completions.create({
+      model: GROQ_MODELS.VERSATILE,
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT },
+        { role: 'user', content: userPrompt },
+      ],
+      max_tokens: 2048,
+      temperature: 0.3,
+    });
+
+    let text = response.choices[0]?.message?.content?.trim() || '';
 
     // Clean up JSON
     if (text.startsWith('```json')) {

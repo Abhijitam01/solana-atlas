@@ -5,7 +5,8 @@ export type PanelId =
   | "explanation"
   | "execution"
   | "inspector"
-  | "checklist";
+  | "checklist"
+  | "mermaid";
 
 export type LayoutMode = "code-only" | "code-map" | "code-exec";
 
@@ -30,6 +31,7 @@ const initialPanels: Record<PanelId, boolean> = {
   execution: false,
   inspector: false,
   checklist: false,
+  mermaid: false,
 };
 
 export const useLayoutStore = createWithEqualityFn<LayoutState>((set) => ({

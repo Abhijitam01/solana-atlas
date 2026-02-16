@@ -1,5 +1,9 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import OpenAI from "openai";
 import type { LineExplanation, ProgramMap } from "@solana-playground/types";
+
+const GROQ_MODELS = {
+  VERSATILE: "llama-3.3-70b-versatile",
+} as const;
 
 const SYSTEM_PROMPT = `You are a Solana educator. You explain code clearly and concisely.
 Rules:
@@ -29,16 +33,22 @@ interface ExplainRequest {
   };
 }
 
+function getGroqClient(): OpenAI {
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) {
+    throw new Error("GROQ_API_KEY not configured");
+  }
+
+  return new OpenAI({
+    apiKey,
+    baseURL: "https://api.groq.com/openai/v1",
+  });
+}
+
 export async function explainLines(
   request: ExplainRequest
 ): Promise<LineExplanation[]> {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    throw new Error("GEMINI_API_KEY not configured");
-  }
-
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const client = getGroqClient();
 
   const codeLines = request.code.split("\n");
   const selectedCode = request.lineNumbers
@@ -48,9 +58,7 @@ export async function explainLines(
     })
     .join("\n");
 
-  const prompt = `${SYSTEM_PROMPT}
-
-Explain these lines from a Solana Anchor program:
+  const userPrompt = `Explain these lines from a Solana Anchor program:
 
 \`\`\`rust
 ${selectedCode}
@@ -67,22 +75,29 @@ Program context:
 Return ONLY the JSON array, no markdown, no code blocks.`;
 
   try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    const response = await client.chat.completions.create({
+      model: GROQ_MODELS.VERSATILE,
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: userPrompt },
+      ],
+      max_tokens: 2048,
+      temperature: 0.3,
+    });
+
+    let text = response.choices[0]?.message?.content?.trim() || "";
 
     // Try to extract JSON from the response
-    let jsonText = text.trim();
-    if (jsonText.startsWith("```json")) {
-      jsonText = jsonText.replace(/```json\n?/g, "").replace(/```\n?/g, "");
-    } else if (jsonText.startsWith("```")) {
-      jsonText = jsonText.replace(/```\n?/g, "");
+    if (text.startsWith("```json")) {
+      text = text.replace(/```json\n?/g, "").replace(/```\n?/g, "");
+    } else if (text.startsWith("```")) {
+      text = text.replace(/```\n?/g, "");
     }
 
-    const explanations = JSON.parse(jsonText) as LineExplanation[];
+    const explanations = JSON.parse(text) as LineExplanation[];
     return explanations;
   } catch (error) {
-    console.error("Gemini API error:", error);
+    console.error("Groq API error:", error);
     throw new Error("Failed to generate explanation");
   }
 }

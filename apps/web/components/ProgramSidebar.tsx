@@ -18,6 +18,7 @@ import {
   Sparkles,
   ChevronDown,
   ChevronRight,
+  GitBranch,
 } from "lucide-react";
 import { scaffoldProgram } from "@/lib/scaffold";
 import { motion, AnimatePresence } from "framer-motion";
@@ -131,6 +132,7 @@ export function ProgramSidebar() {
     { id: "execution" as const, label: "Execution", icon: Rocket },
     { id: "inspector" as const, label: "Account Inspector", icon: ShieldCheck },
     { id: "checklist" as const, label: "Program Checklist", icon: ListChecks },
+    { id: "mermaid" as const, label: "Mermaid Diagram", icon: GitBranch },
   ];
   const layoutItems = [
     { id: "code-only" as const, label: "Code Only" },

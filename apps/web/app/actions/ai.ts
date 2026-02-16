@@ -1,6 +1,6 @@
 "use server";
 
-import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from "@google/generative-ai";
+import { getGroqClient, GROQ_MODELS } from "@/lib/groq";
 import { z } from "zod";
 import pRetry from "p-retry";
 import { LRUCache } from "lru-cache";
@@ -10,8 +10,6 @@ import { LRUCache } from "lru-cache";
 // ============================================================================
 
 const config = {
-  apiKey: process.env.GEMINI_API_KEY,
-  model: "gemini-1.5-flash",
   maxRetries: 3,
   retryDelay: 1000,
   
@@ -35,15 +33,16 @@ const config = {
   
   // Completion settings
   completion: {
-    maxOutputTokens: 150,     // Reduced from 200 (cheaper)
-    temperature: 0.2,         // More deterministic
+    model: GROQ_MODELS.FAST,
+    maxOutputTokens: 150,
+    temperature: 0.2,
     topP: 0.8,
-    topK: 40,
-    contextLines: 15,         // Reduced from 20 (cheaper)
+    contextLines: 15,
   },
   
   // Response settings
   response: {
+    model: GROQ_MODELS.VERSATILE,
     maxOutputTokens: 2048,
     temperature: 0.7,
   },
@@ -256,62 +255,40 @@ class Telemetry {
 const telemetry = new Telemetry();
 
 // ============================================================================
-// GEMINI CLIENT
+// GROQ CLIENT
 // ============================================================================
 
-class GeminiClient {
-  private client: GoogleGenerativeAI | null = null;
-
-  private getClient(): GoogleGenerativeAI {
-    if (!config.apiKey) {
-      throw new Error("GEMINI_API_KEY is not set in environment variables");
-    }
-
-    if (!this.client) {
-      this.client = new GoogleGenerativeAI(config.apiKey);
-    }
-
-    return this.client;
-  }
-
+class GroqLLMClient {
   async generateWithRetry(
     prompt: string,
     settings: {
+      model: string;
       maxOutputTokens: number;
       temperature: number;
       topP?: number;
-      topK?: number;
     }
   ): Promise<string> {
     return pRetry(
       async () => {
-        const genAI = this.getClient();
-        const model = genAI.getGenerativeModel({
-          model: config.model,
-          generationConfig: settings,
-          safetySettings: [
+        const client = getGroqClient();
+        const response = await client.chat.completions.create({
+          model: settings.model,
+          messages: [
             {
-              category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-              threshold: HarmBlockThreshold.BLOCK_NONE,
-            },
-            {
-              category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-              threshold: HarmBlockThreshold.BLOCK_NONE,
-            },
-            {
-              category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-              threshold: HarmBlockThreshold.BLOCK_NONE,
-            },
-            {
-              category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-              threshold: HarmBlockThreshold.BLOCK_NONE,
+              role: "user",
+              content: prompt,
             },
           ],
+          max_tokens: settings.maxOutputTokens,
+          temperature: settings.temperature,
+          top_p: settings.topP,
         });
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        return response.text();
+        const text = response.choices[0]?.message?.content;
+        if (!text) {
+          throw new Error("Empty response from Groq");
+        }
+        return text;
       },
       {
         retries: config.maxRetries,
@@ -320,7 +297,7 @@ class GeminiClient {
         onFailedAttempt: (error) => {
           const errorMessage = error instanceof Error ? error.message : String(error);
           console.warn(
-            `[Gemini] Attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.`,
+            `[Groq] Attempt ${error.attemptNumber} failed. ${error.retriesLeft} retries left.`,
             errorMessage
           );
         },
@@ -329,7 +306,7 @@ class GeminiClient {
   }
 }
 
-const geminiClient = new GeminiClient();
+const groqLLMClient = new GroqLLMClient();
 
 // ============================================================================
 // INPUT SANITIZATION
@@ -489,11 +466,11 @@ export async function generateCodeCompletion(
     const prompt = buildCompletionPrompt(lastLines, input.suffix.substring(0, 500));
 
     // Generate completion
-    const text = await geminiClient.generateWithRetry(prompt, {
+    const text = await groqLLMClient.generateWithRetry(prompt, {
+      model: config.completion.model,
       maxOutputTokens: config.completion.maxOutputTokens,
       temperature: config.completion.temperature,
       topP: config.completion.topP,
-      topK: config.completion.topK,
     });
 
     // Clean response
@@ -562,7 +539,8 @@ export async function generateAIResponse(prompt: string, userId?: string) {
     }
 
     // Generate response
-    const text = await geminiClient.generateWithRetry(input.prompt, {
+    const text = await groqLLMClient.generateWithRetry(input.prompt, {
+      model: config.response.model,
       maxOutputTokens: config.response.maxOutputTokens,
       temperature: config.response.temperature,
     });
