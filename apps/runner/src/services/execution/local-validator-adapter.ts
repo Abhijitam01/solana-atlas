@@ -32,16 +32,70 @@ export class LocalValidatorAdapter implements ExecutionAdapter {
   private signerCache: Map<string, Keypair> = new Map();
   private workspaceManager = new WorkspaceManager();
 
-  async execute(input: ExecutionScenarioInput): Promise<ExecutionResult> {
+  async executeScenario(input: ExecutionScenarioInput): Promise<ExecutionResult> {
+    return this.executeCommon(input.template, input.scenarioName, async (program, programId, payer, stateCapture) => {
+      // Resolve accounts and capture initial state
+      const resolved = await this.resolveAccounts(input.template, input.instruction, programId, payer);
+      const before = await stateCapture.captureMultipleAccounts(resolved.labels);
+
+      // Execute instruction (with optional bootstrap for dependent flows)
+      await this.executeWithPrerequisites(program, input, programId, payer);
+
+      return { before, resolved };
+    });
+  }
+
+  async executeTransaction(input: ExecutionTransactionInput): Promise<ExecutionResult> {
+    const { template, transaction } = input;
+    return this.executeCommon(template, "custom-transaction", async (program, programId, payer, stateCapture) => {
+      // Resolve accounts for all instructions
+      // For now, we'll assume a single instruction execution or sequential execution
+      // capturing state before/after the WHOLE transaction
+      
+      // We need to resolve accounts for the first instruction to capture "before" state of interest
+      // This is a bit tricky with multiple instructions. 
+      // Strategy: Collect ALL unique accounts across all instructions.
+      
+      const allLabels = new Map<string, PublicKey>();
+      
+      // 1. Resolve all accounts for all instructions
+      for (const inst of transaction.instructions) {
+        const resolved = await this.resolveTransactionAccounts(inst, programId, payer);
+        resolved.labels.forEach((l) => allLabels.set(l.label, l.address));
+      }
+
+      const labels = Array.from(allLabels.entries()).map(([label, address]) => ({ label, address }));
+      const before = await stateCapture.captureMultipleAccounts(labels);
+
+      // 2. Execute instructions sequentially
+      for (const inst of transaction.instructions) {
+         const resolved = await this.resolveTransactionAccounts(inst, programId, payer);
+         await this.invoke(program, inst.instructionName, inst.args || [], resolved);
+      }
+
+      return { before, resolved: { accounts: {}, signers: [], labels } }; 
+    });
+  }
+
+  private async executeCommon(
+    template: Template, 
+    scenarioName: string,
+    executionLogic: (
+      program: any, 
+      programId: PublicKey, 
+      payer: Keypair,
+      stateCapture: StateCapture
+    ) => Promise<{ before: any[], resolved: ResolvedAccounts }>
+  ): Promise<ExecutionResult> {
     this.accountCache.clear();
     this.signerCache.clear();
     this.lastLogs = null;
     this.lastComputeUnits = null;
 
-    if (!SUPPORTED_TEMPLATES.has(input.template.id)) {
-      return this.unsupported(
-        input,
-        `Live execution is not yet supported for "${input.template.id}".`
+    if (!SUPPORTED_TEMPLATES.has(template.id)) {
+      return this.fail(
+        scenarioName,
+        `Live execution is not yet supported for "${template.id}".`
       );
     }
 
@@ -52,20 +106,20 @@ export class LocalValidatorAdapter implements ExecutionAdapter {
       const connection = this.getConnection();
       const payer = await this.getPayer(connection);
 
-      workspaceDir = await this.workspaceManager.create(input.template.id);
+      workspaceDir = await this.workspaceManager.create(template.id);
       const compiler = new ProgramCompiler();
       const compileResult = await compiler.compile(
-        input.template.id,
-        input.template.code,
+        template.id,
+        template.code,
         workspaceDir
       );
 
       if (!compileResult.success) {
-        return this.fail(input, `Compilation failed: ${compileResult.error}`);
+        return this.fail(scenarioName, `Compilation failed: ${compileResult.error}`);
       }
 
       if (!compileResult.programKeypairPath) {
-        return this.fail(input, "Program keypair not found after build.");
+        return this.fail(scenarioName, "Program keypair not found after build.");
       }
 
       const payerKeypairPath = await this.writePayerKeypair(payer, workspaceDir);
@@ -84,19 +138,16 @@ export class LocalValidatorAdapter implements ExecutionAdapter {
 
       const idlPath = compileResult.idlPath;
       if (!idlPath) {
-        return this.fail(input, "IDL not found after compilation.");
+        return this.fail(scenarioName, "IDL not found after compilation.");
       }
       const idl = await this.loadIdl(idlPath);
       const program = new anchor.Program(idl, programId, provider);
-
       const stateCapture = new StateCapture(connection);
-      const resolved = await this.resolveAccounts(input.template, input.instruction, programId, payer);
 
-      const before = await stateCapture.captureMultipleAccounts(resolved.labels);
+      // Run valid execution logic
+      const { before, resolved } = await executionLogic(program, programId, payer, stateCapture);
 
-      // Execute instruction (with optional bootstrap for dependent flows)
-      await this.executeWithPrerequisites(program, input, programId, payer);
-
+      // Capture after state
       const after = await stateCapture.captureMultipleAccounts(resolved.labels);
       const diff = stateCapture.computeStateDiff(before, after);
 
@@ -105,19 +156,17 @@ export class LocalValidatorAdapter implements ExecutionAdapter {
         return { ...account, changes: change?.changes ?? [] };
       });
 
-      const result = {
+      return {
         success: true,
-        scenario: input.scenarioName,
+        scenario: scenarioName,
         accountsBefore: before,
         accountsAfter,
         logs: this.lastLogs ?? [],
         computeUnits: this.lastComputeUnits ?? 0,
         trace: parseTransactionLogs(this.lastLogs ?? []),
       };
-
-      return result;
     } catch (error) {
-      return this.fail(input, error instanceof Error ? error.message : String(error));
+      return this.fail(scenarioName, error instanceof Error ? error.message : String(error));
     } finally {
       if (workspaceDir) {
         await this.workspaceManager.cleanup(workspaceDir);

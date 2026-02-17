@@ -2,6 +2,7 @@ import { createWithEqualityFn } from "zustand/traditional";
 import { persist } from "zustand/middleware";
 import type { ProgramMap, FunctionSpec, PrecomputedState, TemplateMetadata } from "@solana-playground/types";
 import { PROGRAM_TYPE_MAP, type ProgramTypeId } from "@/lib/program-types";
+import type { TestSuiteResult } from "@/lib/test-runner";
 
 export type ProgramSource = "template" | "custom";
 
@@ -19,6 +20,8 @@ export interface ProgramSession {
   precomputedState: PrecomputedState;
   checklist: string[];
   mermaidDiagram?: string;
+  testCode?: string;
+  lastTestResult?: TestSuiteResult;
   createdAt: string;
   updatedAt: string;
   isDirty: boolean;
@@ -36,7 +39,8 @@ interface ProgramState {
     programMap?: ProgramMap,
     functionSpecs?: FunctionSpec[],
     precomputedState?: PrecomputedState,
-    mermaidDiagram?: string
+    mermaidDiagram?: string,
+    testCode?: string
   ) => ProgramSession;
   openTemplateProgram: (template: {
     id: string;
@@ -56,15 +60,18 @@ interface ProgramState {
     templateId: string;
     title: string;
     code: string;
-    template: {
-      metadata: TemplateMetadata;
-      functionSpecs: FunctionSpec[];
-      programMap: ProgramMap;
-      precomputedState: PrecomputedState;
-      checklist: string[];
-    };
-  }) => ProgramSession;
+      template: {
+        metadata: TemplateMetadata;
+        functionSpecs: FunctionSpec[];
+        programMap: ProgramMap;
+        precomputedState: PrecomputedState;
+        checklist: string[];
+        testCode?: string;
+      };
+    }) => ProgramSession;
   removeProgramBySavedId: (savedId: string) => void;
+  updateProgramTestCode: (id: string, testCode: string) => void;
+  setProgramTestResult: (id: string, result: TestSuiteResult) => void;
 }
 
 const nowIso = () => new Date().toISOString();
@@ -86,7 +93,8 @@ export const useProgramStore = createWithEqualityFn<ProgramState>()(
         programMap,
         functionSpecs,
         precomputedState,
-        mermaidDiagram
+        mermaidDiagram,
+        testCode
       ) => {
         const definition = PROGRAM_TYPE_MAP.get(typeId);
         if (!definition) {
@@ -109,6 +117,7 @@ export const useProgramStore = createWithEqualityFn<ProgramState>()(
           precomputedState: precomputedState || definition.precomputedState,
           checklist: checklist || definition.checklist,
           mermaidDiagram: mermaidDiagram,
+          testCode: testCode ?? (definition as any).testCode,
           createdAt: nowIso(),
           updatedAt: nowIso(),
           isDirty: false,
@@ -135,6 +144,7 @@ export const useProgramStore = createWithEqualityFn<ProgramState>()(
             precomputedState: template.precomputedState,
             checklist: template.checklist || [],
             mermaidDiagram: template.mermaidDiagram,
+            testCode: (template as any).testCode || existing.testCode,
           };
 
           set((state) => ({
@@ -161,6 +171,7 @@ export const useProgramStore = createWithEqualityFn<ProgramState>()(
           precomputedState: template.precomputedState,
           checklist: template.checklist || [],
           mermaidDiagram: template.mermaidDiagram,
+          testCode: (template as any).testCode,
           createdAt: nowIso(),
           updatedAt: nowIso(),
           isDirty: false,
@@ -195,6 +206,7 @@ export const useProgramStore = createWithEqualityFn<ProgramState>()(
           programMap: userCode.template.programMap,
           precomputedState: userCode.template.precomputedState,
           checklist: userCode.template.checklist,
+          testCode: userCode.template.testCode,
           createdAt: nowIso(),
           updatedAt: nowIso(),
           isDirty: false,
@@ -253,6 +265,35 @@ export const useProgramStore = createWithEqualityFn<ProgramState>()(
                 ...program,
                 savedId,
                 isDirty: false, // Clean after save? Or keep dirty if logic differs
+              },
+            },
+          };
+        }),
+      updateProgramTestCode: (id, testCode) =>
+        set((state) => {
+          const program = state.programs[id];
+          if (!program) return state;
+          return {
+            programs: {
+              ...state.programs,
+              [id]: {
+                ...program,
+                testCode,
+                updatedAt: nowIso(),
+              },
+            },
+          };
+        }),
+      setProgramTestResult: (id, result) =>
+        set((state) => {
+          const program = state.programs[id];
+          if (!program) return state;
+          return {
+            programs: {
+              ...state.programs,
+              [id]: {
+                ...program,
+                lastTestResult: result,
               },
             },
           };

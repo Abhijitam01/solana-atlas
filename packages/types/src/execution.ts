@@ -35,9 +35,32 @@ export type PrecomputedState = z.infer<typeof PrecomputedStateSchema>;
 
 export const ExecutionRequestSchema = z.object({
   templateId: z.string(),
-  scenario: z.string(),
-  instruction: z.string(),
+  type: z.enum(["scenario", "transaction"]).default("scenario"),
+  
+  // Scenario execution
+  scenario: z.string().optional(),
+  instruction: z.string().optional(),
   args: z.array(z.unknown()).optional(),
+
+  // Custom transaction execution
+  transaction: z
+    .object({
+      instructions: z.array(
+        z.object({
+          programId: z.string(),
+          instructionName: z.string(),
+          accounts: z.array(
+            z.object({
+              pubkey: z.string(), // This is the label/identifier from frontend
+              isSigner: z.boolean(),
+              isWritable: z.boolean(),
+            })
+          ),
+          args: z.array(z.unknown()).optional(),
+        })
+      ),
+    })
+    .optional(),
 });
 
 export const ExecutionResultSchema = z.object({

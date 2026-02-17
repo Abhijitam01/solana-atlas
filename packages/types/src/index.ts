@@ -19,5 +19,7 @@ export interface Template {
   programMap: ProgramMap;
   functionSpecs: FunctionSpec[];
   precomputedState: PrecomputedState;
+  checklist?: string[];
   mermaidDiagram?: string;
+  testCode?: string;
 }

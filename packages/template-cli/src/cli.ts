@@ -75,6 +75,7 @@ async function initTemplate(templateId: string): Promise<void> {
   await ensureDir(join(templateDir, "program"));
 
   const libRs = `use anchor_lang::prelude::*;\n\ndeclare_id!("${programId}");\n\n#[program]\npub mod ${programName} {\n    use super::*;\n\n    pub fn initialize(_ctx: Context<Initialize>) -> Result<()> {\n        Ok(())\n    }\n}\n\n#[derive(Accounts)]\npub struct Initialize {}\n`;
+  const testCode = `const REQUIRED_INSTRUCTIONS = ["initialize"];\n\nfunction snakeToCamel(name) {\n  return name.replace(/_([a-z])/g, function (_, c) {\n    return c.toUpperCase();\n  });\n}\n\ndescribe("${id} template", () => {\n  it("injects playground test runtime context", () => {\n    expect(program, "program should be injected by the playground runtime").to.exist;\n    expect(provider, "provider should be injected by the playground runtime").to.exist;\n    expect(expect, "chai expect should be available").to.be.a("function");\n    expect(assert, "chai assert should be available").to.be.an("object");\n  });\n\n  it("declares required instructions in the IDL", () => {\n    const idlInstructions = (program.idl && Array.isArray(program.idl.instructions))\n      ? program.idl.instructions.map(function (instruction) { return instruction.name; })\n      : [];\n\n    REQUIRED_INSTRUCTIONS.forEach(function (instruction) {\n      expect(\n        idlInstructions,\n        "IDL is missing required instruction \\"" + instruction + "\\""\n      ).to.include(instruction);\n    });\n  });\n\n  it("exposes required instruction builders on program.methods", () => {\n    const methods = program.methods || {};\n\n    REQUIRED_INSTRUCTIONS.forEach(function (instruction) {\n      const methodName = snakeToCamel(instruction);\n      expect(\n        methods[methodName],\n        "program.methods." + methodName + " should exist for instruction \\"" + instruction + "\\""\n      ).to.be.a("function");\n    });\n  });\n\n  it("creates rpc-capable builders for zero-argument instructions", () => {\n    const methods = program.methods || {};\n    const idlInstructions = (program.idl && Array.isArray(program.idl.instructions))\n      ? program.idl.instructions\n      : [];\n\n    const zeroArgRequired = idlInstructions.filter(function (instruction) {\n      return REQUIRED_INSTRUCTIONS.includes(instruction.name) && Array.isArray(instruction.args) && instruction.args.length === 0;\n    });\n\n    zeroArgRequired.forEach(function (instruction) {\n      const methodName = snakeToCamel(instruction.name);\n      const builder = methods[methodName]();\n      expect(\n        builder && builder.rpc,\n        "builder for \\"" + instruction.name + "\\" should expose rpc()"\n      ).to.be.a("function");\n    });\n  });\n});\n`;
 
   const metadata = {
     id,
@@ -104,6 +105,7 @@ async function initTemplate(templateId: string): Promise<void> {
   await writeFile(join(templateDir, "program-map.json"), JSON.stringify(programMap, null, 2), "utf-8");
   await writeFile(join(templateDir, "precomputed-state.json"), JSON.stringify(precomputedState, null, 2), "utf-8");
   await writeFile(join(templateDir, "function-specs.json"), "[]\n", "utf-8");
+  await writeFile(join(templateDir, "test.ts"), testCode, "utf-8");
 
   console.log(`Created template "${id}" at ${templateDir}`);
 }
@@ -124,6 +126,7 @@ async function validateTemplate(templateId: string, rootDir: string): Promise<st
     "line-explanations.json",
     "program-map.json",
     "precomputed-state.json",
+    "test.ts",
     "program/lib.rs",
   ];
 

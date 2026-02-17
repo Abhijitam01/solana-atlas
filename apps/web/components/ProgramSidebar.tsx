@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTemplates } from "@/hooks/use-templates";
 import { useRouter } from "next/navigation";
 import { useProgramStore } from "@/stores/programs";
@@ -19,6 +19,7 @@ import {
   ChevronDown,
   ChevronRight,
   GitBranch,
+  Beaker,
 } from "lucide-react";
 import { scaffoldProgram } from "@/lib/scaffold";
 import { motion, AnimatePresence } from "framer-motion";
@@ -94,7 +95,19 @@ export function ProgramSidebar() {
     }),
     shallow
   );
-  const { panels, togglePanel, setPanel, toggleZenMode, zenMode, layoutMode, setLayoutMode, mobileSidebarOpen, toggleMobileSidebar } =
+  const {
+    panels,
+    togglePanel,
+    setPanel,
+    toggleZenMode,
+    zenMode,
+    layoutMode,
+    setLayoutMode,
+    mobileSidebarOpen,
+    toggleMobileSidebar,
+    sidebarWidth,
+    setSidebarWidth,
+  } =
     useLayoutStore(
       (state) => ({
         panels: state.panels,
@@ -106,6 +119,8 @@ export function ProgramSidebar() {
         setLayoutMode: state.setLayoutMode,
         mobileSidebarOpen: state.mobileSidebarOpen,
         toggleMobileSidebar: state.toggleMobileSidebar,
+        sidebarWidth: state.sidebarWidth,
+        setSidebarWidth: state.setSidebarWidth,
       })
     );
 
@@ -117,6 +132,43 @@ export function ProgramSidebar() {
   const [isPracticeMode, setIsPracticeMode] = useState(false);
   const [programName, setProgramName] = useState("");
   const [isCreating, setIsCreating] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
+
+  const handleResizeMove = useCallback(
+    (event: MouseEvent) => {
+      setSidebarWidth(event.clientX);
+    },
+    [setSidebarWidth]
+  );
+
+  const handleResizeUp = useCallback(() => {
+    setIsResizing(false);
+    window.removeEventListener("mousemove", handleResizeMove);
+    window.removeEventListener("mouseup", handleResizeUp);
+    document.body.style.cursor = "";
+    document.body.style.userSelect = "";
+  }, [handleResizeMove]);
+
+  const handleResizeDown = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      setIsResizing(true);
+      document.body.style.cursor = "col-resize";
+      document.body.style.userSelect = "none";
+      window.addEventListener("mousemove", handleResizeMove);
+      window.addEventListener("mouseup", handleResizeUp);
+    },
+    [handleResizeMove, handleResizeUp]
+  );
+
+  useEffect(() => {
+    return () => {
+      window.removeEventListener("mousemove", handleResizeMove);
+      window.removeEventListener("mouseup", handleResizeUp);
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+  }, [handleResizeMove, handleResizeUp]);
 
   const { setTemplate, reset: resetPlayground } = usePlaygroundStore(
     (state) => ({
@@ -133,6 +185,7 @@ export function ProgramSidebar() {
     { id: "inspector" as const, label: "Account Inspector", icon: ShieldCheck },
     { id: "checklist" as const, label: "Program Checklist", icon: ListChecks },
     { id: "mermaid" as const, label: "Mermaid Diagram", icon: GitBranch },
+    { id: "tests" as const, label: "Tests", icon: Beaker },
   ];
   const layoutItems = [
     { id: "code-only" as const, label: "Code Only" },
@@ -268,7 +321,8 @@ export function ProgramSidebar() {
         templateData?.programMap,
         templateData?.functionSpecs,
         templateData?.precomputedState,
-        templateData?.mermaidDiagram
+        templateData?.mermaidDiagram,
+        templateData?.testCode
       );
 
       console.log("Program created with ID:", newProgram.id);
@@ -304,6 +358,9 @@ export function ProgramSidebar() {
       // Ensure the contextual checklist is visible for the new workspace
       if (!panels.checklist) {
         setPanel("checklist", true);
+      }
+      if (templateData?.testCode && !panels.tests) {
+        setPanel("tests", true);
       }
 
       toast.success(`Program "${finalName}" created successfully!`);
@@ -354,7 +411,7 @@ export function ProgramSidebar() {
         />
       )}
       <aside
-        className={`w-64 flex-shrink-0 border-r border-border/70 backdrop-blur h-screen overflow-hidden flex flex-col fixed md:relative z-50 transition-transform duration-300 ${
+        className={`flex-shrink-0 border-r border-border/70 backdrop-blur h-screen overflow-hidden flex flex-col fixed md:relative z-50 transition-transform duration-300 ${
           mobileSidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         } ${
         isGridTheme 
@@ -363,8 +420,18 @@ export function ProgramSidebar() {
           ? "bg-[#000000] bg-[linear-gradient(rgba(0,255,0,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,255,0,0.03)_1px,transparent_1px)] bg-[size:20px_20px]"
           : "bg-card/60"
         }`}
+        style={{ width: `${sidebarWidth}px` }}
         style={{ top: 0, left: 0 }}
       >
+        <div
+          className={`hidden md:block absolute right-0 top-0 h-full w-1 cursor-col-resize z-20 transition-colors ${
+            isResizing ? "bg-[#14F195]/70" : "hover:bg-[#14F195]/50"
+          }`}
+          onMouseDown={handleResizeDown}
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="Resize sidebar"
+        />
         {/* Mobile close button */}
         <div className="md:hidden flex items-center justify-between p-4 border-b border-border/70">
           <span className="text-sm font-semibold text-foreground">Menu</span>

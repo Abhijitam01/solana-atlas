@@ -12,6 +12,7 @@ import { ExecutionPanel } from "@/components/panels/ExecutionPanel";
 import { AccountInspectorPanel } from "@/components/panels/AccountInspectorPanel";
 import { ProgramChecklistPanel } from "@/components/panels/ProgramChecklistPanel";
 import { MermaidPanel } from "@/components/panels/MermaidPanel";
+import { TestPanel } from "@/components/panels/TestPanel";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { useToast } from "@/hooks/use-toast";
 import { ToastContainer } from "@/components/ui/Toast";
@@ -71,7 +72,7 @@ export default function PlaygroundPage() {
   );
   const sidePanelRef = useRef<ImperativePanelHandle>(null);
   const anyPanelOpen =
-    panels.map || panels.explanation || panels.execution || panels.inspector || panels.checklist || panels.mermaid;
+    panels.map || panels.explanation || panels.execution || panels.inspector || panels.checklist || panels.mermaid || panels.tests;
 
   const codeId = useSearchParams().get("code");
   const { openTemplateProgram, openUserProgram } = useProgramStore(
@@ -411,6 +412,7 @@ export default function PlaygroundPage() {
                         {panels.inspector && <AccountInspectorPanel />}
                         {panels.execution && <ExecutionPanel />}
                         {panels.mermaid && <MermaidPanel />}
+                        {panels.tests && <TestPanel />}
                       </div>
                     </motion.aside>
                   )}

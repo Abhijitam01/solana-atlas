@@ -6,7 +6,8 @@ export type PanelId =
   | "execution"
   | "inspector"
   | "checklist"
-  | "mermaid";
+  | "mermaid"
+  | "tests";
 
 export type LayoutMode = "code-only" | "code-map" | "code-exec";
 
@@ -14,6 +15,7 @@ interface LayoutState {
   panels: Record<PanelId, boolean>;
   sidebarVisible: boolean;
   mobileSidebarOpen: boolean;
+  sidebarWidth: number;
   zenMode: boolean;
   layoutMode: LayoutMode;
   togglePanel: (panel: PanelId) => void;
@@ -23,6 +25,7 @@ interface LayoutState {
   setLayoutMode: (mode: LayoutMode) => void;
   toggleMobileSidebar: () => void;
   setMobileSidebarOpen: (open: boolean) => void;
+  setSidebarWidth: (width: number) => void;
 }
 
 const initialPanels: Record<PanelId, boolean> = {
@@ -32,12 +35,15 @@ const initialPanels: Record<PanelId, boolean> = {
   inspector: false,
   checklist: false,
   mermaid: false,
+  tests: false,
 };
 
 export const useLayoutStore = createWithEqualityFn<LayoutState>((set) => ({
   panels: { ...initialPanels },
   sidebarVisible: true,
   mobileSidebarOpen: false,
+  // 5% wider than previous 256px default.
+  sidebarWidth: 269,
   zenMode: false,
   layoutMode: "code-only",
   togglePanel: (panel) =>
@@ -84,4 +90,6 @@ export const useLayoutStore = createWithEqualityFn<LayoutState>((set) => ({
     })),
   setMobileSidebarOpen: (open) =>
     set({ mobileSidebarOpen: open }),
+  setSidebarWidth: (width) =>
+    set({ sidebarWidth: Math.max(220, Math.min(520, Math.round(width))) }),
 }));
